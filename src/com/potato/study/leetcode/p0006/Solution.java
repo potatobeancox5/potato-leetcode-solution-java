@@ -1,15 +1,5 @@
 package com.potato.study.leetcode.p0006;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import com.potato.study.leetcode.domain.ListNode;
-import com.potato.study.leetcode.util.ArrayUtil;
-import com.potato.study.leetcode.util.ListNodeUtil;
-
 /**
  * 
  * @author liuzhao11

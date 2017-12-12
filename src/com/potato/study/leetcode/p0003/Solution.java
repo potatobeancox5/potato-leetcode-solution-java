@@ -3,9 +3,6 @@ package com.potato.study.leetcode.p0003;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.potato.study.leetcode.domain.ListNode;
-import com.potato.study.leetcode.util.ListNodeUtil;
-
 /**
  * 
  * @author liuzhao11 3. Longest Substring Without Repeating Characters
