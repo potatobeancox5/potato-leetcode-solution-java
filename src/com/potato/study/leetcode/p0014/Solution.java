@@ -1,11 +1,5 @@
 package com.potato.study.leetcode.p0014;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-
-import javax.swing.UIManager;
-
 /**
  * 
  * @author liuzhao11 14. Longest Common Prefix 

@@ -1,7 +1,5 @@
 package com.potato.study.leetcode.p0012;
 
-import javax.swing.UIManager;
-
 /**
  * 
  * @author liuzhao11
