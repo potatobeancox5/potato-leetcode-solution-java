@@ -3,7 +3,7 @@ package com.potato.study.leetcode.p0118;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.potato.study.leetcode.util.ArrayUtil;
+import com.potato.study.leetcode.util.ListUtil;
 
 /**
  * 
@@ -53,6 +53,6 @@ public class Solution {
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		List<List<Integer>> result = solution.generate(5);
-		ArrayUtil.printListList(result);
+		ListUtil.printListList(result);
 	}
 }
