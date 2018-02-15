@@ -1,7 +1,5 @@
 package com.potato.study.leetcode.p0647;
 
-import java.util.Arrays;
-
 /**
  * 
  * @author liuzhao11
