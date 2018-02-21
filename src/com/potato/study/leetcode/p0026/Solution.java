@@ -2,7 +2,9 @@ package com.potato.study.leetcode.p0026;
 
 /**
  * 
- * @author liuzhao11 26. Remove Duplicates from Sorted Array
+ * @author liuzhao11 
+ * 		
+ * 26. Remove Duplicates from Sorted Array
  * 
  *         Given a sorted array, remove the duplicates in-place such that each
  *         element appear only once and return the new length.
@@ -19,6 +21,9 @@ package com.potato.study.leetcode.p0026;
  *         beyond the new length.
  * 
  *         思路：
+ *         采用覆盖写的办法
+ *         两个指针，第一个指针负责遍历数组，找不同的数字，第二个指针负责指示当前存储数字的位置
+ *         
  *         遍历一遍数组从 index 1 开始
  *         纪录之前的数字before 数字出现的次数time=1 没有重复的数字写位置 uniqueWriteIndex
  *         	如果当前数字current与之前的数字一致	
