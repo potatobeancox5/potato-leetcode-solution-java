@@ -27,7 +27,7 @@ You can assume that you can always reach the last index.
  *         记录index 并记录下一步所能能达到的最大位置 maxIndex 每遍历到一个新位置（没到本步达到的最大位置） 更新maxIndex（下一步能达到的最大位置）
  *         记录上一次能达到的最大位置，超出了上一步达到的最大位置 需要增加步数
  *         
- *        
+ *        http://blog.csdn.net/whzyb1991/article/details/46942025
  *        
  *
  */
