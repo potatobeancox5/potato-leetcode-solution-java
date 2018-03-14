@@ -1,4 +1,4 @@
-package com.potato.study.leetcode.util;
+package com.potato.study.leetcode.util;import java.util.Arrays;
 
 /**
  * 数组工具类
@@ -16,6 +16,17 @@ public class ArrayUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	public static void printMatrix(int[][] matrix) {
+		if(null == matrix || matrix.length == 0) {
+			return ;
+		}
+		System.out.println("[");
+		for (int[] is : matrix) {
+			System.out.println(Arrays.toString(is));
+		}
+		System.out.println("]");
 	}
 	
 }
