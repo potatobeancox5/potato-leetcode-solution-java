@@ -67,7 +67,7 @@ Could you devise a constant space solution?
  *   
  * 		
  */
-public class Solution {
+public class Solution {	
 
 	public void recoverTree(TreeNode root) {
         if(null == root) {
@@ -106,11 +106,6 @@ public class Solution {
 		}
 		// 遍历当前节点
 		if(pre.size() > 0 && pre.get(0).val > root.val) { // 遍历过程中出现了中序遍历， 记录当前遍历的界节点 
-//			if(faultNode.size() == 0) { // 当前找到的是第一个错误的节点
-//				faultNode.add(pre);
-//			} else { // 当前找到的是第二个错误的节点
-//				faultNode.add(root);
-//			}
 			faultNode.addAll(pre);
 			faultNode.add(root);
 		}
