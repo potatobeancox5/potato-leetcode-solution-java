@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Stack;
 
 import com.potato.study.leetcode.domain.TreeNode;
-import com.potato.study.leetcode.util.TreeNodeUtil;
 
 /**
  * 
@@ -61,10 +60,5 @@ public class Solution {
 		return list;
     }
 	
-	public static void main(String[] args) {
-		Solution solution = new Solution();
-		TreeNode root = TreeNodeUtil.generateTreeByArrayString("[1,null,2,3]");
-		List<Integer> result = solution.preorderTraversal(root);
-		System.out.println(result);
-	}
+	
 }
