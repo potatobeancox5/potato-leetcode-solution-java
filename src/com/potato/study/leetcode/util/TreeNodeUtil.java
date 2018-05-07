@@ -15,6 +15,7 @@ public class TreeNodeUtil {
 	
 	/**
 	 * 将字符串  转换成 类似代表二叉树结构的字符串：[5,1,4,null,null,3,6] 转换成树结构
+	 * 输入字符转必须是二叉完成树表示方式
 	 * 字符串形式不进行判断 字符串结构必须合法
 	 * @param arrStr
 	 * @return
