@@ -20,6 +20,8 @@ Follow up:
 A linked list can be reversed either iteratively or recursively. Could you implement both?
  *         思路： 要求 即使用递归 又使用正常办法 对链表进行反转  
  * 
+ * 		递归方法 采用 当前节点和当前节点连接的节点作为参数的解法
+ * https://segmentfault.com/a/1190000004708243
  */
 public class Solution {
 	
