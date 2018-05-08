@@ -19,6 +19,10 @@ package com.potato.study.leetcode.p0541;
  *         思路： 交换前k 个 0- k-1 2k~ 3k-1 ... 
  *         // 计算需要正常交换几次 有n个k 需要交换 （n+1） / 2 次
  *          //余数r 若n为奇数 不动了 //若n为偶数 交换最后的r个数
+ *          
+ *          直接对0 - k-1 倒序遍历 使用StringBuilder 添加
+ *       
+ *          
  */
 public class Solution {
 	
