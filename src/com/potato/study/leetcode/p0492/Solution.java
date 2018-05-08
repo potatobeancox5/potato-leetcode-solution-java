@@ -27,6 +27,8 @@ The web page's width and length you designed must be positive integers.
  * 
  *         思路： 
  *         给出面积  求出长l和宽w 要求l >= w 且 l w 之间差距越小越好 
+ *         
+ *         递减的时候也可用面积对 当前i 取余数  然后计算高
  * 
  */
 public class Solution {
