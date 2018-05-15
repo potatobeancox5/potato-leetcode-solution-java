@@ -17,6 +17,7 @@ Supposed the linked list is 1 -> 2 -> 3 -> 4 and you are given the third node wi
  *   这个题主要难点在题意的解读
  *   不给链表head 只给要删除的节点node 让你删除节点 
  *   解答就是 不删节点 只修改内容 然后删除最后一个节点（前提node不是最终节点）
+ *   https://blog.csdn.net/sunao2002002/article/details/47083975
  */
 public class Solution {
 	
