@@ -29,7 +29,6 @@ public class Solution {
         	if(nums[i] != 0) { //判断是否需要移动
         		if(i == index) {
         			index++;
-        			continue;
         		} else {
         			nums[index] = nums[i];
         			index++;
