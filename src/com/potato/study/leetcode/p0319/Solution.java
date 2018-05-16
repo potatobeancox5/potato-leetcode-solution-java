@@ -26,6 +26,7 @@ So you should return 1, because there is only one bulb is on.
  *         思路： 
  *         n = a * b 除非 ab 相等  否则就有会有两个轮次点击开关1 这样开关最后的状态就是闭合的
  *         因此 题目转换成求 小于n 的平方数
+ *         https://blog.csdn.net/zhangxiao93/article/details/50370170
  *         
  *         
  *         
