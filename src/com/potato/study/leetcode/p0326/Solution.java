@@ -21,7 +21,7 @@ Special thanks to @dietpepsi for adding this problem and creating all test cases
  *         思路： 
  *         // 一致 int 最大3 的倍数 1162261467
  *         任意的3的指数 都能被这个数整除 
- *         
+ *         https://blog.csdn.net/ebowtang/article/details/50485622
  *         
  */
 public class Solution {
