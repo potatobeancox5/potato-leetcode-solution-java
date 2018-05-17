@@ -28,7 +28,7 @@ Explanation:
 'e' is the letter that was added.
  *         
  *         思路：
- *        
+ *        也可以求和 然后相减 就可以了 
  *         
  */
 public class Solution{
