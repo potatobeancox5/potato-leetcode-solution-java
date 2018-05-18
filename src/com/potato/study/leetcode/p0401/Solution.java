@@ -40,6 +40,8 @@ The minute must be consist of two digits and may contain a leading zero, for exa
 			
 			https://blog.csdn.net/justdoit_potato/article/details/77262225
 			数字格式化 输出
+			采用动态规划 解题方法啊
+			https://blog.csdn.net/styshoo/article/details/52908424
  * 
  */
 public class Solution {
