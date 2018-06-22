@@ -29,4 +29,15 @@ public class ArrayUtil {
 		System.out.println("]");
 	}
 	
+	public static void printMatrix(char[][] matrix) {
+		if(null == matrix || matrix.length == 0) {
+			return ;
+		}
+		System.out.println("[");
+		for (char[] is : matrix) {
+			System.out.println(Arrays.toString(is));
+		}
+		System.out.println("]");
+	}
+	
 }
