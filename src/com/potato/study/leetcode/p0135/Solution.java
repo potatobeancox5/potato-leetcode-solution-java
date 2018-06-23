@@ -37,6 +37,7 @@ Explanation: You can allocate to the first, second and third child with 1, 2, 1 
  *         	如果i - 1 小于等于 i 那么 i+1 = 1
  *         	如果i - 1 大于i 那么 i+1 = i位置++
  *        https://www.cnblogs.com/AndyJee/p/4483043.html
+ *        https://www.jianshu.com/p/4fc4e970dfec
  * 
  */
 public class Solution {
