@@ -40,6 +40,8 @@ public class Solution {
 		boolean [][] isPalindrome = new boolean[s.length()][s.length()];
 		int[] cutNum = new int[s.length() + 1]; // 加一为了防止最后一个位置溢出
 		for(int i = s.length() - 1 ; i>=0 ;i--) {
+			// min[i]初始化为min[i+1]+1，即初始化s[i]与s[i+1]之间需要切一刀。这里考虑边界问题，因此min数组设为n+1长度。
+			//切一刀一定能保证都是回文
 			cutNum[i] = cutNum[i + 1] + 1;
 			for(int j = i ; j < s.length() ; j++) {
 				if(s.charAt(i) == s.charAt(j) 
