@@ -76,6 +76,35 @@ public class ListNodeUtil {
 			}
 		}
 	}
+
+
+	/**
+	 * todo 测试
+	 * 生成一个带环的链表
+	 * pos位置就是环的开始位置
+	 * head = [3,2,0,-4], pos = 1
+	 * @param nodeNum
+	 * @param pos
+	 * @return
+	 */
+	public static ListNode buildLinkedListWithCycle(int[] nodeNum, int pos) {
+		ListNode head = new ListNode(-999);
+		ListNode current = head;
+		// 生成一个ListNode
+		for (int num : nodeNum) {
+			current.next = new ListNode(num);
+		}
+		// 遍历 ListNode 设置环的位置
+		int count = 0;
+		ListNode cycleStart = head.next;
+		while(count < pos) {
+			cycleStart = current.next;
+		}
+		current.next = cycleStart;
+		return head.next;
+	}
+
+
 	
 	public static void main(String[] args) {
 		String str = "1->2->3->3->4->4->5";
