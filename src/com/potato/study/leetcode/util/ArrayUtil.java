@@ -39,5 +39,36 @@ public class ArrayUtil {
 		}
 		System.out.println("]");
 	}
+
+
+
+	/**
+	 * [3,2,0,-4] 类似字符串 转换成数组
+	 * []  -> 空数组
+	 * null -> null
+	 * 不校验入参合法性
+	 * @param arrayStr
+	 * @return
+	 */
+	public static int[] string2ArrayiInt(String arrayStr) {
+		if (null == arrayStr || arrayStr.length() < 2) {
+			return null;
+		}
+		if (arrayStr.length() == 2) {
+			return new int[0];
+		}
+		String[] numParts = arrayStr.substring(1, arrayStr.length() - 1).split(",");
+		int[] numArray = new int[numParts.length];
+		for (int i = 0; i < numParts.length; i++) {
+			numArray[i] = Integer.parseInt(numParts[i]);
+		}
+		return numArray;
+	}
+
+	public static void main(String[] args) {
+		String arrayStr = "[3,2,0,-4]";
+		int[] arr = string2ArrayiInt(arrayStr);
+		System.out.println(Arrays.toString(arr));
+	}
 	
 }
