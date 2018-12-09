@@ -16,6 +16,10 @@ public class ListNodeUtil {
 	 * @param head
 	 */
 	public static void printListNode(ListNode head) {
+		if (null == head) {
+			System.out.println("null");
+			return;
+		}
 		StringBuilder sBuilder = new StringBuilder("[");
 		ListNode p = head;
 		while(null != p) {
