@@ -27,6 +27,7 @@ Output: ["AAAAACCCCC", "CCCCCAAAAA"]
 
  *         思路： 
  *          ACGT 使用而二进制表示时最后三位不同，只取最后三位进行存储 比较 用int 数字存储每个序列
+ *          https://www.cnblogs.com/grandyang/p/4284205.html
  *         
  *        
  */
