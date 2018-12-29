@@ -35,39 +35,36 @@ Explanation: 13 = 4 + 9.
  */
 public class Solution {
 
-
-
-
-        public int numSquares(int n) {
-            int[] dp = new int[n + 1];
-            dp[1] = 1;
-            for (int i = 2; i <= n; i++) {
-                List<Integer> dpList = new ArrayList<>();
-                for (int k = 1 ; k * k <= i ; k++) {
-                    dpList.add(dp[i - k * k]);
-                }
-                dp[i] = min(dpList) + 1;
+    public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            List<Integer> dpList = new ArrayList<>();
+            for (int k = 1 ; k * k <= i ; k++) {
+                dpList.add(dp[i - k * k]);
             }
-            return dp[n];
+            dp[i] = min(dpList) + 1;
         }
+        return dp[n];
+    }
 
-        /**
-         * 输入一组数字，返回最小值
-         * @param list
-         * @return
-         */
-        private int min (List<Integer> list) {
-            if (null == list || list.size() == 0) {
-                // 处理异常
-            }
-            int min = list.get(0);
-            for (int num: list) {
-                if (num < min) {
-                    min = num;
-                }
-            }
-            return min;
+    /**
+     * 输入一组数字，返回最小值
+     * @param list
+     * @return
+     */
+    private int min (List<Integer> list) {
+        if (null == list || list.size() == 0) {
+            // 处理异常
         }
+        int min = list.get(0);
+        for (int num: list) {
+            if (num < min) {
+                min = num;
+            }
+        }
+        return min;
+    }
 	
 	
     public static void main(String[] args) {
