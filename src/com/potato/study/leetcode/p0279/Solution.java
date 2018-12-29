@@ -29,6 +29,8 @@ Explanation: 13 = 4 + 9.
  * 	        dp[n] 储存 dp[n] 最少由几个平方和组成 n 从1 开始计算 为了防止出现问题
  * 	        dp[i] = min {dp[i - 1* 1] + 1, dp[i - 2 * 2] + 1....dp[i - k* k] + 1} (k * k < i)
  *
+ * 	        https://blog.csdn.net/mupengfei6688/article/details/78903254
+ *
 * 
  */
 public class Solution {
