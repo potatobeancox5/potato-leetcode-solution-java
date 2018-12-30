@@ -39,6 +39,7 @@ Explanation:
  * 思路：
  *  分治法
  *  记录字串对应数组 放在全局变量中
+ *  https://blog.csdn.net/happyaaaaaaaaaaa/article/details/51535462
  *
  */
 public class Solution {
