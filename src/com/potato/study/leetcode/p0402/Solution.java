@@ -33,6 +33,7 @@ Explanation: Remove all the digits from the number and it is left with nothing w
  *   题目含义：
  *   给定一个数字字符串 numStr 和k 要求 去掉k个数字之后 这个数最小
  *   思路：
+ *   https://www.cnblogs.com/reboot329/p/5883739.html
  *   1.什么时候去掉数字能保证去掉后的数字最小
  *   去掉从前往后数递增的最后一个数字
  *   使用栈，如果当前数字比之前peek小的话，删除之前的数，知道数列变成递增的，
