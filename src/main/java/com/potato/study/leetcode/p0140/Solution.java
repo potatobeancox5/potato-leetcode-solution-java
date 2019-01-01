@@ -1,4 +1,4 @@
-package com.potato.study.leetcode.p0140.todo;
+package com.potato.study.leetcode.p0140;
 
 import java.util.ArrayList;
 import java.util.Arrays;
