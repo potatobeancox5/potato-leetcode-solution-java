@@ -30,6 +30,7 @@ A is a mountain, as defined above.
  *         题目含义：
  *            找到一个一个山脉数组的最大值，山脉数组见英文定义吧
  *         思路：
+ *         https://blog.csdn.net/fuxuemingzhu/article/details/80721162
  *            二分查找  A.length >= 3
  *            left = 0 right = len - 1
  *            while left <= right
