@@ -38,7 +38,7 @@ Each call to ping will have 1 <= t <= 10^9.
  *
  *         思路：
  *          队列解决
- *          https://leetcode.com/problems/number-of-recent-calls/
+ *          https://blog.csdn.net/u011732358/article/details/83833428
  *          还可以使用二分查找
  *
  *
