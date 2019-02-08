@@ -46,6 +46,8 @@ Explanation:
  *          贡献行列式判断
  *          x1 * y2 + x2 * y3 + x3 * y1 - x3 * y2 - x2 * y1 - x1 * y3 == 0
  *          每次更换之前选择两个点的时候 判断最大值
+ *          为什么 65536 * 65536 = 0
+ *          https://bbs.csdn.net/topics/380191065
  *
  */
 public class Solution {
