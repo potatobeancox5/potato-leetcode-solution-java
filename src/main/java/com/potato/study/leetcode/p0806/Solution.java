@@ -43,6 +43,8 @@ widths is an array of length 26.
 widths[i] will be in the range of [2, 10]. *
  *         思路：
  *          设置一个pos 记录当前 位置 pos + len > 100 写入下一行 line 记录当前行数
+ *
+https://blog.csdn.net/yuweiming70/article/details/79684506
  * 
  */
 public class Solution {
