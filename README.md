@@ -17,3 +17,5 @@ https://www.cnblogs.com/carlo/p/5009968.html
 # Error:java: Compilation failed: internal java compiler error
 https://blog.csdn.net/jdjdndhj/article/details/70256989
 
+# git push web 一次push到两个仓库设置
+https://blog.csdn.net/w_yunlong/article/details/52313387
