@@ -19,3 +19,8 @@ https://blog.csdn.net/jdjdndhj/article/details/70256989
 
 # git push web 一次push到两个仓库设置
 https://blog.csdn.net/w_yunlong/article/details/52313387
+修改本地代码中 .git/config 文件，新增或修改节点如下：
+    
+    [remote "web"]
+    url = https://git.oschina.net/xxx/xx.git
+    url = https://github.com/xxx/xx.git
