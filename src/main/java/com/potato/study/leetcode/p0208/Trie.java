@@ -27,122 +27,132 @@ All inputs are guaranteed to be non-empty strings.
         实现前缀树的方法
         采用左孩子，右兄弟的存储方法
     思路：
+        https://www.cnblogs.com/strugglion/p/6426979.html
+        前缀树 结构 数组保存下一个节点 boolean 标记到当前节点是否结束
  */
 public class Trie {
 
-    private TreeNode treeNodeHead;
-
+    /**
+     * 根节点
+     */
+    private TrieTreeNode rootNode;
     /** Initialize your data structure here. */
     public Trie() {
-        treeNodeHead = new TreeNode('A');
+        rootNode = new TrieTreeNode();
     }
 
     /** Inserts a word into the trie. */
     public void insert(String word) {
-        // 获取第一层节点
-        TreeNode current = treeNodeHead.left;
-        TreeNode preHead = new TreeNode('B');
-        TreeNode pre = preHead;
-        TreeNode parent = treeNodeHead;
-        pre.right = current;
-        for (int i = 0; i < word.length(); i++) {
-            while (current != null && current.val != word.charAt(i)) { // 向右找
-                current = current.right;
-                pre = pre.right;
-            }
-            if (current == null) { // 找到了节点, 找下一个节点
-                parent = current; // 修改副节点
-                current = current.left;
-                pre = preHead;
-                pre.right = current;
-                continue;
-            } else { // 最后都没有找到, 在最后创建一个字母 拼上去
-                if (pre == preHead) { // 第一个孩子 需要连接到父亲的left上边
-                    TreeNode treeNode = new TreeNode(word.charAt(i));
-                    parent.left = treeNode;
-                    parent = treeNode;
-                    i++;
-                    while (i < word.length()) {
-                        TreeNode child = new TreeNode(word.charAt(i));
-                        parent.left = child;
-                        parent = child;
-                        i++;
-                    }
-                } else {
-                    TreeNode treeNode = new TreeNode(word.charAt(i));
-                    pre.right = treeNode;
-                    current = treeNode.left; // 往下层移动
-                }
-            }
+        if (null == word || "".equals(word)) {
+            return;
         }
-
-
-        // 找到响应的位置 ，如果最终没有找到 那么 之前的那个位置就是插入点
+        rootNode.insert(word);
     }
 
     /** Returns if the word is in the trie. */
-//    public boolean search(String word) {
-//        if(null == word || "".equals(word)) {
-//            return false;
-//        }
-//        char headch = word.charAt(0);
-//        TreeNode head = treeNodeHead[headch - 'a'];
-//        if (null == head) {
-//            return false;
-//        }
-//        TreeNode p = head.left;
-//        int index = 1;
-//        while (index < word.length()) {
-//            while(null != p && p.val != (word.charAt(index) - 'a')) {
-//                p = p.right;
-//            }
-//            if (p == null) { // 最终没有这个单词
-//                return false;
-//            } else { // 找到了 p
-//                p = p.left;
-//                index++;
-//            }
-//        }
-//        if (p.left != null) {
-//            return false;
-//        }
-//        return true;
-//    }
+    public boolean search(String word) {
+        return rootNode.search(word);
+    }
 
     /** Returns if there is any word in the trie that starts with the given prefix. */
-//    public boolean startsWith(String prefix) {
-//        if(null == prefix || "".equals(prefix)) {
-//            return false;
-//        }
-//        char headch = prefix.charAt(0);
-//        TreeNode head = treeNodeHead[headch - 'a'];
-//        if (null == head) {
-//            return false;
-//        }
-//        TreeNode p = head.left;
-//        int index = 1;
-//        while (index < prefix.length()) {
-//            while(null != p && p.val != (prefix.charAt(index) - 'a')) {
-//                p = p.right;
-//            }
-//            if (p == null) { // 最终没有这个单词
-//                return false;
-//            } else { // 找到了 p
-//                p = p.left;
-//                index++;
-//            }
-//        }
-//        return true;
-//    }
+    public boolean startsWith(String prefix) {
+        return rootNode.startsWith(prefix);
+    }
 
+    /**
+     * 前缀树节点数据结构
+     */
+    class TrieTreeNode {
+        /**
+         * 下一个节点的位置
+         * 26 个节点 每个对应字母 a - z
+         */
+        public TrieTreeNode[] children;
 
-    class TreeNode {
-        public char val;
-        public TreeNode left;
-        public TreeNode right;
+        /**
+         * 标志是否是一个单词的结束
+         * true ： 此节点是一个单词的结束
+         * false ： 此节点不是一个单词的结束
+         */
+        public boolean isWordEnd;
 
-        public TreeNode(char x) {
-            val = x;
+        public TrieTreeNode() {
+            children = new TrieTreeNode[26]; // 初始化孩子节点
         }
+
+
+        /** 向当前前缀树中追加word */
+        public void insert(String word) {
+            // 获取根节点
+            TrieTreeNode curNode = this;
+            // 取出每个字符
+            for (int i = 0; i < word.length(); i++) {
+                char ch = word.charAt(i);
+                // 如果存在 判断是否结束 不是的话 再往里塞
+                if (null == curNode.children[ch - 'a']) {
+                    curNode.children[ch - 'a'] = new TrieTreeNode();
+                }
+                TrieTreeNode thisNode = curNode.children[ch - 'a'];
+                // 判断当前节点是否是单词最后一个节点
+                if (i == word.length() - 1) {
+                    thisNode.isWordEnd = true;
+                }
+                curNode = thisNode;
+            }
+        }
+
+        /** 在当前节点的前缀树种搜索给定单词，且满足结束的字符的is */
+        public boolean search(String word) {
+            // 获取根节点
+            TrieTreeNode curNode = this;
+            for (int i = 0; i < word.length(); i++) {
+                char ch = word.charAt(i);
+                // 如果存在 判断是否结束 不是的话 再往里塞
+                if (null == curNode.children[ch - 'a']) {
+                    return false;
+                }
+                TrieTreeNode thisNode = curNode.children[ch - 'a'];
+                // 判断当前节点是否是单词最后一个节点
+                if (i == word.length() - 1 && thisNode.isWordEnd) {
+                    return true;
+                }
+                curNode = thisNode;
+            }
+            return false; // 正常此处不可达
+        }
+
+        /** Returns if there is any word in the trie that starts with the given prefix. */
+        public boolean startsWith(String prefix) {
+            // 获取根节点
+            TrieTreeNode curNode = this;
+            for (int i = 0; i < prefix.length(); i++) {
+                char ch = prefix.charAt(i);
+                // 如果存在 判断是否结束 不是的话 再往里塞
+                if (null == curNode.children[ch - 'a']) {
+                    return false;
+                }
+                TrieTreeNode thisNode = curNode.children[ch - 'a'];
+                curNode = thisNode;
+            }
+            return true; // 正常此处不可达
+        }
+    }
+
+    public static void main(String[] args) {
+        Trie trie = new Trie();
+        trie.insert("apple");
+        boolean apple = trie.search("apple");// returns true
+        System.out.println("apple:" +  apple);
+        assert apple;
+        boolean app = trie.search("app");// returns false
+        assert !app;
+        System.out.println("app:" +  app);
+        boolean app1 = trie.startsWith("app");// returns true
+        assert app1;
+        System.out.println("app1:" +  app1);
+        trie.insert("app");
+        boolean app2 = trie.search("app");// returns true
+        assert app2;
+        System.out.println("app2:" +  app2);
     }
 }
