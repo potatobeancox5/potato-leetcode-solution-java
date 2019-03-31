@@ -34,6 +34,8 @@ Do not use the eval built-in library function.
  *
  * 思路：
  *     栈 操作数入栈
+ *     开一个栈 计算 按照符号优先级进行计算
+        抽一个判断符号优先级的方法
  *  
  */
 public class Solution {
