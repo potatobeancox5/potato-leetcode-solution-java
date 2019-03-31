@@ -1,7 +1,10 @@
 package com.potato.study.leetcode.p0429;
 
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * 
@@ -44,7 +47,41 @@ public class Solution {
 
     public List<List<Integer>> levelOrder(Node root) {
 
-        return null;
+        List<List<Integer>> levelOrderList = new ArrayList<>();
+
+        if (null == root) {
+            return levelOrderList;
+        }
+
+        Queue<Node> nextNodeQueue = new LinkedList<>();
+        nextNodeQueue.add(root);
+
+        int currentLevelNum = 1; // 当前层总数量
+        int currentNodeIndex = 0; // 目前遍历了多少个节点了 这个层的
+        int nextLevelNum = 0; // 下一层有多少个节点
+        List<Integer> currentLevelOrder = new ArrayList<>();
+
+        while (!nextNodeQueue.isEmpty()) {
+            Node node = nextNodeQueue.remove();
+            currentNodeIndex++;
+            currentLevelOrder.add(node.val);
+            if (node.children != null && node.children.size() > 0) {
+                for (Node child : node.children) {
+                    nextNodeQueue.add(child);
+                    nextLevelNum++;
+                }
+            }
+            // 判断当前是否是最后一个节点
+            if (currentNodeIndex == currentLevelNum) {
+                // 插入当前层数据 到一个结果
+                levelOrderList.add(currentLevelOrder);
+                currentLevelOrder = new ArrayList<>();
+                currentLevelNum = nextLevelNum;
+                nextLevelNum = 0;
+                currentNodeIndex = 0;
+            }
+        }
+        return levelOrderList;
     }
 }
 
