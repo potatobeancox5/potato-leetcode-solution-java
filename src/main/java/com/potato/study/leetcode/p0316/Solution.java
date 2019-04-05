@@ -63,45 +63,44 @@ public class Solution {
         // 缓存当前结果
         StringBuffer res = new StringBuffer();
         for (char ch : s.toCharArray()) {
+            // 处理第一个字符
             if (res.length() == 0) {
                 res.append(ch);
                 timesMap.put(ch, timesMap.get(ch) - 1);
-            } else {
-                if (ch >= res.charAt(res.length() - 1)) {
-                    if (res.toString().contains(ch + "")) {
-                        timesMap.put(ch, timesMap.get(ch) - 1);
-                    } else {
-                        res.append(ch);
-                        timesMap.put(ch, timesMap.get(ch) - 1);
-                    }
-                } else {// 当前字符比 res last 小
-                    if (res.toString().contains(ch + "")) {
-                        timesMap.put(ch, timesMap.get(ch) - 1);
-                    } else {
-                        if (timesMap.get(res.charAt(res.length() - 1)) == 0) {
-                            //如果last 字符次数 等于0 说明 只能添加到最后了 添加当前字符 次数--
-                            res.append(ch);
-                        } else {
-                            // 如果last 字符次数 大于 0 说明可以删除最后一个字符 并添加当前字符 当前次数-- last也--
-                            char lastCh = res.charAt(res.length() - 1);
-                            while (lastCh > ch && res.length() > 0 &&  timesMap.get(res.charAt(res.length() - 1)) > 0) {
-                                res.deleteCharAt(res.length() - 1);
-                            }
-                            res.append(ch);
-                            timesMap.put(lastCh, timesMap.get(lastCh) - 1);
+                continue;
+            }
+            // 处理其他字符
+            char lastResultCh = res.charAt(res.length() - 1);
+            // 新字符比res最后一个字符大 如果这个字符没在res中 则加入
+            if (ch >= lastResultCh && !res.toString().contains(ch + "")) {
+                res.append(ch);
+            } else if (ch < lastResultCh && !res.toString().contains(ch + "")) {
+                if (timesMap.get(lastResultCh) == 0) {
+                    //如果last 字符次数 等于0 说明 只能添加到最后了 添加当前字符 次数--
+                    res.append(ch);
+                } else {
+                    // 如果last 字符次数 大于 0 说明可以删除最后一个字符 并添加当前字符 当前次数-- last也--
+                    char lastCh = res.charAt(res.length() - 1);
+                    while (lastCh > ch && res.length() > 0 &&  timesMap.get(lastCh) > 0) {
+                        res.deleteCharAt(res.length() - 1);
+                        if (res.length() > 0) {
+                            lastCh = res.charAt(res.length() - 1);
                         }
-                        timesMap.put(ch, timesMap.get(ch) - 1);
                     }
+                    res.append(ch);
                 }
             }
+            timesMap.put(ch, timesMap.get(ch) - 1);
         }
         return res.toString();
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-//        String s = "cbacdcbc";
-        String s = "bcabc";
+//        String s = "cbacdcbc"; // acdb
+//        String s = "bcabc";// abc
+//        String s = "edebbed"; // bed
+        String s = "bbcaac"; // bac
         String str = solution.removeDuplicateLetters(s);
         System.out.println(str);
     }
