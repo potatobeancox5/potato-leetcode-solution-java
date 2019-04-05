@@ -24,7 +24,8 @@ Output: "acdb"
  *         
  *         
  *         
- *         思路： 
+ *         思路：
+ *         https://www.jianshu.com/p/ea5ca7aa820e
  *         xx
  *         timesmap 存放当前字符出现次数
  *         res 缓存存放当前结果
