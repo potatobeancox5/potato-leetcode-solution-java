@@ -31,11 +31,49 @@ Total amount you can rob = 1 + 3 = 4.
         转换问题 求 串的前缀回文
         https://blog.csdn.net/tingting256/article/details/50454924
         https://segmentfault.com/a/1190000008395015?utm_medium=referral&utm_source=tuicool
+        将字符字符串 reverse 拼接到最后 然后使用kmp中寻找模式匹配串的方式找每个的位置 知道第n个字符
+
+
+        p[20] = p[8]
+
+        abcddcbaxx#xxabcddcba
+                     abcddcbaxx#xxabcddcba
+
+        subString 8
+
+        abcddcba 找到自后一个字符串不匹配如何移动
+
  */
 public class Solution {
     public String shortestPalindrome(String s) {
+        String patternStr = s + "#" + new StringBuilder(s).reverse().toString();
+        int[] index = new int[patternStr.length()];
+        //生成模式字符串匹配
+        int i = 0;
+        int j = 1;
+        while (j < patternStr.length()) {
+            if (patternStr.charAt(i) == patternStr.charAt(j)) {
+                index[j] = i + 1;
+                i++;
+                j++;
+            } else {
+                if (i == 0) {
+                    j++;
+                } else {
+                    i = index[i - 1];
+                }
+            }
+        }
+        // 生成index[length - 1] 指向位置
+        int subIndex = index[patternStr.length() - 1];
+        StringBuilder sb = new StringBuilder(s.substring(subIndex));
+        return sb.reverse() + s;
+    }
 
-        return null;
-
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s = solution.shortestPalindrome("aacecaaa");
+//        String s = solution.shortestPalindrome("abcd");
+        System.out.println(s);
     }
 }
