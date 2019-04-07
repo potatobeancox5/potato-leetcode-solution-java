@@ -1,6 +1,11 @@
 package com.potato.study.leetcode.p0300;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * 
  * @author Administrator
@@ -31,8 +36,16 @@ Follow up: Could you improve it to O(n log n) time complexity?
  *          dp[0] = 1
  *
  *         思路：
+ *
+ *          https://www.jianshu.com/p/a3cd9df6d9d1
+why
+https://www.jianshu.com/p/a3cd9df6d9d1一个数组 记录当前最大串
+升序
+遍历target 当前数字比最大值大 加在最后 否则替换数组中第一个大于这个数的数
+https://segmentfault.com/a/1190000007322972?utm_medium=referral&utm_source=tuicool
  *          https://www.cnblogs.com/yrbbest/p/5047816.html
  *
+ *      这种解法的原因数组中的个数总是最长的增长串
  *         
  *         
  *         
@@ -41,45 +54,35 @@ Follow up: Could you improve it to O(n log n) time complexity?
  */
 public class Solution {
 
-    public boolean isAdditiveNumber(String num) {
-        if (null == num || "".equals(num)) {
-            return true;
-        }
-        int length = num.length();
-        for (int i = 1; i <= (length - 1) / 2; i++) {
-            for (int j = i + 1; (length - j >= i) && (length - j >= j - i); j++) {
-                long num1 = Long.parseLong(num.substring(0, i));
-                long num2 = Long.parseLong(num.substring(i, j));
-                if (isAdditiveNumberString(num1, num2, num)) {
-                    return true;
+    public int lengthOfLIS(int[] nums) {
+        List<Integer> lis = new ArrayList<>();
+        if (null != nums) {
+            for (int i = 0; i < nums.length; i++) {
+                if (lis.size() == 0 || nums[i] > lis.get(lis.size() - 1)) {
+                    lis.add(nums[i]);
+                } else { // 替换list中第一个大于 这个树的值
+                    for (int j = 0; j < lis.size(); j++) {
+                        if (lis.get(j) > nums[i]) {
+                            lis.set(j, nums[i]);
+                            break;
+                        } else if (lis.get(j) == nums[i]) {
+                            break;
+                        }
+                    }
                 }
             }
         }
-        return false;
-    }
-
-
-
-    private boolean isAdditiveNumberString (long num1, long num2, String numStr) {
-        long sum = num1 + num2;
-        String prefixKey = "" + num1 + num2 + sum;
-        if (!numStr.startsWith(prefixKey)) {
-            return false;
-        }
-        // 根据长度判断是否已经比较结束
-        if (numStr.length() == prefixKey.length()) {
-            return true;
-        }
-        String num1Str = "" + num1;
-        return isAdditiveNumberString(num2, sum, numStr.substring(num1Str.length()));
+        Set<Integer> set = new HashSet<>(lis);
+        return set.size();
     }
 
 
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		String num = "221474836472147483649";
-//		String num = "123";
-        boolean additiveNumber = solution.isAdditiveNumber(num);
-        System.out.println(additiveNumber);
+        int[] nums = {10,9,2,5,3,7,101,18};
+//        int[] nums = {2,2};
+//        int[] nums = {4,10,4,3,8,9}; // 3
+        int res = solution.lengthOfLIS(nums);
+        System.out.println(res);
     }
 }
