@@ -42,13 +42,13 @@ sum(piles) is odd.
     每次操作完 dp表示的最大胜利值就是后接下来拿的人赢得分
  *
  * 思路：
+ * alex 必胜
  *
 
  *
  */
 public class Solution {
     public boolean stoneGame(int[] piles) {
-
-        return false;
+        return true;
     }
 }
