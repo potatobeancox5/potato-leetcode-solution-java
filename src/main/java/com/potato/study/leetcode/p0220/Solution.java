@@ -20,7 +20,13 @@ Example 3:
 
 Input: nums = [1,5,9,1,5,9], k = 2, t = 3
 Output: false
- * *         
+ * *
+ *
+ * 题目需求：
+ *  判断是否存在 i - j  k的距离内
+ *  num[i]  -   nums[j]  最大不能超过t
+ *
+ *
  * 思路：
  *
  *  https://www.cnblogs.com/codeskiller/p/6359733.html
