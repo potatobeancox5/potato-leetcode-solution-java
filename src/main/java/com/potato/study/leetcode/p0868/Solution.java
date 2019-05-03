@@ -49,19 +49,41 @@ Note:
  *         
  *
  *         题目含义：
- *              移位 1-0 转换的时候 计数 0 - 1转换的时候检查最大值
+ *              给一个数，转换成二进制，求两个1之间最多有多少0
 
  *         思路：
- *              求矩阵的转zhi
-                申请一个新的数组，按照行列对应的形式进行赋值
-
- *
+ *           记录当前距离 dis = 0， maxdis = 0;
+ *           index 记录当前index preIndex 记录之前 1的index
+ *           对 n && 1 结果为 1   dis = index - preindex 求最大值 preIndex = index   n >> 1 index++
  *
  *
  */
 public class Solution {
     public int binaryGap(int n) {
+        int maxDistance = 0;
+        int index = 0;
+        int preindex = -1;
+        while (n !=  0) {
+            if ((n & 1) == 1) {
+                if (preindex != -1) {
+                    int dis = index - preindex;
+                    if (maxDistance < dis) {
+                        maxDistance = dis;
+                    }
+                }
+                preindex = index;
+            }
+            index++;
+            n = n >> 1;
+        }
+        return maxDistance;
+    }
 
-        return -1;
+    public static void main(String[] args) {
+//        System.out.println(4>>>1);
+        Solution solution = new Solution();
+        int n = 8;
+        int gap = solution.binaryGap(n);
+        System.out.println(gap);
     }
 }
