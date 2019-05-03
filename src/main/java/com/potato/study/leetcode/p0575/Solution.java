@@ -1,5 +1,8 @@
 package com.potato.study.leetcode.p0575;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 
  * @author liuzhao11
@@ -32,8 +35,19 @@ The number in given array is in range [-100,000, 100,000].
  */
 public class Solution {
     public int distributeCandies(int[] candies) {
+        int sum = candies.length;
+        Set<Integer> candySet = new HashSet<>();
+        for (int candy : candies) {
+            candySet.add(candy);
+        }
+        return candySet.size() > (sum / 2) ? sum / 2 : candySet.size();
+    }
 
-
-        return 0;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+//        int[] candies = {1,1,2,2,3,3};
+        int[] candies = {1,1,2,3};
+        int nums = solution.distributeCandies(candies);
+        System.out.println("nums:" + nums);
     }
 }
