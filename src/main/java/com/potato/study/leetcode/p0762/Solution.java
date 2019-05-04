@@ -1,5 +1,9 @@
 package com.potato.study.leetcode.p0762;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 
  * @author liuzhao11
@@ -41,13 +45,36 @@ R - L will be at most 10000.
  *
  *   解题思路：
  *      https://www.jianshu.com/p/ca8d4bcea632
-        首先判断20以内的素数
-        遍历每个树 利用移位 判断有多少个1
+        首先判断20以内的素数 找到
+        遍历每个数 利用移位 判断有多少个1
  * 
  */
 public class Solution {
-    public int countPrimeSetBits(int L, int R) {
+    public int countPrimeSetBits(int left, int right) {
+        Set<Integer> primeSet = new HashSet<>();
+        primeSet.addAll(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29));
+        int total = 0; // 记录总的1的数量为素数的个数
+        for (int i = left; i <= right; i++) {
+            int count = 0;
+            int tmp = i;
+            while (tmp > 0) {
+                if ((tmp & 1) == 1) {
+                    count++;
+                }
+                tmp = tmp >> 1;
+            }
+            if (primeSet.contains(count)) {
+                total++;
+            }
+        }
+        return total;
+    }
 
-        return -1;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int left = 6;
+        int right = 10;
+        int count = solution.countPrimeSetBits(left, right);
+        System.out.println("count:" + count);
     }
 }
