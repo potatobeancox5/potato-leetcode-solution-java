@@ -2,7 +2,10 @@ package com.potato.study.leetcode.p0637;
 
 import com.potato.study.leetcode.domain.TreeNode;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * 
@@ -28,7 +31,44 @@ The range of node's value is in the range of 32-bit signed integer.
  */
 public class Solution {
     public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> averageOfLevelRes = new ArrayList<>();
+        Queue<TreeNode> levelQueue = new LinkedList<>();
+        TreeNode cur = root;
+        levelQueue.add(cur);
+        int curLevelNum = 1;
+        int nextLevelNum = 0;
+        int curLevelCounter = 0;
+        long curLevelSum = 0;
+        while (!levelQueue.isEmpty()) {
+            TreeNode node = levelQueue.remove();
+            curLevelNum--;
+            curLevelCounter++;
+            curLevelSum += (long)node.val;
+            // 放置孩子节点
+            if (node.left != null) {
+                levelQueue.add(node.left);
+                nextLevelNum++;
+            }
+            if (node.right != null) {
+                levelQueue.add(node.right);
+                nextLevelNum++;
+            }
+            if (curLevelNum == 0) { // 一个层的终结
+                curLevelNum = nextLevelNum;
+                nextLevelNum = 0;
+                // 计算平均值并写入结果
+                averageOfLevelRes.add((double)curLevelSum / curLevelCounter);
+                // 回复原来计数器
+                curLevelCounter = 0;
+                curLevelSum = 0;
+            }
+        }
+        return averageOfLevelRes;
+    }
 
-        return null;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        List<Double> doubles = solution.averageOfLevels(null);
+        System.out.println(doubles);
     }
 }
