@@ -27,6 +27,7 @@ Note: The length of the input array will not exceed 20,000.
  *         思路：
  *         由于直接求的是子序列，直接计数就可以了 然后使用TreeMap存储，遍历TreeMap
  *         从第二个元素开始，如果与之前相差1 加到之前那个之上，与最大值进行比较
+ *         https://www.cnblogs.com/grandyang/p/6896799.html
  *       
  *          
  */
