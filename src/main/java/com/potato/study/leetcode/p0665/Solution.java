@@ -38,13 +38,44 @@ public class Solution {
 
     public boolean checkPossibility(int[] nums) {
 
-        return false;
+        if (null == nums || nums.length <= 1) {
+            return true;
+        }
+
+        boolean hasChanged = false;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i == 0 && nums[i] > nums[i + 1]) {
+                hasChanged = true;
+                nums[i] = nums[i + 1];
+                continue;
+            }
+            if (i == nums.length - 1) {
+                continue;
+            }
+            if (nums[i] < nums[i + 1]) {
+                continue;
+            }
+            if (nums[i] > nums[i + 1] && hasChanged) {
+                return false;
+            } else if (nums[i] > nums[i + 1]) {
+                hasChanged = true;
+                // 判断需要进行那种替换
+                if (nums[i + 1] < nums[i - 1]) {
+                    nums[i + 1] = nums[i];
+                } else {
+                    nums[i] = nums[i + 1];
+                }
+            }
+        }
+        return true;
     }
 
 	
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-        int[] nums = {};
+//        int[] nums = {4,2,3};
+        int[] nums = {4,2,1};
         boolean result = solution.checkPossibility(nums);
         System.out.println(result);
     }
