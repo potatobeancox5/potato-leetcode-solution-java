@@ -45,102 +45,80 @@ Do not use the eval built-in library function.
  *
  *          注意多位数字兼容
  *
+ *          https://www.cnblogs.com/tonyluis/p/4579092.html
+ *
  */
 public class Solution {
+
     public int calculate(String s) {
-        // 操作数栈和符号栈
-        Stack<Character> opStack = new Stack<>();
-        Stack<Integer> numStack = new Stack<>();
-        // 遍历字符串
+
+        // 记录当前符号 只push 不出
+        Stack<Integer> sign = new Stack<>();
+        sign.push(1);
+
+        int lastOp = 1;
+
+        long res = 0; // 记录当前的结果
         for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (!isNum(ch)) {
-                //如果是操作符号
-                if ('(' == ch) {
-                    opStack.add(ch);
-                } else if ('+' == ch || '-' == ch){
-                    if (!opStack.isEmpty() && (opStack.peek() == '+' || opStack.peek() == '-')) {
-                        // 计算最终的表达式的值  1 - 2 + 3
-                        while (!opStack.isEmpty() && numStack.size() >= 2) {
-                            dealNumAndOp(opStack, numStack);
-                        }
+            char op = s.charAt(i);
+            switch (op) {
+                case ' ':
+                    break;
+                case '+' :
+                    lastOp = 1;
+                    break;
+                case '-' :
+                    lastOp = -1;
+                    break;
+                case '(' :
+                    sign.push(sign.peek() * lastOp);
+                    lastOp = 1;
+                    break;
+                case ')' :
+                    sign.pop();
+                    break;
+                default: // 数字
+                    long num = op - '0';
+                    int j = i + 1;
+                    while (j < s.length() && Character.isDigit(s.charAt(j))) {
+                        num = num * 10 + s.charAt(j) - '0';
+                        j++;
+                        i++;
                     }
-                    opStack.add(ch);
-                } else if (')' == ch && opStack.peek() == '(') {
-                    opStack.pop();
-                } else if (')' == ch) {
-                    // + - 循环出操作数并计算直到 peek 为')'
-                    while (!opStack.isEmpty() && numStack.size() >= 2 && opStack.peek() != '(') {
-                        dealNumAndOp(opStack, numStack);
-                    }
-                    opStack.pop();
-                }
-            } else if (isNum(ch)){ // 判断是不是多位数字
-                int j = i + 1;
-                StringBuilder numSb = new StringBuilder();
-                numSb.append(ch);
-                while (j < s.length() && isNum(s.charAt(j))) {
-                    numSb.append(s.charAt(j));
-                    j++;
-                    i++;
-                }
-                int opNum = Integer.parseInt(numSb.toString());
-                // 数字处理
-                numStack.add(opNum);
-            }
-            // 按照操作符号计算当前的值
-            if (!opStack.isEmpty() && (opStack.peek() == '+' || opStack.peek() == '-')) {
-                // + - 循环出操作数并计算直到 peek 为')'
-                while (!opStack.isEmpty() && opStack.peek() != '(' && numStack.size() > 1) {
-                    dealNumAndOp(opStack, numStack);
-                }
+                    // 计算结果
+                    res = res + num * lastOp * sign.peek();
             }
         }
-        // 计算最终的表达式的值  1 - 2 + 3
-        while (!opStack.isEmpty()) {
-            dealNumAndOp(opStack, numStack);
-        }
-        return numStack.pop();
+        return (int)res;
     }
 
-    private void dealNumAndOp(Stack<Character> opStack, Stack<Integer> numStack) {
-        int a = numStack.pop();
-        int b = numStack.pop();
-        char op = opStack.pop();
-        int res = this.calculateSingleOp(a, b, op);
-        numStack.add(res);
-    }
-
-
-    private int calculateSingleOp(int a, int b, char op) {
-        int res = 0;
-        switch (op) {
-            case '+' :
-                res = a + b;
-                break;
-            case '-' :
-                res = b - a;
-                break;
-        }
-        return res;
-    }
-
-    private boolean isNum (char ch) {
-        if ('0' <= ch && '9' >= ch) {
-            return true;
-        }
-        return false;
-    }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-//        String s = "(1+(4+5+2)-3)+(6+8)"; // 23
-//        String s = "1 + 1";
-//        String s = "2147483647";
-//        String s = "(7)-(0)+(4)"; // 11
-//        String s = "(5-(1+(5)))"; // -1
-        String s = "1-(3+5-2+(3+19-(3-1-4+(9-4-(4-(1+(3)-2)-5)+8-(3-5)-1)-4)-5)-4+3-9)-4-(3+2-5)-10"; // -1
-        int res = solution.calculate(s);
+        int res;
+        String s = "(1+(4+5+2)-3)+(6+8)"; // 23
+        res = solution.calculate(s);
+        System.out.println("res: " + res);
+
+        s = "1 + 1";// 2
+        res = solution.calculate(s);
+        System.out.println("res: " + res);
+
+        s = "2147483647";
+        res = solution.calculate(s);
+        System.out.println("res: " + res);
+
+        s = "(7)-(0)+(4)"; // 11
+        res = solution.calculate(s);
+        System.out.println("res: " + res);
+
+        s = "(5-(1+(5)))"; // -1
+        res = solution.calculate(s);
+        System.out.println("res: " + res);
+
+
+        s = "1-(3+5-2+(3+19-(3-1-4+(9-4-(4-(1+(3)-2)-5)+8-(3-5)-1)-4)-5)-4+3-9)-4-(3+2-5)-10"; // -1
+        res = solution.calculate(s);
         System.out.println("res: " + res);
     }
 }
