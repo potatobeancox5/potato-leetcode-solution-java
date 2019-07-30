@@ -1,5 +1,10 @@
 package com.potato.study.leetcode.p0239;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+
 /**
  * 
  * @author liuzhao11
@@ -34,6 +39,41 @@ Could you solve it in linear time?
 public class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
 
-        return null;
+        if (nums == null || nums.length == 0) {
+            return new int[0];
+        }
+
+        int[] res = new int[nums.length - k + 1];
+        // 大根堆
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(k, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+
+        for (int i = 0; i < nums.length; i++) {
+            // 前k 个计算
+            if(i < k) {
+                priorityQueue.add(nums[i]);
+            }
+            if (i == k -1) {
+                res[0] = priorityQueue.peek();
+            }
+            if (i >= k) {
+                priorityQueue.remove(nums[i - k]);
+                priorityQueue.add(nums[i]);
+                res[i - k + 1] = priorityQueue.peek();
+            }
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = {1,3,-1,-3,5,3,6,7};
+        int k = 3;
+        int[] ints = solution.maxSlidingWindow(nums, k);
+        System.out.println(Arrays.toString(ints));
     }
 }
