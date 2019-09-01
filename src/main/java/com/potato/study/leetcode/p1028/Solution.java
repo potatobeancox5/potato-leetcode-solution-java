@@ -50,6 +50,7 @@ Each node will have a value between 1 and 10^9.
  *         
  *         思路：
  *          给定一个字符串 代表一个数 每个节点前面的 - 代表是第几层的
+ *          https://www.jianshu.com/p/27da3bf2319f
  *
  *
  *
