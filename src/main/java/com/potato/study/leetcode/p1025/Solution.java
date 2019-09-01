@@ -1,8 +1,6 @@
 package com.potato.study.leetcode.p1025;
 
 
-import java.util.Arrays;
-
 /**
  * 
  * @author liuzhao11
@@ -58,7 +56,7 @@ public class Solution {
             }
             dp[i] = curResult;
         }
-        System.out.println(Arrays.toString(dp));
+//        System.out.println(Arrays.toString(dp));
         return dp[n];
     }
 	
