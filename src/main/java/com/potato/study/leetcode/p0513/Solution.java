@@ -2,6 +2,9 @@ package com.potato.study.leetcode.p0513;
 
 import com.potato.study.leetcode.domain.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * 
  * @author liuzhao11
@@ -45,7 +48,41 @@ Note: You may assume the tree (i.e., the given root node) is not NULL.
  */
 public class Solution {
     public int findBottomLeftValue(TreeNode root) {
+        TreeNode firstNode = root;
+        int currentLayerCount = 1;
+        int nextLayerCount = 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode currentNode = queue.remove();
+            currentLayerCount--;
+            if (currentNode.left != null) {
+                queue.add(currentNode.left);
+                nextLayerCount++;
+            }
+            if (currentNode.right != null) {
+                queue.add(currentNode.right);
+                nextLayerCount++;
+            }
+            // 处理最后每层最后一个节点带来的问题
+            if (currentLayerCount == 0) {
+                if (!queue.isEmpty()) {
+                    firstNode = queue.peek();
+                }
+                currentLayerCount = nextLayerCount;
+                nextLayerCount = 0;
+            }
+        }
+        return firstNode.val;
+    }
 
-        return -1;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        TreeNode root = new TreeNode(2);
+        root.left = new TreeNode(1);
+        root.right = new TreeNode(3);
+
+        int value = solution.findBottomLeftValue(root);
+        System.out.println(value);
     }
 }
