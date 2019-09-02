@@ -18,13 +18,23 @@ Note: Your solution should run in O(log n) time and O(1) space.
 
 
  * 
- *         思路： 二分法查找 index保证是对数后边得那个 然后判断两边那边事奇数个
+ *         思路： 异或 同则为0
  *       
  *          
  */
 public class Solution {
     public int singleNonDuplicate(int[] nums) {
+        int num = 0;
+        for (int current : nums) {
+            num ^= current;
+        }
+        return num;
+    }
 
-        return  -1;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = {3,3,7,7,10,11,11};
+        int res = solution.singleNonDuplicate(nums);
+        System.out.println(res);
     }
 }
