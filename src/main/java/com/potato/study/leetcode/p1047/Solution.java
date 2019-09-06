@@ -30,6 +30,8 @@ S consists only of English lowercase letters.
  *         
  *
  *         题目含义：
+ *          用一个栈 缓存字母 并进行删除重复字符串
+ *          https://blog.csdn.net/wilzxu/article/details/90368553
  *
  *
  *
@@ -43,22 +45,21 @@ public class Solution {
      * @return
      */
     public String removeDuplicates(String s) {
-
+        StringBuilder stack = new StringBuilder();
         // 遍历数组找到重复字符串
-        int index = 0;
-        char duplicateCh = 'a';
-        while (s.charAt(index) == s.charAt(index+1)) {
-
-            index++;
+        for (Character ch : s.toCharArray()) {
+            if (stack.length() == 0 || stack.charAt(stack.length() - 1) != ch) {
+                stack.append(ch);
+            } else if (stack.charAt(stack.length() - 1) == ch) {
+                stack.deleteCharAt(stack.length() - 1);
+            }
         }
-
-
-        return null;
+        return stack.toString();
     }
 	
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-        String s = "";
+        String s = "abbaca";
         String str = solution.removeDuplicates(s);
         System.out.println(str);
     }
