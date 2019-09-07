@@ -31,6 +31,7 @@ You may assume that you have an infinite number of each kind of coin.
  *         动态规划
  *         dp[i] 兑换i 需要使用多少个硬币
  *         dp[i] = min {dp[i], dp[i - coin[j]] + 1}
+ *         https://www.jianshu.com/p/9208a4ac0df2
  *
  *         
  */
