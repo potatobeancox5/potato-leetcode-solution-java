@@ -36,8 +36,30 @@ num 当前node index
 public class Solution {
 
     public ListNode oddEvenList(ListNode head) {
+        ListNode oddHead = new ListNode(-1);
+        ListNode evenHead = new ListNode(-1);
 
-        return null;
+        ListNode curOdd = oddHead;
+        ListNode curEven = evenHead;
+
+        ListNode p = head;
+
+        int index = 1;
+
+        while (p != null) {
+            if (index % 2 == 1) {
+                curOdd.next = p;
+                curOdd = curOdd.next;
+            } else {
+                curEven.next = p;
+                curEven = curEven.next;
+            }
+            p = p.next;
+            index++;
+        }
+        curOdd.next = evenHead.next;
+        curEven.next = null;
+        return oddHead.next;
     }
 	
 	public static void main(String[] args) {
