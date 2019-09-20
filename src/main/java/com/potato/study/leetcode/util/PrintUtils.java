@@ -32,4 +32,8 @@ public class PrintUtils {
         builder.append("             佛祖保佑       永无BUG\n");
         System.out.println(builder.toString());
     }
+
+    public static void main(String[] args) {
+        printSuccessAndNeverBug();
+    }
 }
