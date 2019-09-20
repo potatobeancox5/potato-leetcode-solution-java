@@ -56,7 +56,7 @@ Output:
 public class Solution {
 
     /**
-     * 生成bitCount 位最大的数
+     * 生成 bitCount 位最大的数
      * @param nums      原数组
      * @param bitCount  位数
      * @return

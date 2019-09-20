@@ -74,7 +74,7 @@ public class Solution {
 	}
 	
 	public static void main(String[] args) {
-//		Solution solution = new Solution();
+//		MyCalendarThree solution = new MyCalendarThree();
 //		List<List<Integer>> triangle = new ArrayList<>();
 //		triangle.add(new ArrayList<>().);
 //		
