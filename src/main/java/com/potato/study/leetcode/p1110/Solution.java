@@ -38,7 +38,7 @@ to_delete.length <= 1000
 to_delete contains distinct values between 1 and 1000.
  *         
  *         思路：
- *          每找到一个点 进行删除 将孩子们放入 set中 以便于下一步删除
+ *          遍历树
  *
  *
 
@@ -55,6 +55,11 @@ public class Solution {
         deleteTheNode(toDelete);
         return new ArrayList<>(treeSet);
     }
+
+
+
+
+
 
     /**
      * 删除 toDelete 的值的节点，并将删除后的结果加入到set中
