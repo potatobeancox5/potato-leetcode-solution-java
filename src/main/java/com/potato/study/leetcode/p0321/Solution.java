@@ -1,6 +1,8 @@
 package com.potato.study.leetcode.p0321;
 
 
+import org.junit.Assert;
+
 import java.util.Arrays;
 
 /**
@@ -56,6 +58,36 @@ Output:
 public class Solution {
 
     /**
+     * 从 nums 1和 nums2 中找到k 个数保证 找到的数字顺序保持不变且 组合成的数字最大
+     * @param nums1
+     * @param nums2
+     * @param k
+     * @return
+     */
+    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
+//        1：从nums1里取i个元素组成最大数组，从nums2里取k-i个元素组成最大数组。
+        int[] max = new int[k];
+        for (int i = 0; i <= k; i++) {
+            int j = k - i;
+            if (i > nums1.length || j > nums2.length) {
+                continue;
+            }
+            int[] greatestNum1 = getGreatestNum(nums1, i);
+            int[] greatestNum2 = getGreatestNum(nums2, j);
+//        2：合并之前结果，得到一个长度为k的最大数组。
+            int[] mergeResult = mergeAndGetLarger(greatestNum1, greatestNum2);
+//        3：对于不同长度分配的情况，比较每次得到的长度为k的最大数组，返回最大的一个。
+            if (isGreaterThan(mergeResult, max, 0 , 0)) {
+                max = mergeResult;
+            }
+        }
+        return max;
+    }
+
+
+
+    /**
+     * 从nums 找到 保持顺序不变的 最大的序列 保证组成的数字最大
      * 生成 bitCount 位最大的数
      * @param nums      原数组
      * @param bitCount  位数
@@ -96,44 +128,83 @@ public class Solution {
      * @return
      */
     private int[] mergeAndGetLarger(int[] num1, int[] num2) {
-
-        // 如果某一个直接是 空 直接返回另外一个
-        if (num1.length == 0 && num2.length == 0) {
-            return new int[0];
+        // 1. 申请len1 + len2 长度数组
+        int totalLen = num1.length + num2.length;
+        int[] res = new int[totalLen];
+        // 2. i j 找到大的放到数组里，并向后移动
+        int i = 0;
+        int j = 0;
+        int insertIndex = 0;
+        while (i < num1.length || j < num2.length) {
+            if (i < num1.length && j < num2.length) {
+                res[insertIndex++] = (isGreaterThan(num1, num2, i, j) ? num1[i++] : num2[j++]);
+            } else if (i < num1.length) {
+                res[insertIndex++] = num1[i++];
+            } else {
+                // j < num2.length
+                res[insertIndex++] = num2[j++];
+            }
         }
-
-        if (num1.length == 0) {
-            return num2;
-        }
-
-        if (num2.length == 0) {
-            return num1;
-        }
-
-        int[] res = new int[num1.length + num2.length];
-        int index = 0;
-
-        while (true) {
-
-        }
-
-
+        return res;
     }
 
 
 
-    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
 
-        return null;
+    /**
+     * 判断 mergeResult 是否比 max 大
+     * @param a
+     * @param b
+     * @return
+     */
+    private boolean isGreaterThan(int[] a, int[] b, int i, int j) {
+        // 如果i j 存在如果 i j 对应数字相等 i++, j++
+        while (i < a.length && j < b.length && a[i] == b[j]) {
+            i++;
+            j++;
+        }
+        // 如果 i 存在 j 不存在 那么 a > b 否则 如果 i 不存在 j 存在 那么 a < b 都不存在a = b
+        if (i < a.length && j >= b.length) {
+            return true;
+        } else if (i >= a.length && j < b.length) {
+            return false;
+        } else if (i >= a.length && j >= b.length) {
+            // 相等
+            return false;
+        } else {
+            // 都存在 直接比较 ai - bj > 0 ?
+            return a[i] - b[j] > 0;
+        }
     }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		Solution solution = new Solution();
 
-		int[] nums = {6, 0, 4};
-		int k = 2;
+		int[] nums1 = {3, 4, 6, 5};
+		int[] nums2 = {9, 1, 2, 5, 8, 3};
+		int k = 5;
 
-        int[] greatestNum = solution.getGreatestNum(nums, k);
+        int[] greatestNum = solution.maxNumber(nums1, nums2, k);
         System.out.println(Arrays.toString(greatestNum));
+        int[] expected1 = {9, 8, 6, 5, 3};
+        Assert.assertArrayEquals(expected1, greatestNum);
+
+
+        int[] nums3 = {6, 7};
+        int[] nums4 = {6, 0, 4};
+        k = 5;
+
+        greatestNum = solution.maxNumber(nums3, nums4, k);
+        System.out.println(Arrays.toString(greatestNum));
+        int[] expected2 = {6, 7, 6, 0, 4};
+        Assert.assertArrayEquals(expected2, greatestNum);
+
+        int[] nums5 = {3, 9};
+        int[] nums6 = {8, 9};
+        k = 3;
+        greatestNum = solution.maxNumber(nums5, nums6, k);
+        System.out.println(Arrays.toString(greatestNum));
+        int[] expected3 = {9, 8, 9};
+        Assert.assertArrayEquals(expected3, greatestNum);
     }
 }
