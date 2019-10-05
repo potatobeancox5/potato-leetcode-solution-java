@@ -2,10 +2,7 @@ package com.potato.study.leetcode.p0337;
 
 import com.potato.study.leetcode.domain.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * 
@@ -43,8 +40,18 @@ Output: 9
 Explanation: Maximum amount of money the thief can rob = 4 + 5 = 9.
  * 
  *         思路：
- *         层序遍历求出每层的和
- *         遍历和求每个隔层能赚多少前，奇数层与偶数层
+ *         https://blog.csdn.net/zdavb/article/details/50994413
+ *
+ *         设计一个结构 GotMoney 当前节点 可能获得的钱数
+ *         两个属性字段 notRob 和 rob 分别代表不抢这个节点 和抢这个节点
+ *          递归遍历 root
+ *           获取 leftChild 孩子的情况和 right的
+ *           计算最大值
+ *              1. rob 当前节点 + left和right 都不能rob的钱数和
+ *              2. not rob 当前节点 + Maxleft是否rob + max right 是否rob
+ *
+ *
+ *
  *
  *
  *
@@ -52,45 +59,40 @@ Explanation: Maximum amount of money the thief can rob = 4 + 5 = 9.
  */
 public class Solution {
 
+
+    class GotMoney {
+        public int notRob;
+        public int rob;
+
+        public GotMoney(int notRob, int rob) {
+            this.notRob = notRob;
+            this.rob = rob;
+        }
+    }
+
     public int rob(TreeNode root) {
+        GotMoney wholeMoney = getWholeMoney(root);
+        return Math.max(wholeMoney.notRob, wholeMoney.rob);
+    }
+
+    /**
+     * 递归求解 rob 当前节点 一共能获得多少钱
+     * @param root
+     * @return
+     */
+    private GotMoney getWholeMoney(TreeNode root) {
         if (null == root) {
-            return 0;
+            return new GotMoney(0,0);
         }
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        int currentLayerNum = 1;
-        int nextLayerNum = 0;
-        int currentLayTotalMoney = 0;
-        List<Integer> moneyList = new ArrayList<>();
-        while (!queue.isEmpty()) {
-            TreeNode cur = queue.remove();
-            currentLayTotalMoney += cur.val;
-            currentLayerNum--;
-            if (cur.left != null) {
-                nextLayerNum++;
-                queue.add(cur.left);
-            }
-            if (cur.right != null) {
-                nextLayerNum++;
-                queue.add(cur.right);
-            }
-            // 判断是否处理到当前层最后一个节点
-            if (currentLayerNum == 0) {
-                moneyList.add(currentLayTotalMoney);
-                currentLayTotalMoney = 0;
-                currentLayerNum = nextLayerNum;
-                nextLayerNum = 0;
-            }
-        }
-//        System.out.println(moneyList);
-        // 遍历和求每个隔层能赚多少前，奇数层与偶数层 dp i = max { money[i] + dp i -2 , dp i -i }
-        int[] dp = new int[moneyList.size() + 1];
-        dp[1] = moneyList.get(0);
-        dp[0] = 0;
-        for (int i = 2; i < dp.length; i++) {
-            dp[i] = Math.max(dp[i - 2] + moneyList.get(i-1), dp[i-1]);
-        }
-        return dp[moneyList.size()];
+        // 左右孩子的情况
+        GotMoney leftChildMoney = this.getWholeMoney(root.left);
+        GotMoney rightChildMoney = this.getWholeMoney(root.right);
+//        计算最大值
+//                *              1. rob 当前节点 + left和right 都不能rob的钱数和
+//                *              2. not rob 当前节点 + Maxleft是否rob + max right 是否rob
+        int robThisNode = root.val + leftChildMoney.notRob + rightChildMoney.notRob;
+        int notRobThisNode = Math.max(leftChildMoney.notRob, leftChildMoney.rob) + Math.max(rightChildMoney.notRob, rightChildMoney.rob);
+        return new GotMoney(notRobThisNode, robThisNode);
     }
 	
 	public static void main(String[] args) {
