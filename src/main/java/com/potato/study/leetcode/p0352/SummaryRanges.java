@@ -31,6 +31,7 @@ What if there are lots of merges and the number of disjoint intervals are small 
  *         floor(E e) 方法返回在这个集合中小于或者等于给定元素的最大元素，如果不存在这样的元素,返回null.
 
 ceiling(E e) 方法返回在这个集合中大于或者等于给定元素的最小元素，如果不存在这样的元素,返回null.
+https://www.cnblogs.com/apanda009/p/7854333.html
 
 
 			0。 构造区间对象 Interval start end
