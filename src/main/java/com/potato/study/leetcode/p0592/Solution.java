@@ -1,5 +1,7 @@
 package com.potato.study.leetcode.p0592;
 
+import java.util.Scanner;
+
 /**
  * 
  * @author liuzhao11
@@ -56,17 +58,44 @@ public class Solution {
 
     public String fractionAddition(String expression) {
 
+        Scanner sc = new Scanner(expression).useDelimiter("/|(?=[-+])");
+        // 总分子
+        long totalA = 0;
+        // 总分母
+        long totalB = 1;
 
+        while (sc.hasNext()) {
+            // 分子
+            long a = sc.nextLong();
+            // 分母
+            long b = sc.nextLong();
 
-        return null;
+            totalA = totalA * b + a * totalB;
+            totalB *= b;
+
+            long gcd = this.gcd(totalA, totalB);
+
+            totalA /= gcd;
+            totalB /= gcd;
+        }
+
+        return totalA + "/" + totalB;
     }
 
     // 递归遭到最大公约数
+    private long gcd (long a, long b) {
+
+        if (a == 0) {
+            return Math.abs(b);
+        } else {
+            return gcd(b % a, a);
+        }
+    }
 
 
     public static void main(String[] args) {
 		Solution solution = new Solution();
-        String expression = "";
+        String expression = "-1/2+1/2";
         String sum = solution.fractionAddition(expression);
         System.out.println(sum);
     }
