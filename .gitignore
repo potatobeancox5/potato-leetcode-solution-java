@@ -80,3 +80,8 @@ Thumbs.db
 #.swp
 *.*~
 ~*.*
+
+target/
+
+*/.gitee/
+*/target/
