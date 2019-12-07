@@ -77,15 +77,10 @@ public class Solution {
             int q = (p + 1) % n;
             for (int i = 0; i < points.length; i++) {
                 int orientationRes = orientation(points[p], points[q], points[i]);
-				/* Look at explanation above, if orientationRes is negative, it means we found a more left/CCW point. */
                 if (orientationRes < 0) {
                     q = i;
                     list = new ArrayList();
                 } else if(orientationRes == 0) {
-					/* if the slopes of pq and qr are the same, we know that they lie on the same line.
-					This means that we need to choose between q and i. We want the one that is further away,
-					since the one closer to p will eventually pick the current i as the furthest left/CCW point.
-					We can optimize by picking the one that is further away and just adding the closer one (closer one with respect to p) to the list. */
                     if(distance(points[p], points[q]) >= distance(points[p], points[i])) {
                         list.add(points[i]);
                     } else {
