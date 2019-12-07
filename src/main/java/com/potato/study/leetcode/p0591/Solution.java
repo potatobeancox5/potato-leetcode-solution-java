@@ -2,6 +2,8 @@ package com.potato.study.leetcode.p0591;
 
 import org.junit.Assert;
 
+import java.util.Stack;
+
 /**
  * 
  * @author liuzhao11
@@ -81,6 +83,17 @@ For simplicity, you could assume the input code (including the any characters me
  * 
  * 
  *         思路：
+ *         591. Tag Validator
+
+
+https://blog.csdn.net/familyshizhouna/article/details/100142462
+
+方法3
+
+
+https://www.cnblogs.com/ruruozhenhao/p/10755712.html
+ *      实现一个 tag 校验器
+ *      校验tag是否满足下面条件：
  *
  *       
  *          
@@ -88,10 +101,53 @@ For simplicity, you could assume the input code (including the any characters me
 public class Solution {
 
     public boolean isValid(String code) {
-
-
-
-        return true;
+        // 用一个栈保存 目前 上一个该匹配的 开始tag
+        Stack<String> tagStack = new Stack<>();
+        // 遍历code 
+        for (int i = 0; i < code.length(); i++) {
+            // 开始时直接就是内容le false
+            if (i > 0 && tagStack.isEmpty()) {
+                return false;
+            }
+            if (i + 9 < code.length() && "<![CDATA[".equals(code.substring(i, i + 9))) {
+                // 判断是不是CDATA区
+                int j = code.indexOf("]]>", i);
+                // 判断cdata区是否关闭
+                if (j < 0) {
+                    return false;
+                }
+                i = j + 2;
+            } else if (i + 2 < code.length() && "</".equals(code.substring(i, i+2))) {
+                // 判断是不是有结束符号的开始字符
+                int j = code.indexOf(">", i);
+                if (j < 0) {
+                    return false;
+                }
+                // </ 除了上面字符都一致
+                if (tagStack.isEmpty() || !tagStack.pop().equals(code.substring(i+2, j))) {
+                    return false;
+                }
+                i = j;
+            } else if (i+1 < code.length() && "<".equals(code.substring(i, i+1))) {
+                // 判断是不是开始tag
+                int j = code.indexOf(">", i);
+                if (j < 0) {
+                    return false;
+                }
+                String s = code.substring(i + 1, j);
+                if (s.length() <= 0 || s.length() > 9) {
+                    return false;
+                }
+                for (char c: s.toCharArray()) {
+                    if (!Character.isUpperCase(c)) {
+                        return false;
+                    }
+                }
+                tagStack.push(s);
+                i = j;
+            }
+        }
+        return tagStack.isEmpty();
     }
 
 
