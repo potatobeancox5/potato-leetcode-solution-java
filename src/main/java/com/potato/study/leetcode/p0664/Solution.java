@@ -31,6 +31,8 @@ Hint: Length of the given string will not exceed 100.
  *
  *         https://www.cnblogs.com/ruruozhenhao/p/10517462.html
  *
+ *         https://www.cnblogs.com/lychnis/p/9247920.html
+ *
  */
 public class Solution {
 
