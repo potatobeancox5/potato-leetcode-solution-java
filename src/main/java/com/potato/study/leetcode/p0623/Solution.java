@@ -130,9 +130,6 @@ public class Solution {
         }
         root.left = addOneRow(root.left, val, true, curLayerIndex - 1);
         root.right = addOneRow(root.right, val, false, curLayerIndex - 1);
-//        node left 等于 递归添加left
-//        right 同理
-//        return node
         return root;
     }
 	
