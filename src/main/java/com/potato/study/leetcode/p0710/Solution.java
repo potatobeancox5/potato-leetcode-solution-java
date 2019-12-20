@@ -1,6 +1,8 @@
 package com.potato.study.leetcode.p0710;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -52,7 +54,11 @@ Arguments are always wrapped with a list, even if there aren't any.
  *         
  *         思路：
  *          建立一个 map 映射 [0, N - black.size ) 到 白名单的映射
- *         
+ *
+ *
+ *         https://leetcode.com/problems/random-pick-with-blacklist/discuss/432609/Java-HashMap-solution-with-explanation
+ *
+ *         映射 黑名单数字到白名单数字
  *
  *
  * 
@@ -64,16 +70,29 @@ public class Solution {
      */
     private Set<Integer> blackSet  = new HashSet<>();
 
-    private Random random = new Random();
+    private Random random;
+
+    // key 黑名单数字，value 对应的白名单数字
+    private Map<Integer, Integer> blackToWhiteNameMap = new HashMap<>();
 
     private int n;
 
     public Solution(int n, int[] blacklist) {
-        this.n = n;
-        // 弄一个black set
-        if (null != blacklist) {
-            for (int blackNum : blacklist) {
-                blackSet.add(blackNum);
+        this.n = n - blacklist.length;
+        random = new Random();
+
+        for (int black : blacklist) {
+            blackSet.add(black);
+        }
+
+        // 对于 this.n 以内的 black 生成其对应的map
+        int mappingIndex = this.n;
+        for (int black: blackSet) {
+            if (black < this.n) {
+                while (blackSet.contains(mappingIndex)) {
+                    mappingIndex++;
+                }
+                blackToWhiteNameMap.put(black, mappingIndex++);
             }
         }
     }
@@ -81,18 +100,17 @@ public class Solution {
     public int pick() {
         // 每次生成一个随机数 然后从map中取
         int nextNum = random.nextInt(n);
-        while (blackSet.contains(nextNum)) {
-            nextNum = random.nextInt(n);
-        }
-        return nextNum;
+        // 有就用map 中的值 没有 用出入的第二个参数的值
+        Integer value = blackToWhiteNameMap.getOrDefault(nextNum, nextNum);
+        return value;
     }
 	
 
 	
 	public static void main(String[] args) {
 
-        int n = 3;
-        int[] blacklist = {2};
+        int n = 4;
+        int[] blacklist = {0, 1};
 
 		Solution solution = new Solution(n, blacklist);
 
