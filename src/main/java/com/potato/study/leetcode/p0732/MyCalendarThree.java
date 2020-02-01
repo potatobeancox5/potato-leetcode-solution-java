@@ -1,6 +1,8 @@
 package com.potato.study.leetcode.p0732;
 
 
+import java.util.TreeMap;
+
 /**
  * 
  * @author liuzhao11
@@ -47,13 +49,25 @@ In calls to MyCalendarThree.book(start, end), start and end are integers in the 
  */
 public class MyCalendarThree {
 
-    public MyCalendarThree() {
+    TreeMap<Integer, Integer> map;
 
+    public MyCalendarThree() {
+        map = new TreeMap<>();
     }
 
     public int book(int start, int end) {
 
-        return 0;
+        int max = 0;
+        // 0 将 start end 放入map value 1， -1
+        map.put(start, map.getOrDefault(start, 0) + 1);
+        map.put(end, map.getOrDefault(end, 0) - 1);
+        // 1 遍历 map values 计数 如果大于等于3 返回false 同时 将start 和 end 还原
+        int state = 0;
+        for (Integer count: map.values()) {
+            state += count;
+            max = Math.max(max, state);
+        }
+        return max;
     }
 	
 
