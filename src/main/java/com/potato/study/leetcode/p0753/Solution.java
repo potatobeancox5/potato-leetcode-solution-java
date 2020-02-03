@@ -42,6 +42,8 @@ k^n will be at most 4096.
 
  *   解题思路：
  *
+ *   https://blog.csdn.net/weixin_30670965/article/details/96620232
+ *
  * 
  */
 public class Solution {
