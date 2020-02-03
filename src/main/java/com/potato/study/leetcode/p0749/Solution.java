@@ -64,7 +64,7 @@ Throughout the described process, there is always a contiguous viral region that
  *
  *  思路：
  *      要求建立防火墙 建立策略 是每天找到临街边最多的进行建立，最终计算需要建立多少个防火墙 才能阻止病毒
- *
+ *      https://leetcode.com/problems/contain-virus/discuss/341527/Simple-Java-DFS
  *  解答：
  *
  *  // 1. 遍历找出被感染的区域 max 边
