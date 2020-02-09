@@ -1,6 +1,8 @@
 package com.potato.study.leetcode.p0786;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 /**
  * 
@@ -32,15 +34,37 @@ K will be between 1 and A.length * (A.length - 1) / 2.
  *
  *
  *   解题思路：
+ *      https://blog.csdn.net/u014688145/article/details/79335163
+ *      分别n路 记录最小的 然后依次放入最小的后继 pop时计数 直到达到 最终的k
  *
  * 
  */
 public class Solution {
 
     public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+        // int[] 0 横坐标 1 纵坐标
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return arr[o1[0]] * arr[o2[1]] - arr[o1[1]] * arr[o2[0]];
+            }
+        });
+        // 0 放入初始
+        for (int i = 0; i < arr.length - 1; i++) {
+            priorityQueue.add(new int[] {i, arr.length - 1});
+        }
 
-        return null;
-
+        // 1 依次找到 前k个数字
+        while (k > 1) {
+            int[] index = priorityQueue.poll();
+            if (index[1] - 1 > index[0] ) {
+                index[1]--;
+                priorityQueue.offer(index);
+            }
+            k--;
+        }
+        int[] peek = priorityQueue.peek();
+        return new int[]{arr[peek[0]], arr[peek[1]]};
     }
 
 
