@@ -29,6 +29,7 @@ S will consist of lowercase letters and have length in range [1, 500].
 
  *   题目大意：
  *      给一个字符串 问 能不能 对字符串重构 使得任意两个相同的字符 不能挨着
+ *      https://www.jianshu.com/p/aff4f3db8572
  *
  *
  *   解题思路：
