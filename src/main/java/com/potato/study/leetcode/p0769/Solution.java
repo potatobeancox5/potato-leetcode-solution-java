@@ -37,7 +37,8 @@ arr[i] will be a permutation of [0, 1, ..., arr.length - 1].
  *
  *
  *   解题思路：
- *
+ *      https://blog.csdn.net/liuchuo/article/details/79187214
+
  *      遍历 arr 找到 max == i count ++
  *
  *
