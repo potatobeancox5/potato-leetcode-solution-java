@@ -39,6 +39,7 @@ K will be an integer in the range [1, 2^(N-1)].
  *
  *
  *      比如第7个数是由第4个数算出来的，且数字等于第4个数。 第8个数是由第4个数算出来的，且数字与第4个数相反
+ *      https://blog.csdn.net/xdhc304/article/details/79771031
  *
  *
  *
