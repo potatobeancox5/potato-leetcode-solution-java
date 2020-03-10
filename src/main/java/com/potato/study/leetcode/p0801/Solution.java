@@ -44,6 +44,9 @@ A[i], B[i] are integer values in the range [0, 2000].
           dp[i][1]表示交换i，使得[0, i]严格递增的最小swap数 （交换过 ）
  *          https://www.jianshu.com/p/9ab839a48d23
  *
+ *          解释
+ *          https://blog.csdn.net/wilzxu/article/details/90898285
+ *
  * 
  */
 public class Solution {
