@@ -3,10 +3,7 @@ package com.potato.study.leetcode.p1110;
 
 import com.potato.study.leetcode.domain.TreeNode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 
@@ -38,7 +35,9 @@ to_delete.length <= 1000
 to_delete contains distinct values between 1 and 1000.
  *         
  *         思路：
- *          遍历树
+ *          遍历树 bfs
+ *
+ *          https://leetcode.com/problems/delete-nodes-and-return-forest/discuss/554346/JAVA-non-recursive-BFS-solution
  *
  *
 
@@ -46,65 +45,51 @@ to_delete contains distinct values between 1 and 1000.
  */
 public class Solution {
 
-    private Set<TreeNode> treeSet;
-
     public List<TreeNode> delNodes(TreeNode root, int[] toDelete) {
-        // 初始化set 并按照 toelete 进行删除
-        treeSet = new HashSet<>();
-        treeSet.add(root);
-        deleteTheNode(toDelete);
-        return new ArrayList<>(treeSet);
-    }
-
-
-
-
-
-
-    /**
-     * 删除 toDelete 的值的节点，并将删除后的结果加入到set中
-     * @param toDelete      要删除的树
-     */
-    private void deleteTheNode(int[] toDelete) {
-        for (int target : toDelete) {
-            for (TreeNode tree : treeSet) {
-                // 找到删除节点
-                TreeNode targetNode = findTheNodeWithVal(target, tree);
-                if (null == targetNode) {
-                    continue;
-                }
-            }
-
-        }
-    }
-
-    /**
-     * 找到指定数字的节点
-     * @param target
-     * @return
-     */
-    private TreeNode findTheNodeWithVal(int target, TreeNode root) {
+        // 0 root null 处理
         if (null == root) {
             return null;
         }
-        if (root.val == target) {
-            return root;
+        // 1 todelete 去重复
+        Set<Integer> deleteSet = new HashSet<>();
+        for (int delete : toDelete) {
+            deleteSet.add(delete);
         }
-        if (root.left != null) {
-            TreeNode leftRes = findTheNodeWithVal(target, root.left);
-            if (leftRes != null) {
-                return leftRes;
+        // 2 将root 放入queue中 set res 记录当前结果
+        Set<TreeNode> resultSet = new HashSet<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        queue.add(root);
+        resultSet.add(root);
+
+        // 3 queue feikong pop 如果当前 当前节点要被删除 将孩子们 插入res 且 res 删除当前节点
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (deleteSet.contains(node.val)) {
+                resultSet.remove(node);
+                if (null != node.left) {
+                    resultSet.add(node.left);
+                }
+                if (null != node.right) {
+                    resultSet.add(node.right);
+                }
+            }
+            if (null != node.left) {
+                queue.add(node.left);
+                if (deleteSet.contains(node.left.val)) {
+                    node.left = null;
+                }
+            }
+            if (null != node.right) {
+                queue.add(node.right);
+                if (deleteSet.contains(node.right.val)) {
+                    node.right = null;
+                }
             }
         }
-        if (root.right != null) {
-            TreeNode rightRes = findTheNodeWithVal(target, root.right);
-            if (rightRes != null) {
-                return rightRes;
-            }
-        }
-        // 没有命中节点
-        return null;
+        return new ArrayList<>(resultSet);
     }
+
 	
 	public static void main(String[] args) {
 
