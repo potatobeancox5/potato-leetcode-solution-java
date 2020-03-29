@@ -1,6 +1,8 @@
 package com.potato.study.leetcode.p1043;
 
 
+import org.junit.Assert;
+
 /**
  * 
  * @author liuzhao11
@@ -29,8 +31,11 @@ Note:
  *         题目含义：
  *             一道动态规划题
  *
- *             dp i 表示 从0 到 最大值
- *             dp i = max {dp k(1,i) + (k+1,i)最大值 * （i- k）}
+ *             https://www.cnblogs.com/rookielet/p/10852452.html
+ *
+ *              dp[i] = Math.max(dp[i], prev + maxInPart * (i - j + 1));
+ *
+ *              dp i 代表 到了 位置 能到达到的最大值
  *
  *
  *
@@ -43,36 +48,34 @@ public class Solution {
      * @return
      */
     public int maxSumAfterPartitioning(int[] arr, int k) {
-        int[] dp = new int[arr.length + 1];
-        // 控制次数
-        for (int i = 0; i < dp.length; i++) {
-            int max = 0;
-            for (int j = 0; j < k; j++) {
-                int m = this.maxValue(arr, j + 1, i);
-                dp[i] = Math.max(max, dp[k] + m * (i - j));
+        // 遍历 arr 找到每个阶段 的最大值 计算到某个位置 的最大值 缓存到dp中
+
+        int[] dp = new int[arr.length];
+        dp[0] = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            int j = i;
+            int maxPart = arr[j];
+            // 往前找
+            for (; j >= 0 && j > i - k ; j--) {
+                maxPart = Math.max(maxPart, arr[j]);
+                // 前边多少
+                int previous = 0;
+                if (j >= 1) {
+                    previous = dp[j-1];
+                }
+                dp[i] = Math.max(dp[i], maxPart * (i - j + 1) + previous);
             }
         }
-        return dp[arr.length];
+        return dp[arr.length-1];
     }
-    /**
-     * 找数据最大值
-     * @param arr
-     * @param from
-     * @param to
-     * @return
-     */
-    private int maxValue(int[] arr, int from, int to) {
-        int max = 0;
-        for (int i = from; i <= to; i++) {
-            max = Math.max(max, arr[i]);
-        }
-        return max;
-    }
+
+
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		int[] arr = {1,15,7,9,2,5,10};
 		int k = 3;
         int res = solution.maxSumAfterPartitioning(arr, k);
         System.out.println(res);
+        Assert.assertEquals(84, res);
     }
 }
