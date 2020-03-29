@@ -31,7 +31,7 @@ It is guaranteed an answer exists. If there exists multiple answers, you can ret
  * 题目含义：
  *
  * 思路：
- *      https://blog.csdn.net/dong_beijing/article/details/81842169
+ *      https://blog.csdn.net/m1f2c3/article/details/96365372
  */
 public class Solution {
     public TreeNode constructFromPrePost(int[] pre, int[] post) {
