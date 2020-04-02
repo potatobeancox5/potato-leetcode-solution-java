@@ -31,12 +31,26 @@ It is guaranteed an answer exists. If there exists multiple answers, you can ret
  * 题目含义：
  *
  * 思路：
- *      https://blog.csdn.net/m1f2c3/article/details/96365372
+ *      https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/discuss/535343/Java-Recursion-and-iterative
  */
 public class Solution {
+    // pre index
+    private int i = 0;
+    // post index
+    private int j = 0;
+
     public TreeNode constructFromPrePost(int[] pre, int[] post) {
 
+        TreeNode node = new TreeNode(pre[i++]);
 
-        return null;
+        if (node.val != post[j]) {
+            node.left = constructFromPrePost(pre, post);
+        }
+        if (node.val != post[j]) {
+            node.right = constructFromPrePost(pre, post);
+        }
+
+        j++;
+        return node;
     }
 }
