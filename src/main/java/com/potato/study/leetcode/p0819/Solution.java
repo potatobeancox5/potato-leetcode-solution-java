@@ -1,5 +1,7 @@
 package com.potato.study.leetcode.p0819;
 
+import org.junit.Assert;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -48,6 +50,8 @@ Words only consist of letters, never apostrophes or other punctuation symbols.
  *          2. 遍历每个分隔 使用map记次数 （如果命中hit单词不要记录）
  *          3. 遍历map输出最多的单词
  *
+ *          https://www.cnblogs.com/jimmycheng/p/9000771.html
+ *
  * 
  */
 public class Solution {
@@ -60,16 +64,51 @@ public class Solution {
                 bannedSet.add(bannedWord);
             }
         }
-        String[] split = paragraph.split(" ");
+        // 替换标点
+        String[] split = paragraph.toLowerCase().split(" |!|\\?|'|,|;|\\.");
         Map<String, Integer> word2Times = new HashMap<>();
+        String mostKey = null;
 
-        return null;
+        // 遍历 单词对于不在banned 中的使用map 计数 并 维护一个最大值
+        for (String word : split) {
+
+            if (word.trim().equals("")) {
+                continue;
+            }
+
+            String realWord = word.toLowerCase();
+            if (bannedSet.contains(realWord)) {
+                continue;
+            }
+
+            Integer count = word2Times.getOrDefault(realWord, 0);
+            count++;
+            word2Times.put(realWord, count);
+
+            if (null == mostKey || word2Times.get(mostKey) < count) {
+                mostKey = realWord;
+            }
+        }
+
+        return mostKey;
     }
 
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-//		int[][] grid = {{3,0,8,4},{2,4,5,7},{9,2,6,3},{0,3,1,0}};
-//        int result = solution.pruneTree(grid);
-//        System.out.println(result);
+
+        String paragraph = "Bob hit a ball, the hit BALL flew far after it was hit.";
+        String[] banned = new String[]{"hit"};
+
+        String s = solution.mostCommonWord(paragraph, banned);
+        System.out.println(s);
+        Assert.assertEquals("ball", s);
+
+
+        paragraph = "Bob. hIt, baLl";
+        banned = new String[]{"bob", "hit"};
+
+        s = solution.mostCommonWord(paragraph, banned);
+        System.out.println(s);
+        Assert.assertEquals("ball", s);
     }
 }
