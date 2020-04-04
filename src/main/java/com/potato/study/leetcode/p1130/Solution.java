@@ -3,9 +3,7 @@ package com.potato.study.leetcode.p1130;
 
 import org.junit.Assert;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.Stack;
 
 /**
  * 
@@ -48,30 +46,40 @@ It is guaranteed that the answer fits into a 32-bit signed integer (ie. it is le
  *
  *          https://segmentfault.com/a/1190000021337627
  *
- *
- *
+ *          1130. Minimum Cost Tree From Leaf Values
+
+https://www.acwing.com/solution/LeetCode/content/3996/
  *
  *
  */
 public class Solution {
 
     public int mctFromLeafValues(int[] arr) {
+        // 单调递减栈
+        Stack<Integer> minStack = new Stack<>();
+        minStack.push(Integer.MAX_VALUE);
+        int result = 0;
 
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
         for (int i = 0; i < arr.length; i++) {
-            priorityQueue.add(arr[i]);
+            if (minStack.peek() >= arr[i]) {
+                minStack.push(arr[i]);
+            } else {
+                while (arr[i] > minStack.peek()) {
+                    int pre = minStack.pop();
+                    result += pre * Math.min(arr[i], minStack.peek());
+                }
+                minStack.push(arr[i]);
+            }
         }
-        int sum = 0;
-        while (!priorityQueue.isEmpty() && priorityQueue.size() >= 2) {
-            int num1 = priorityQueue.poll();
-            int num2 = priorityQueue.poll();
-
-            int product = num1 * num2;
-            sum += product;
-            priorityQueue.add(product);
+        while(minStack.size() > 2)
+        {
+            int cur = minStack.pop();
+            result += cur * minStack.peek();
         }
-        return sum;
+        return result;
     }
+
+
 	
 	public static void main(String[] args) {
 		Solution solution = new Solution();
