@@ -45,6 +45,8 @@ Note:
  *         思路：
  *         https://blog.csdn.net/magicbean2/article/details/80333734
  *
+ *         https://leetcode.com/problems/race-car/discuss/377038/Java-DP
+ *
  *
  *
  * 
