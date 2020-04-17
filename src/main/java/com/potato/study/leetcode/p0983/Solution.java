@@ -1,6 +1,12 @@
 package com.potato.study.leetcode.p0983;
 
 
+import org.junit.Assert;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 
  * @author liuzhao11
@@ -49,12 +55,60 @@ days is in strictly increasing order.
 costs.length == 3
 1 <= costs[i] <= 1000
  *
+ *
+ *      题目思路：
+ *      days 出行的日期 1 <= days[i] <= 365 costs 套票多少钱，求最少花多少钱
+ *
+ *      递推公式是：
+    dp 初始值 为 int max
+dp[i] = dp[i - 1] 当第i天不用旅行
+dp[i] = min(dp[i - 1] + costs[0], dp[i - 7] + costs1, dp[i - 30] + costs[2]) 当第i天需要旅行
+ *
  *      思路：
  *      https://www.acwing.com/solution/leetcode/content/877/
+ *      https://blog.csdn.net/fuxuemingzhu/article/details/86697224
  */
 public class Solution {
-    public int mincostTickets(int[] days, int[] costs) {
 
-        return -1;
+    public int mincostTickets(int[] days, int[] costs) {
+        int[] dp = new int[366];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < days.length; i++) {
+            set.add(days[i]);
+            dp[days[i]] = 0;
+        }
+
+        dp[0] = 0;
+
+        for (int i = 1; i <= 365; i++) {
+            if (dp[i] != Integer.MAX_VALUE) {
+                dp[i] = dp[i - 1] + costs[0];
+                dp[i] = Math.min(dp[i], dp[Math.max(0, i - 7)] + costs[1]);
+                dp[i] = Math.min(dp[i], dp[Math.max(0, i - 30)] + costs[2]);
+            } else {
+                // i天不需要旅行
+                dp[i] = dp[i-1];
+            }
+        }
+        return dp[days[days.length - 1]];
     }
+
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        int[] days = new int[]{1,4,6,7,8,20};
+        int[] costs = new int[]{2,7,15};
+        int minCost = solution.mincostTickets(days, costs);
+        System.out.println(minCost);
+        Assert.assertEquals(11, minCost);
+
+        days = new int[]{1,2,3,4,5,6,7,8,9,10,30,31};
+        costs = new int[]{2,7,15};
+        minCost = solution.mincostTickets(days, costs);
+        System.out.println(minCost);
+        Assert.assertEquals(17, minCost);
+    }
+
 }
