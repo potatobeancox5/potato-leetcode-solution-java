@@ -112,11 +112,11 @@ public class Solution {
         int guessIndex = -1;
 
         for (int guess = 0; guess < h.length; guess++) {
-
+            // 之前cai过
             if (path.contains(guess)) {
                 continue;
             }
-
+            // 缓存一个匹配列表
             List<Integer>[] groups = new ArrayList[7];
             for (int i = 0; i < 7; ++i) groups[i] = new ArrayList<Integer>();
             for (Integer j: possible) {
