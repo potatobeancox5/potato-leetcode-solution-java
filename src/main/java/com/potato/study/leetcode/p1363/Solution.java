@@ -100,6 +100,7 @@ public class Solution {
         return sn.toString();
     }
 
+
 	public static void main(String[] args) {
         Solution solution = new Solution();
         int[] digits = new int[]{8,1,9};
