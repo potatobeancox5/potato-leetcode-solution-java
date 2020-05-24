@@ -44,16 +44,16 @@ A.length is even
  */
 public class Solution {
 
-        public int repeatedNTimes(int[] arr) {
-            Set<Integer> set = new HashSet<>();
-            for (int num : arr) {
-                if (set.contains(num)) {
-                    return num;
-                }
-                set.add(num);
+    public int repeatedNTimes(int[] arr) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : arr) {
+            if (set.contains(num)) {
+                return num;
             }
-            return 0;
+            set.add(num);
         }
+        return 0;
+    }
 
 
 
