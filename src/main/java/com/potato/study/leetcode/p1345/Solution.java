@@ -61,7 +61,7 @@ Constraints:
 -10^8 <= arr[i] <= 10^8
  *         
  *         思路：
- *
+ *          https://leetcode-cn.com/problems/jump-game-iv/solution/javayan-du-you-xian-sou-suo-onjie-fa-by-jackie-tie/
  *
  *
  *
