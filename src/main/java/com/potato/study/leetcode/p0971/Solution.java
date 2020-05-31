@@ -2,6 +2,7 @@ package com.potato.study.leetcode.p0971;
 
 import com.potato.study.leetcode.domain.TreeNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,9 +52,7 @@ Note:
 1 <= N <= 100
  *         
  *         题目含义：
- *          给一个树的根和一个先序列遍历的数组，翻转最少的节点，能够是的节点与给定的先序遍历匹配
- *          返回一个列表，
- *         思路：
+ *          https://leetcode-cn.com/problems/flip-binary-tree-to-match-preorder-traversal/solution/fan-zhuan-er-cha-shu-yi-pi-pei-xian-xu-bian-li-by-/
  *
  *
  *
@@ -61,11 +60,43 @@ Note:
  */
 public class Solution {
 
+    private List<Integer> flipped;
+    private int index;
+    private int[] voyage;
+
     public List<Integer> flipMatchVoyage(TreeNode root, int[] voyage) {
-        return null;
+        flipped = new ArrayList<>();
+        index = 0;
+        this.voyage = voyage;
+
+        dfs(root);
+        if (!flipped.isEmpty() && flipped.get(0) == -1) {
+            flipped.clear();
+            flipped.add(-1);
+        }
+
+        return flipped;
     }
 
+    private void dfs(TreeNode node) {
+        if (node != null) {
+            if (node.val != voyage[index++]) {
+                flipped.clear();
+                flipped.add(-1);
+                return;
+            }
 
+            if (index < voyage.length && node.left != null &&
+                    node.left.val != voyage[index]) {
+                flipped.add(node.val);
+                dfs(node.right);
+                dfs(node.left);
+            } else {
+                dfs(node.left);
+                dfs(node.right);
+            }
+        }
+    }
 	
 	public static void main(String[] args) {
 		Solution solution = new Solution();
