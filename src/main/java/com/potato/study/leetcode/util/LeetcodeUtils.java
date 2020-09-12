@@ -14,7 +14,7 @@ public class LeetcodeUtils {
      * @param leetcodeString
      * @return
      */
-    public static ListNode buildListByLeetcodeString (String leetcodeString) {
+    public static ListNode buildListNodeByLeetcodeString (String leetcodeString) {
         if (null == leetcodeString || "".equals(leetcodeString)) {
             return null;
         }
@@ -29,6 +29,26 @@ public class LeetcodeUtils {
             p = p.next;
         }
         return head;
+    }
+
+    /**
+     * 给一个数字链表 按照这个类型的字符串进行输出
+     * 1->1->2->3->4->4
+     * @param head
+     * @return
+     */
+    public static String getListNodeInLeetcodeString (ListNode head) {
+        if (head == null) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(head.val);
+        if (head.next == null) {
+            return builder.toString();
+        }
+        builder.append("->");
+        builder.append(getListNodeInLeetcodeString(head.next));
+        return builder.toString();
     }
 
 }
