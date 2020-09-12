@@ -23,6 +23,7 @@ public class Solution {
 
     /**
      * 反转链表 注意边界条件判定
+     * 第一个节点判断 后边节点的next 其他情况 由于之前都已经判定了 next 所以可以不判断了
      * @param head
      * @return
      */
