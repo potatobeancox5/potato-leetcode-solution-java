@@ -2,7 +2,10 @@ package com.potato.study.leetcodecn.p0102.t001;
 
 import com.potato.study.leetcode.domain.TreeNode;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * 102. 二叉树的层序遍历
@@ -35,7 +38,42 @@ import java.util.List;
 public class Solution {
 
     public List<List<Integer>> levelOrder(TreeNode root) {
-        return null;
+
+        // 当前层需要遍历的队列
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        // 缓存下一个要遍历的队列
+        Queue<TreeNode> layerQueue = new LinkedList<>();
+
+        List<List<Integer>> result = new ArrayList<>();
+        if (null == root) {
+            return result;
+        }
+        List<Integer> partResult = new ArrayList<>();
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            partResult.add(node.val);
+            if (null != node.left) {
+                layerQueue.add(node.left);
+            }
+            if (null != node.right) {
+                layerQueue.add(node.right);
+            }
+
+            // 当前层已经遍历 完了 去遍历下一层
+            if (queue.isEmpty()) {
+                // 生成每层结果
+                result.add(partResult);
+                partResult = new ArrayList<>();
+                // 如果还有下一层的话 进行遍历
+                if (!layerQueue.isEmpty()) {
+                    queue.addAll(layerQueue);
+                    layerQueue = new LinkedList<>();
+                }
+            }
+        }
+        return result;
     }
 
     public static void main(String[] args) {
