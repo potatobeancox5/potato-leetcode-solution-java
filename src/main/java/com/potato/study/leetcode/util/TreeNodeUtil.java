@@ -29,7 +29,7 @@ public class TreeNodeUtil {
 		// 分割字符串 
 		String[] nodeValArr = newArrStr.split(",");
 		// 生成的字符串数组对应一个满二叉树
-		TreeNode head = generateTreeNode(0,nodeValArr);
+		TreeNode head = generateTreeNode(0 ,nodeValArr);
 		return head;
 	}
 	
