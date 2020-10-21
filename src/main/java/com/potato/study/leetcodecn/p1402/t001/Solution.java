@@ -52,6 +52,9 @@ import java.util.Arrays;
 public class Solution {
 
     /**
+     *
+     * 这道题可以使用贪心思想解
+     *
      * 注意 可以按照任意顺序进行做菜
      * 那么我们有一个假设 先做小的 会使得 sum 达到最大值
      *
