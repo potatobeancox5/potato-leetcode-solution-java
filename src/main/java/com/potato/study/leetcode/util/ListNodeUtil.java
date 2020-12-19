@@ -65,7 +65,7 @@ public class ListNodeUtil {
 			String[] oriNumArray = str.trim().split("->");
 			int[] arr = new int[oriNumArray.length]; 
 			for (int i = 0 ; i <arr.length ; i++ ) {
-				arr[i] = Integer.parseInt(oriNumArray[i]);
+				arr[i] = Integer.parseInt(oriNumArray[i].trim());
 			}
 			return intArrayToListNode(arr);
 		} else {
