@@ -60,7 +60,7 @@ public class ArrayUtil {
 		String[] numParts = arrayStr.substring(1, arrayStr.length() - 1).split(",");
 		int[] numArray = new int[numParts.length];
 		for (int i = 0; i < numParts.length; i++) {
-			numArray[i] = Integer.parseInt(numParts[i]);
+			numArray[i] = Integer.parseInt(numParts[i].trim());
 		}
 		return numArray;
 	}
