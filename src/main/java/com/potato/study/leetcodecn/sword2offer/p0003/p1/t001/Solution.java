@@ -33,6 +33,8 @@ public class Solution {
 
     /**
      * 直接 计数，然后当计数器达到2时 返回即可
+     * 通过 t002 解法减少空间消耗
+     * 解法有个问题 会额外耗费空间
      * @param nums
      * @return
      */
