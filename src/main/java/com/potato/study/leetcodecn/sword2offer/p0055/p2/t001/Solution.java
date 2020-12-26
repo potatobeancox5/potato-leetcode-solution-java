@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.sword2offer.p0055p2t001;
+package com.potato.study.leetcodecn.sword2offer.p0055.p2.t001;
 
 import com.potato.study.leetcode.domain.TreeNode;
 

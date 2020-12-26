@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.sword2offer.p0058p2t001;
+package com.potato.study.leetcodecn.sword2offer.p0058.p2.t001;
 
 
 import org.junit.Assert;
