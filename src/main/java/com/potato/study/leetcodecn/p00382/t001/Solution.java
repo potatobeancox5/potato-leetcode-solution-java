@@ -43,6 +43,7 @@ public class Solution {
     /** Returns a random node's value. */
     /**
      * 初始化一个蓄水池
+     * 其实可以看做 蓄水池 大小是1 的特例
      *
      * @return
      */
