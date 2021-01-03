@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.p0004.t001;
+package com.potato.study.leetcodecn.p00004.t001;
 
 import com.potato.study.leetcode.util.ArrayUtil;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.p0005.t001;
+package com.potato.study.leetcodecn.p00005.t001;
 
 /**
  * 5. 最长回文子串

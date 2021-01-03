@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.p0009.t001;
+package com.potato.study.leetcodecn.p00009.t001;
 
 /**
  * 9. 回文数
