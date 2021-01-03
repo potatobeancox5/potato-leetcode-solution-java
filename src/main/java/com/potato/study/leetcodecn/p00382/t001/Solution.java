@@ -1,6 +1,8 @@
 package com.potato.study.leetcodecn.p00382.t001;
 
-import org.junit.Assert;
+import com.potato.study.leetcode.domain.ListNode;
+
+import java.util.Random;
 
 /**
  * 382. 链表随机节点
@@ -28,49 +30,44 @@ import org.junit.Assert;
  */
 public class Solution {
 
-    /**
-     * 顺序比较
-     * while i < s.len
-     * 如果 si != tj j++
-     * else i++ j++
-     *
-     * if i == s.len true
-     * false
-     *
-     * 如果量比较多 使用hash map 记录 前缀对应结束的index
-     * @param s
-     * @param t
-     * @return
-     */
-    public boolean isSubsequence(String s, String t) {
-        int i = 0;
-        int j = 0;
+    private ListNode head;
+    private Random random;
 
-        while (i < s.length() && j < t.length()) {
-            if (s.charAt(i) == t.charAt(j)) {
-                i++;
-                j++;
-            } else {
-                j++;
-            }
-        }
-        return i == s.length();
+    /** @param head The linked list's head.
+    Note that the head is guaranteed to be not null, so it contains at least one node. */
+    public Solution(ListNode head) {
+        this.head = head;
+        this.random = new Random();
     }
 
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-
-        String s = "abc";
-        String t = "ahbgdc";
-        boolean res = solution.isSubsequence(s, t);
-        System.out.println(res);
-        Assert.assertEquals(true, res);
-
-        s = "axc";
-        t = "ahbgdc";
-        res = solution.isSubsequence(s, t);
-        System.out.println(res);
-        Assert.assertEquals(false, res);
+    /** Returns a random node's value. */
+    /**
+     * 初始化一个蓄水池
+     *
+     * @return
+     */
+    public int getRandom() {
+        int[] sample = new int[100];
+        ListNode p = head;
+        int i = 0;
+        while (p != null) {
+            if (i < 100) {
+                sample[i] = p.val;
+            } else {
+                int ran = random.nextInt(i + 1);
+                if (ran < 100) {
+                    sample[ran] = p.val;
+                }
+            }
+            i++;
+            p = p.next;
+        }
+        int target = 0;
+        if (i < 100) {
+            target = random.nextInt(i);
+        } else {
+            target = random.nextInt(100);
+        }
+        return sample[target];
     }
 }
