@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.p0002.t001;
+package com.potato.study.leetcodecn.p00002.t001;
 
 import com.potato.study.leetcode.domain.ListNode;
 
