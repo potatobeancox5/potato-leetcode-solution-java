@@ -46,6 +46,7 @@ public class Solution {
 
     /**
      * 每次遍历 nums 根据 taget 生成一个蓄水池，然后random 返回采样的坐标
+     * 这个其实没有蓄水池淘汰的算法
      * @param target
      * @return
      */
