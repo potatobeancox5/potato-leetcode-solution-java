@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00121.t001;
 
+import org.junit.Assert;
+
 /**
  * 121. 买卖股票的最佳时机
  *
@@ -31,12 +33,50 @@ package com.potato.study.leetcodecn.p00121.t001;
  */
 public class Solution {
 
+    /**
+     * 从前往后 找到当前位置最小值
+     * 从后往前 找到当前位置之后最大值
+     * 遍历上面两个数组 求差 记录max
+     * @param prices
+     * @return
+     */
     public int maxProfit(int[] prices) {
+        int[] min = new int[prices.length];
+        int[] max = new int[prices.length];
 
-        return -1;
+        for (int i = 0; i < prices.length; i++) {
+            if (i == 0) {
+                min[i] = prices[i];
+                continue;
+            }
+            min[i] = Math.min(prices[i], min[i-1]);
+        }
+
+        for (int i = prices.length - 1; i >= 0; i--) {
+            if (i == prices.length - 1) {
+                max[i] = prices[i];
+                continue;
+            }
+            max[i] = Math.max(prices[i], max[i+1]);
+        }
+
+        int maxProfit = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            maxProfit = Math.max(maxProfit, max[i] - min[i]);
+        }
+
+        if (maxProfit < 0) {
+            return 0;
+        }
+
+        return maxProfit;
     }
 
     public static void main(String[] args) {
-
+        Solution solution = new Solution();
+        int[] arr = new int[]{7,1,5,3,6,4};
+        int maxProfit = solution.maxProfit(arr);
+        System.out.println(maxProfit);
+        Assert.assertEquals(5, maxProfit);
     }
 }
