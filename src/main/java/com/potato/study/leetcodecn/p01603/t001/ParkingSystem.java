@@ -52,6 +52,7 @@ public class ParkingSystem {
         countMap.put(3, small);
     }
 
+
     /**
      *
      * @param carType
