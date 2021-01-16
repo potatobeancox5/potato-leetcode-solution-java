@@ -16,6 +16,19 @@
             <version>4.12</version>
             <!--<scope>test</scope>-->
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>22.0</version>
+        </dependency>
+        <!--集合类使用 ： https://www.cnblogs.com/qdhxhz/p/10787130.html-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
