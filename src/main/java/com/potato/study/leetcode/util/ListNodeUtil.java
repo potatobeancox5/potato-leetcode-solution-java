@@ -63,7 +63,7 @@ public class ListNodeUtil {
 		// 存在-> ？
 		if(str.contains("->")) {
 			String[] oriNumArray = str.trim().split("->");
-			int[] arr = new int[oriNumArray.length]; 
+			int[] arr = new int[oriNumArray.length];
 			for (int i = 0 ; i <arr.length ; i++ ) {
 				arr[i] = Integer.parseInt(oriNumArray[i].trim());
 			}
@@ -80,6 +80,21 @@ public class ListNodeUtil {
 			}
 		}
 	}
+
+    /**
+     * 将 如[0,1,2,3,4,5] 类型的string 转换成对应列表 head.value = 1
+     * 特例是只有一个数组 如 1
+     * @param str
+     * @return
+     */
+    public static ListNode arrayStringToListNode(String str) {
+        if(null == str || "".equals(str.trim()) || str.trim().length() < 2) {
+            return null;
+        }
+        int[] ints = ArrayUtil.string2ArrayiInt(str);
+        ListNode listNode = intArrayToListNode(ints);
+        return listNode;
+    }
 
 
 	/**
