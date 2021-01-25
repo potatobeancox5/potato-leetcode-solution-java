@@ -44,6 +44,7 @@ public class Solution {
 
     /**
      *
+     *
      * 前缀和思想
      * left sum = sum index 位置左边的和
      * 右边和 = sum all - leftsum - index 位置
