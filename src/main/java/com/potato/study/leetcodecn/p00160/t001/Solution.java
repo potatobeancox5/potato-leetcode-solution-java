@@ -58,6 +58,8 @@ public class Solution {
 
     /**
      * 找到开始相交的位置
+     * https://leetcode-cn.com/problems/intersection-of-two-linked-lists/solution/xiang-jiao-lian-biao-by-leetcode/
+     * 有个双指针发的解法，挺奇妙的
      * @param headA
      * @param headB
      * @return
