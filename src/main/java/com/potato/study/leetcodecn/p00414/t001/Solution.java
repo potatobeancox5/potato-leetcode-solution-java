@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00414.t001;
 
+import org.junit.Assert;
+
 import java.util.PriorityQueue;
 
 /**
@@ -43,14 +45,44 @@ import java.util.PriorityQueue;
 public class Solution {
 
     /**
-     * 第三大的数组
+     * 注意 可能有重复的数字 怎么办
      * @param nums
      * @return
      */
     public int thirdMax(int[] nums) {
+        if (null == nums) {
+            return -1;
+        }
         // 小根堆
         PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
-//        fori
-        return -1;
+        for (int num : nums) {
+            // 处理重复数字
+            if (priorityQueue.contains(num)) {
+                continue;
+            }
+            if (priorityQueue.size() < 3) {
+                priorityQueue.add(num);
+                continue;
+            }
+            if (priorityQueue.peek() < num) {
+                priorityQueue.poll();
+                priorityQueue.add(num);
+            }
+        }
+        if (priorityQueue.size() == 3) {
+            return priorityQueue.peek();
+        }
+        while (priorityQueue.size() > 1) {
+            priorityQueue.poll();
+        }
+        return priorityQueue.peek();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = new int[] {2,2,3,1};
+        int res = solution.thirdMax(nums);
+        System.out.println(res);
+        Assert.assertEquals(1, res);
     }
 }
