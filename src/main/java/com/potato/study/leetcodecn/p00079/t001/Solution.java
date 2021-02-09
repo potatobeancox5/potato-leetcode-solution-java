@@ -1,9 +1,6 @@
 package com.potato.study.leetcodecn.p00079.t001;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 79. 单词搜索
  *
@@ -64,5 +61,6 @@ public class Solution {
      * @return
      */
     private boolean dfsJudgeExist(char[][] board, String word, int i, int j, int index) {
+        return false;
     }
 }
