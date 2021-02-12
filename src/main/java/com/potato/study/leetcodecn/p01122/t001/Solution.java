@@ -1,8 +1,10 @@
 package com.potato.study.leetcodecn.p01122.t001;
 
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 /**
  * 1122. 数组的相对排序
@@ -36,7 +38,8 @@ import java.util.Map;
 public class Solution {
 
     /**
-     * 计数排序
+     * 计数排序 对 arr1 出现数字进行计数
+     * 然后 遍历2 重新成成 arr1
      * @param arr1
      * @param arr2
      * @return
@@ -53,10 +56,27 @@ public class Solution {
             // 题目保证一定有
             int count = countMap.get(num);
             for (int i = 0; i < count; i++) {
-                arr1[i++] = num;
+                arr1[index++] = num;
+            }
+            countMap.remove(num);
+        }
+        // 最终的位置如何 未出现的升序排列
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+        for (Map.Entry<Integer, Integer> entry :countMap.entrySet()) {
+            priorityQueue.add(new int[] {entry.getKey(), entry.getValue()});
+        }
+        while (!priorityQueue.isEmpty()) {
+            int[] poll = priorityQueue.poll();
+            for (int i = 0; i < poll[1]; i++) {
+                arr1[index++] = poll[0];
             }
         }
-        return null;
+        return arr1;
     }
 
 
