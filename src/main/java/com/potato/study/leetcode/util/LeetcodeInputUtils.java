@@ -33,7 +33,7 @@ public class LeetcodeInputUtils {
         // 去掉引号
         String[] result = new String[split.length];
         for (int i = 0; i < split.length; i++) {
-            String word = split[i];
+            String word = split[i].trim();
             word = word.substring(1, word.length() - 1);
             result[i] = word;
         }
