@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00961.t001;
 
+import java.util.Arrays;
+
 /**
  * 961. 重复 N 次的元素
  *
@@ -37,9 +39,14 @@ package com.potato.study.leetcodecn.p00961.t001;
 public class Solution {
 
 
+    /**
+     * 排序 不管怎样 index = N的位置 一定是那个值
+     * @param arr
+     * @return
+     */
     public int repeatedNTimes(int[] arr) {
-
-        return 0;
+        Arrays.sort(arr);
+        return arr[(arr.length - 1)/ 2];
     }
 
 
