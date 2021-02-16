@@ -1,6 +1,7 @@
 package com.potato.study.leetcodecn.p00506.t001;
 
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -35,32 +36,31 @@ public class Solution {
      * @return
      */
     public String[] findRelativeRanks(int[] nums) {
-        // 小根堆 大小 3
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
-        for (int num : nums) {
-            if (priorityQueue.size() < 3 || priorityQueue.peek() < num) {
-                priorityQueue.add(num);
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o2[0] - o1[0];
             }
-            if (priorityQueue.size() > 3) {
-                priorityQueue.poll();
+        });
+        for (int i = 0; i < nums.length; i++) {
+            priorityQueue.add(new int[]{nums[i], i});
+        }
+        String[] res = new String[nums.length];
+        int index = 0;
+        while (!priorityQueue.isEmpty()) {
+            int[] poll = priorityQueue.poll();
+            index++;
+            if (index == 1){
+                res[poll[1]] = "Gold Medal";
+            } else if (index == 2) {
+                res[poll[1]] = "Silver Medal";
+            } else if (index == 3) {
+                res[poll[1]] = "Bronze Medal";
+            } else {
+                res[poll[1]] = "" + index;
             }
         }
-        int third = priorityQueue.poll();
-        int second = priorityQueue.poll();
-        int first = priorityQueue.poll();
-        String[] res = new String[nums.length];
-//        for (int i = 0; i < nums.length; i++) {
-//            if () {
-//
-//            } else if () {
-//
-//            } else if () {
-//
-//            } else {
-//                res[i] = "" + nums[i];
-//            }
-//        }
-        return null;
+        return res;
     }
 
 }
