@@ -1,6 +1,7 @@
 package com.potato.study.leetcodecn.p00234.t001;
 
 import com.potato.study.leetcode.domain.ListNode;
+import org.junit.Assert;
 
 /**
  * 234. 回文链表
@@ -42,17 +43,59 @@ public class Solution {
             length++;
             p = p.next;
         }
-        // 计算一半的位置 奇数 偶数 需要移动多少个节点数
+        // 计算一半的位置 奇数 偶数 需要移动多少个节点数 3 的话  2， 4的话 2
         int half = (length % 2 == 0 ? length / 2: length / 2 + 1);
         p = head;
         // 过程中 翻转链表
+        ListNode pre = null;
         for (int i = 0; i < half; i++) {
-            p = p.next;
+            // 奇数 的最后一次 不需要反转
+            if (i == half - 1 && length % 2 == 1) {
+                p = p.next;
+                continue;
+            }
+            ListNode q = p.next;
+            p.next = pre;
+            // 移动 p 和 pre
+            pre = p;
+            p = q;
         }
+        // 另一端的开始
         ListNode halfStart = p;
+        // 判断是够是回文
+        while (pre != null && halfStart != null) {
+            if (pre.val != halfStart.val) {
+                return false;
+            }
+            pre = pre.next;
+            halfStart = halfStart.next;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        boolean palindrome = solution.isPalindrome(head);
+        System.out.println(palindrome);
+        Assert.assertEquals(false, palindrome);
+
+        head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(2);
+        head.next.next.next = new ListNode(1);
+        palindrome = solution.isPalindrome(head);
+        System.out.println(palindrome);
+        Assert.assertEquals(true, palindrome);
 
 
-        return false;
+        head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(2);
+        palindrome = solution.isPalindrome(head);
+        System.out.println(palindrome);
+        Assert.assertEquals(false, palindrome);
     }
 
 }
