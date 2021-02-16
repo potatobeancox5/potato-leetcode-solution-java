@@ -2,6 +2,7 @@ package com.potato.study.leetcodecn.p00025.t001;
 
 
 import com.potato.study.leetcode.domain.ListNode;
+import com.potato.study.leetcode.util.ListNodeUtil;
 
 /**
  * 25. K 个一组翻转链表
@@ -37,30 +38,76 @@ import com.potato.study.leetcode.domain.ListNode;
 public class Solution {
 
     /**
-     * 先遍历一遍 计算 链表个数
-     * 然后进行 遍历 没
+     * 遍历 链表 记录当前数字，
+     * 设置一个哨兵，newHead
+     * 遍历链表 使用 数字 num记录 当前遍历到多少个节点
+     * 记录 这个小段落开始的位置和结束的位置
      * @param head
      * @param k
      * @return
      */
     public ListNode reverseKGroup(ListNode head, int k) {
+        // 设置哨兵
+        ListNode newHead = new ListNode(-1);
+        newHead.next = head;
+        int num = 0;
+        ListNode p = newHead.next;
+        ListNode nextPartHead;
+        ListNode prePartTail = newHead;
+        ListNode start = newHead.next;
+        while (p != null) {
+            num++;
+            if (num == k) {
+                nextPartHead = p.next;
+                // 翻转
+                reversePart(start, k, nextPartHead, prePartTail);
+                // 设置之前的几点
+                prePartTail = start;
+                // 下一个开始的位置
+                start = start.next;
+                num = 0;
+                p = start;
+            } else {
+                p = p.next;
+            }
+        }
+        return newHead.next;
+    }
 
-        return null;
+
+    /**
+     * 翻转 start 到 end 这个部分 包括end
+     * 如何反转
+     * https://www.cnblogs.com/keeya/p/9218352.html
+     * @param start
+     * @param k
+     * @param nextPartHead
+     * @param prePartTail
+     */
+    private void reversePart(ListNode start, int k, ListNode nextPartHead, ListNode prePartTail) {
+        ListNode pre = null;
+        ListNode p = start;
+        while (p != null && k > 0) {
+            ListNode nextNode = p.next;
+            p.next = pre;
+            k--;
+            // 转移
+            pre = p;
+            p = nextNode;
+        }
+        // pre 指向的是 第一个节点 p 指向的下一个开始的点 start 指向的是末尾
+        start.next = nextPartHead;
+        prePartTail.next = pre;
     }
 
     public static void main(String[] args) {
-//        Solution solution = new Solution();
-//        ListNode head = ListNodeUtil.intArrayToListNode(new int[]{1,2,3,4});
-//        ListNode listNode = solution.swapPairs(head);
-//        ListNodeUtil.printListNode(listNode);// [2,1,4,3]
-//
-//        head = ListNodeUtil.intArrayToListNode(new int[]{});
-//        listNode = solution.swapPairs(head);
-//        ListNodeUtil.printListNode(listNode);// []
-//
-//
-//        head = ListNodeUtil.intArrayToListNode(new int[]{1});
-//        listNode = solution.swapPairs(head);
-//        ListNodeUtil.printListNode(listNode);// [1]
+        Solution solution = new Solution();
+        ListNode head = ListNodeUtil.stringToListNode("1->2->3->4->5");
+        ListNode listNode = solution.reverseKGroup(head, 2);
+        ListNodeUtil.printListNode(listNode);// 2->1->4->3->5
+
+        head = ListNodeUtil.stringToListNode("1->2->3->4->5");
+        listNode = solution.reverseKGroup(head, 3);
+        ListNodeUtil.printListNode(listNode);// 3->2->1->4->5
     }
 }
