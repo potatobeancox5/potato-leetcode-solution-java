@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p01021.t001;
 
+import org.junit.Assert;
+
 /**
  * 1021. 删除最外层的括号
  *
@@ -56,21 +58,48 @@ public class Solution {
      */
     public String removeOuterParentheses(String s) {
         int flag = 0;
+        // 存全体结果
         StringBuilder builder = new StringBuilder();
+        // 存一组结果
         StringBuilder tmp = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
-            if ('(' == ch) {
-                if (flag == 0) {
-                    tmp = new StringBuilder();
-                }
+            if (flag == 0 && ch == '(') {
+                // 当前是 第一个 （
+                tmp = new StringBuilder();
                 flag++;
-            } else if (')' == ch) {
+            } else if (flag == 1 && ch == ')') {
+                // 当前是 第一个 ） (第一个 == 最外层)
+                builder.append(tmp);
+                tmp = new StringBuilder();
                 flag--;
             } else {
-                tmp.append(tmp);
+                // 非第一的字符
+                if (ch == '(') {
+                    flag++;
+                } else if (ch == ')') {
+                    flag--;
+                }
+                tmp.append(ch);
             }
         }
+        // 如果 tmp 还有字符串 还放进去
+        if (tmp.length() > 0) {
+            builder.append(tmp);
+        }
         return builder.toString();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s = "(()())(())";
+        String ssss = solution.removeOuterParentheses(s);
+        System.out.println(ssss);
+        Assert.assertEquals("()()()", ssss);
+
+        s = "(()())(())(()(()))";
+        ssss = solution.removeOuterParentheses(s);
+        System.out.println(ssss);
+        Assert.assertEquals("()()()()(())", ssss);
     }
 }
