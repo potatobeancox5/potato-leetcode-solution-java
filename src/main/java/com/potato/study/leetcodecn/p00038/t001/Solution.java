@@ -1,5 +1,10 @@
 package com.potato.study.leetcodecn.p00038.t001;
 
+import org.junit.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 38. 外观数列
  *
@@ -59,34 +64,61 @@ public class Solution {
 
     /**
      * 从1开始计数 使用 val 存储字符串
+     * 模拟法 使用 一个 List 记录中间结果
      * @param n
      * @return
      */
     public String countAndSay(int n) {
-
-        return null;
+        List<Integer> result = new ArrayList<>();
+        result.add(1);
+        for (int i = 2; i <= n; i++) {
+            List<Integer> temp = new ArrayList<>();
+            int count = 0;
+            int last = -1;
+            for (int j = 0; j < result.size(); j++) {
+                if (j == 0) {
+                    count++;
+                    last = result.get(j);
+                } else if (last == result.get(j)) {
+                    count++;
+                } else {
+                    // 不相等 生成结果
+                    temp.add(count);
+                    temp.add(last);
+                    last = result.get(j);
+                    count = 1;
+                }
+            }
+            // 最后一个数字 处理
+            if (count > 0) {
+                temp.add(count);
+                temp.add(last);
+            }
+            result = temp;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < result.size(); i++) {
+            builder.append(result.get(i));
+        }
+        return builder.toString();
     }
 
     public static void main(String[] args) {
-//        Solution solution = new Solution();
-//
-//        int[] nums = new int[]{1,3,5,6};
-//        int target = 5;
-//        int index = solution.searchInsert(nums, target);
-//        System.out.println(index);
-//        Assert.assertEquals(2, index);
-//
-//        nums = new int[]{1,3,5,6};
-//        target = 2;
-//        index = solution.searchInsert(nums, target);
-//        System.out.println(index);
-//        Assert.assertEquals(1, index);
-//
-//
-//        nums = new int[]{1,3,5,6};
-//        target = 7;
-//        index = solution.searchInsert(nums, target);
-//        System.out.println(index);
-//        Assert.assertEquals(4, index);
+        Solution solution = new Solution();
+        String s = solution.countAndSay(1);
+        System.out.println(s);
+        Assert.assertEquals("1", s);
+
+        s = solution.countAndSay(2);
+        System.out.println(s);
+        Assert.assertEquals("11", s);
+
+        s = solution.countAndSay(3);
+        System.out.println(s);
+        Assert.assertEquals("21", s);
+
+        s = solution.countAndSay(4);
+        System.out.println(s);
+        Assert.assertEquals("1211", s);
     }
 }
