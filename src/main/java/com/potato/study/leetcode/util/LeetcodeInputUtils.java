@@ -109,4 +109,21 @@ public class LeetcodeInputUtils {
         int[][] array = inputString2IntArrayTwoDimensional(input);
         System.out.println(Arrays.deepToString(array));
     }
+
+
+    /**
+     * rectangles =height = [0,1,0,2,1,0,1,3,2,1,2,1]
+     * 测试用例
+     * []
+     * null
+     * 返回 int  数组
+     * @param input
+     * @return
+     */
+    public static int[] inputString2IntArray(String input) {
+        return ArrayUtil.string2ArrayiInt(input);
+    }
+
+
+
 }
