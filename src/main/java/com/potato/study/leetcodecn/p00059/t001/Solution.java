@@ -1,6 +1,8 @@
 package com.potato.study.leetcodecn.p00059.t001;
 
 
+import java.util.Arrays;
+
 /**
  * 59. 螺旋矩阵 II
  *
@@ -29,44 +31,37 @@ public class Solution {
      * @return
      */
     public int[][] generateMatrix(int n) {
-        int value = 1;
-        int[][] matrix = new int[n][n];
-        int x = 0;
-        int y = 0;
-        while (value <= n * n) {
-            for (int i = 0; i < n; i++) {
-                y--;
-                if (matrix[x][y] > 0) {
-                    continue;
-                }
-                matrix[x][y + i] = value++;
+        int[][] direction = new int[][] {
+                {0, 1}, {1, 0}, {0, -1}, {-1, 0}
+        };
+        boolean[][] visited = new boolean[n][n];
+        int index = 0;
+        int p = 1;
+        int i = 0;
+        int j = 0;
+        int[][] result = new int[n][n];
+        while (p <= n * n) {
+            visited[i][j] = true;
+            result[i][j] = p;
+            p++;
+            // 判断 是不是已经触及了边界
+            int nextI = i + direction[index][0];
+            int nextJ = j + direction[index][1];
+            if (nextI < 0 || nextI >= n
+                    || nextJ < 0 || nextJ >= n
+                    || visited[nextI][nextJ]) {
+                index = (index + 1) % direction.length;
             }
-            for (int i = 0; i < n; i++) {
-                if (matrix[x][y] > 0) {
-                    continue;
-                }
-                matrix[x-i][y] = value++;
-            }
-            for (int i = 0; i < n; i++) {
-                if (matrix[x][y] > 0) {
-                    continue;
-                }
-            }
-            for (int i = 0; i < n; i++) {
-                if (matrix[x][y] > 0) {
-                    continue;
-                }
-            }
+            i = i + direction[index][0];
+            j = j + direction[index][1];
         }
-        return matrix;
+        return result;
     }
 
 
-//    public static void main(String[] args) {
-//        Solution solution = new Solution();
-//        String s = "Hello World";
-//        int res = solution.lengthOfLastWord(s);
-//        System.out.println(res);
-//        Assert.assertEquals(5, res);
-//    }
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[][] res = solution.generateMatrix(3);
+        System.out.println(Arrays.deepToString(res));
+    }
 }
