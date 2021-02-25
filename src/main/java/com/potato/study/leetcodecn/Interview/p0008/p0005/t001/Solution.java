@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.Interview.p0008p0005.t001;
+package com.potato.study.leetcodecn.Interview.p0008.p0005.t001;
 
 
 /**
