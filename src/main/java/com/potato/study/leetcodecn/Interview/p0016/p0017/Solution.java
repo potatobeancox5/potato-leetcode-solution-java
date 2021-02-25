@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.Interview.p0016p0017;
+package com.potato.study.leetcodecn.Interview.p0016.p0017;
 
 
 import org.junit.Assert;
