@@ -1,27 +1,29 @@
 package com.potato.study.leetcodecn.Interview.p0001.p0001;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * 面试题 01.04. 回文排列
+ * 面试题 01.01. 判定字符是否唯一
  *
- * 给定一个字符串，编写一个函数判定其是否为某个回文串的排列之一。
+ * 实现一个算法，确定一个字符串 s 的所有字符是否全都不同。
 
- 回文串是指正反两个方向都一样的单词或短语。排列是指字母的重新排列。
+ 示例 1：
 
- 回文串不一定是字典当中的单词。
+ 输入: s = "leetcode"
+ 输出: false
+ 示例 2：
 
-  
+ 输入: s = "abc"
+ 输出: true
+ 限制：
 
- 示例1：
-
- 输入："tactcoa"
- 输出：true（排列有"tacocat"、"atcocta"，等等）
+ 0 <= len(s) <= 100
+ 如果你不使用额外的数据结构，会很加分。
 
  来源：力扣（LeetCode）
- 链接：https://leetcode-cn.com/problems/palindrome-permutation-lcci
+ 链接：https://leetcode-cn.com/problems/is-unique-lcci
  著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  */
@@ -29,25 +31,18 @@ public class Solution {
 
 
     /**
-     * 直接统计字母出现次数，判定是够有多余 1个的奇数个数
-     * @param s
+     * 判断是不是 没有重复的
+     * @param astr
      * @return
      */
-    public boolean canPermutePalindrome(String s) {
-        Map<Character, Integer> countMap = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            Integer count = countMap.getOrDefault(s.charAt(i), 0);
-            count++;
-            countMap.put(s.charAt(i), count);
-        }
-        int oddCount = 0;
-        for (Map.Entry<Character, Integer> entry : countMap.entrySet()) {
-            if (entry.getValue() % 2 == 1) {
-                oddCount++;
-            }
-            if (oddCount > 1) {
+    public boolean isUnique(String astr) {
+        Set<Character> set = new HashSet<>();
+        // 判断 set 中是不是有 ch
+        for (char ch : astr.toCharArray()) {
+            if (set.contains(ch)) {
                 return false;
             }
+            set.add(ch);
         }
         return true;
     }
