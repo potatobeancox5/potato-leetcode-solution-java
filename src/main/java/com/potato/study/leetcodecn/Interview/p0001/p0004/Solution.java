@@ -1,4 +1,4 @@
-package com.potato.study.leetcodecn.Interview.p0001p0004;
+package com.potato.study.leetcodecn.Interview.p0001.p0004;
 
 
 import java.util.HashMap;
