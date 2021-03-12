@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.sword2offer.p0005.p1.t001;
 
+import org.junit.Assert;
+
 /**
  * 剑指 Offer 05. 替换空格
  *
@@ -25,38 +27,28 @@ package com.potato.study.leetcodecn.sword2offer.p0005.p1.t001;
 public class Solution {
 
     public String replaceSpace(String s) {
-
-//        if (null == s || s.length() == 0) {
-//
-//        }
-//
-//        StringBuilder builder = new StringBuilder();
-//        for (:) {
-//
-//        }
-        return "";
+        if (null == s || s.length() == 0) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        for (char ch : s.toCharArray()) {
+            if (Character.isSpaceChar(ch)) {
+                builder.append("%20");
+            } else {
+                builder.append(ch);
+            }
+        }
+        return builder.toString();
     }
 
 
     public static void main(String[] args) {
-//        Solution solution = new Solution();
-//
-//        int[][] matrix = new int[][] {
-//                {1,   4,  7, 11, 15},
-//                {2,   5,  8, 12, 19},
-//                {3,   6,  9, 16, 22},
-//                {10, 13, 14, 17, 24},
-//                {18, 21, 23, 26, 30}
-//        };
-//        int target = 5;
-//        boolean res = solution.findNumberIn2DArray(matrix, target);
-//        System.out.println(res);
-//        Assert.assertEquals(true, res);
-//
-//        target = 20;
-//        res = solution.findNumberIn2DArray(matrix, target);
-//        System.out.println(res);
-//        Assert.assertEquals(false, res);
+
+        Solution solution = new Solution();
+        String str = "We are happy.";
+        String s = solution.replaceSpace(str);
+        System.out.println(s);
+        Assert.assertEquals("We%20are%20happy.", s);
     }
 
 }
