@@ -50,14 +50,56 @@ import com.potato.study.leetcode.domain.TreeNode;
  */
 public class Solution {
 
+    private TreeNode preNode;
+
     /**
      * 如果当前节点 是空 或者叶子节点 直接返回 当前节点
      * 否则
+     *
+     * 如果当前节点有右孩子，先计算右孩子 并记录右孩子结果
+     * 将右孩子计算结果加到当前值上
+     *
+     * 计算左孩子
+     *
+     * 返回
+     * 存在 问题 如果当前点 是某个左孩子的右叶子，那么 它需要加上所有的右孩子的值
      * @param root
      * @return
      */
     public TreeNode bstToGst(TreeNode root) {
+        // 空节点 和叶子节点 可以直接返回
+        if (null == root) {
+            return null;
+        }
+        // 如果当前节点有右孩子，先计算右孩子 并记录右孩子结果
+        if (root.right != null) {
+            bstToGst(root.right);
+            // 计算当前节点
+//            root.val += root.right.val;
+        }
+        if (null != preNode) {
+            root.val += preNode.val;
+        }
+        preNode = root;
+        // 如果左边节点不空的话 左边节点 加上他的父亲节点目前的值
+        if (root.left != null) {
+            // 先加上双亲节点值 再往里算
+//            root.left.val += root.val;
+            bstToGst(root.left);
+        }
+        return root;
+    }
 
-        return null;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        TreeNode root = new TreeNode(4);
+        root.right = new TreeNode(6);
+        root.left = new TreeNode(1);
+        root.left.left = new TreeNode(0);
+        root.left.right = new TreeNode(2);
+        TreeNode node = solution.bstToGst(root);
+        System.out.println(node.left);
+//        root.
+//        System.out.println();
     }
 }
