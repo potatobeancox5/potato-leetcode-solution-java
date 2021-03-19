@@ -34,38 +34,28 @@ package com.potato.study.leetcodecn.p00605.t001;
 public class Solution {
 
     /**
-     * 遍历 flowerbed 计算两个1 之间的 zero 数量，计算能种多少个花
-     * 如果为奇数的（n-1）/ 2 偶数的话 （n-2）/ 2
+     * 贪心法 如果左右两边为空 直接种
      * @param flowerbed
      * @param n
      * @return
      */
     public boolean canPlaceFlowers(int[] flowerbed, int n) {
-        int zeroNum = 0;
-        int maxCount = 0;
+        int count = 0;
+
         for (int i = 0; i < flowerbed.length; i++) {
             if (flowerbed[i] == 1) {
-                // 计算个数
-                if (zeroNum > 2) {
-                    if (zeroNum % 2 == 0) {
-                        maxCount += ((zeroNum-2) / 2);
-                    } else {
-                        maxCount += ((zeroNum-1) / 2);
-                    }
-                }
-                zeroNum = 0;
-            } else {
-                zeroNum++;
+                continue;
             }
-        }
-        if (zeroNum > 2) {
-            if (zeroNum % 2 == 0) {
-                maxCount += ((zeroNum-2) / 2);
-            } else {
-                maxCount += ((zeroNum-1) / 2);
+            if (i+1 < flowerbed.length && flowerbed[i+1] == 1) {
+                continue;
             }
+            if (i > 0 && flowerbed[i-1] == 1) {
+                continue;
+            }
+            count++;
+            flowerbed[i] = 1;
         }
-        return maxCount >= n;
+        return n <= count;
     }
 
 
