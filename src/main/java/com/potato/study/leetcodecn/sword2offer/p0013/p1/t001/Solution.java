@@ -49,12 +49,17 @@ public class Solution {
         boolean[][] visit = new boolean[m][n];
         while (!queue.isEmpty()) {
             int[] poll = queue.poll();
-            visit[poll[0]][poll[1]] = true;
             int x = poll[0];
             int y = poll[1];
-            if (canMatch(x, y, k)) {
+            // 判断当前节点能不能进入 判断当前点是不是之前访问过的
+            if (!visit[poll[0]][poll[1]] && canMatch(x, y, k)) {
                 count++;
+            } else {
+                // 进入不了就没有后续节点的技术了
+                continue;
             }
+            visit[poll[0]][poll[1]] = true;
+            // 将与之相邻 没有访问过的都入队 可能访问的点
             if (x > 0 && !visit[x-1][y]) {
                 queue.add(new int[]{x-1, y});
             }
@@ -94,6 +99,12 @@ public class Solution {
         System.out.println(ints);
         Assert.assertEquals(3, ints);
 
+        m = 3;
+        n = 1;
+        k = 0;
+        ints = solution.movingCount(m, n, k);
+        System.out.println(ints);
+        Assert.assertEquals(1, ints);
 
         m = 3;
         n = 2;
@@ -101,6 +112,14 @@ public class Solution {
         ints = solution.movingCount(m, n, k);
         System.out.println(ints);
         Assert.assertEquals(6, ints);
+
+
+        m = 16;
+        n = 8;
+        k = 4;
+        ints = solution.movingCount(m, n, k);
+        System.out.println(ints);
+        Assert.assertEquals(15, ints);
     }
 
 }
