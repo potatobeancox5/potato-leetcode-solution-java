@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p01551.t001;
 
+import org.junit.Assert;
+
 /**
  * 1551. 使数组中所有元素相等的最小操作数
  *
@@ -35,8 +37,32 @@ package com.potato.study.leetcodecn.p01551.t001;
  */
 public class Solution {
 
+    /**
+     *
+     * sum((2 * i) + 1 （ 0 <= i < n ）) = n + 2(0 + 1 + ... n - 1)
+     * = n + n (n-1) = n* n
+     * 平均值 = n
+     *
+     * @param n
+     * @return
+     */
     public int minOperations(int n) {
+        int p = 0;
+        int tmp = 2 * p + 1;
+        int step = 0;
+        while (tmp < n) {
+            step += (n - tmp);
+            p++;
+            tmp = 2 * p + 1;
+        }
+        return step;
+    }
 
-        return -1;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int n = 3;
+        int i = solution.minOperations(n);
+        System.out.println(i);
+        Assert.assertEquals(2, i);
     }
 }
