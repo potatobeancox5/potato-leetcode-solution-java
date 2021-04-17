@@ -1,6 +1,8 @@
 package com.potato.study.leetcodecn.p01389.t001;
 
 
+import java.util.Arrays;
+
 /**
  * 1389. 按既定顺序创建目标数组
  *
@@ -58,16 +60,49 @@ package com.potato.study.leetcodecn.p01389.t001;
 public class Solution {
 
     /**
-     * 插入移动的方式
+     * 从后往前遍历 index
+     *      如果当前index 上面 没有数字 那么直接放数字，否则 一直往后找第一个没有数字的位置
      * @param nums
      * @param index
      * @return
      */
     public int[] createTargetArray(int[] nums, int[] index) {
         int[] res = new int[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            res[index[i]] = nums[i];
+        // 根据条件选择 -1 标记 没有填充
+        Arrays.fill(res, -1);
+        for (int i = 0; i < index.length; i++) {
+            if (res[index[i]] == -1) {
+                res[index[i]] = nums[i];
+            } else {
+                // 找到后边第一个为-1的下标
+                int j = index[i];
+                while (res[j] != -1) {
+                    j++;
+                }
+                // 从i-j 移动 然后将数值放到i位置
+                for (int k = j; k > index[i]; k--) {
+                    res[k] = res[k-1];
+                }
+                // 然后将数值放到i位置
+                res[index[i]] = nums[i];
+            }
         }
         return res;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = new int[] {1};
+        int[] index = new int[] {0};
+        int[] targetArray = solution.createTargetArray(nums, index);
+        System.out.println(Arrays.toString(targetArray));
+
+        // nums = [1,2,3,4,0], index = [0,1,2,3,0]
+        nums = new int[] {0,1,2,3,4};
+        index = new int[] {0,1,2,2,1};
+        targetArray = solution.createTargetArray(nums, index);
+        // [0,4,1,3,2]
+        System.out.println(Arrays.toString(targetArray));
+
     }
 }
