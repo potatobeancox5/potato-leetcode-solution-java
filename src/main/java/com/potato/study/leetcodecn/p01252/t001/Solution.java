@@ -1,6 +1,8 @@
 package com.potato.study.leetcodecn.p01252.t001;
 
 
+import org.junit.Assert;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,20 +53,46 @@ import java.util.Map;
 public class Solution {
 
     public int oddCells(int n, int m, int[][] indices) {
-        Map<int[], Integer> pairCount = new HashMap<>();
-
+        // 1 生命矩阵
+        int[][] cell = new int[n][m];
+        // 2 遍历 indices 依次 给 indices 0 行和 indices 1 列 ++
         for (int i = 0; i < indices.length; i++) {
-
+            if (indices[i][0] >= n) {
+                continue;
+            }
+            if (indices[i][1] >= m) {
+                continue;
+            }
+            // 给 indices 0 行和 indices 1 列 ++
+            for (int j = 0; j < m; j++) {
+                cell[indices[i][0]][j]++;
+            }
+            for (int j = 0; j < n; j++) {
+                cell[j][indices[i][1]]++;
+            }
         }
-        return -1;
+        // 3 遍历矩阵计数
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (cell[i][j] % 2 == 1) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
-//    public static void main(String[] args) {
-//        Solution solution = new Solution();
-//        int[] groupSizes = new int[] {
-//                3,3,3,3,3,1,3
-//        };
-//        List<List<Integer>> lists = solution.groupThePeople(groupSizes);
-//        System.out.println(lists);
-//    }
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int n = 2;
+        int m = 3;
+        int[][] indices = new int[][] {
+                {0,1},
+                {1,1}
+        };
+        int oddCount = solution.oddCells(n, m, indices);
+        System.out.println(oddCount);
+        Assert.assertEquals(6, oddCount);
+    }
 }
