@@ -1,6 +1,8 @@
 package com.potato.study.leetcodecn.p01395.t001;
 
 
+import org.junit.Assert;
+
 /**
  * 1395. 统计作战单位数
  *
@@ -45,24 +47,47 @@ package com.potato.study.leetcodecn.p01395.t001;
 public class Solution {
 
     /**
-     * 三重循环
+     * 直接 三重循环tle了 那么 我们可以记录 每个位置之后 比他大的数量 num1 以及比他小的数量 num2
+     * 双层循环遍历 rating
+     *      如果 num i > num j total += num2 j
+     *      如果 num i < num j total += num1 j
      * @param rating
      * @return
      */
     public int numTeams(int[] rating) {
-        int n = rating.length;
-        int count = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                for (int k = j + 1; k < n; k++) {
-                    if (rating[i] < rating[j] && rating[j] < rating[k]) {
-                        count++;
-                    } else if (rating[i] > rating[j] && rating[j] > rating[k]) {
-                        count++;
-                    }
+        // 记录 每个位置之后 比他大的数量 num1 以及比他小的数量 num2
+        int[] num1 = new int[rating.length];
+        int[] num2 = new int[rating.length];
+        for (int i = 0; i < rating.length; i++) {
+            for (int j = i + 1; j < rating.length; j++) {
+                if (rating[i] < rating[j]) {
+                    num1[i]++;
+                } else if (rating[i] > rating[j]) {
+                    num2[i]++;
                 }
             }
         }
-        return count;
+        // 双层循环遍历 rating
+        int total = 0;
+        for (int i = 0; i < rating.length; i++) {
+            for (int j = i + 1; j < rating.length; j++) {
+                if (rating[i] < rating[j]) {
+                    total += num1[j];
+                } else if (rating[i] > rating[j]) {
+                    total += num2[j];
+                }
+            }
+        }
+        return total;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] arr = new int[] {
+                2,5,3,4,1
+        };
+        int num = solution.numTeams(arr);
+        System.out.println(num);
+        Assert.assertEquals(3, num);
     }
 }
