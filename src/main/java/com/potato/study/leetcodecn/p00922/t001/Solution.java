@@ -34,7 +34,8 @@ import java.util.Arrays;
 public class Solution {
 
     /**
-     * 左侧 找到奇偶数 不同的位置 ，右边也找到
+     * 一个只检查奇数 index 对应位置
+     * 一个只检查偶数 index 对应位置
      * 交换 返回
      * @param arr
      * @return
@@ -43,29 +44,25 @@ public class Solution {
         if (null == arr || arr.length == 0) {
             return arr;
         }
-        int left = 0;
-        int right = arr.length - 1;
-        while (left < arr.length && right >= 0) {
-            // 找到第一个 left 不匹配
-            while ( left < arr.length && (arr[left]+ left) % 2 == 0) {
-                left += 2;
+        int index0 = 0;
+        int index1 = 1;
+
+        while (index0 < arr.length && index1 < arr.length) {
+            // 找到第一个奇数位置
+            while (index0 < arr.length && arr[index0] % 2 == 0) {
+                index0 += 2;
             }
-            if (left >= arr.length) {
+            // 找到第一个偶数位置
+            while (index1 < arr.length && arr[index1] % 2 == 1) {
+                index1 += 2;
+            }
+            if (index0 >= arr.length || index1 >= arr.length) {
                 break;
             }
-            // 找到第一个 right 不匹配
-            while (right >= 0 && (arr[right]+ right) % 2 == 0) {
-                right -= 2;
-            }
-            if (right < 0) {
-                break;
-            }
-            // 匹配上 继续找
-            int tmp = arr[left];
-            arr[left] = arr[right];
-            arr[right] = tmp;
-            left++;
-            right--;
+            // 交换
+            int tmp = arr[index0];
+            arr[index0] = arr[index1];
+            arr[index1] = tmp;
         }
         return arr;
     }
