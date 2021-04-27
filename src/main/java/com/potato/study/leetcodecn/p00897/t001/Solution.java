@@ -3,6 +3,9 @@ package com.potato.study.leetcodecn.p00897.t001;
 import com.potato.study.leetcode.domain.TreeNode;
 import com.potato.study.leetcode.util.TreePrintUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 897. 递增顺序查找树
  *
@@ -56,42 +59,37 @@ import com.potato.study.leetcode.util.TreePrintUtil;
 public class Solution {
 
     /**
-     * 中序遍历 树
+     * 中序遍历 树 用list 记录遍历结果
      * @param root
      * @return
      */
     public TreeNode increasingBST(TreeNode root) {
-        return increasingBST(root, null, false);
+        // 中序遍历 得到遍历结果
+        List<TreeNode> list = new ArrayList<>();
+        this.inorderList(root, list);
+        // 遍历list 进行 指针拼接
+        for (int i = 1; i < list.size(); i++) {
+            list.get(i-1).right = list.get(i);
+            list.get(i-1).left = null;
+        }
+        // 最后节点处理
+        list.get(list.size() -  1).left = null;
+        list.get(list.size() -  1).right = null;
+        return list.get(0);
     }
 
     /**
-     * 展开二叉树 将 left 的右孩子 设置为 root
-     * @param node 当前节点
-     * @param next node right 指向节点
+     * 中序遍历 使用 list 存储中序遍历结果
+     * @param root
+     * @param list
      */
-    private TreeNode increasingBST(TreeNode node, TreeNode next, boolean canConnect) {
-        // 当前 node 为空 直接返回
-        if (node == null) {
-            return null;
+    private void inorderList(TreeNode root, List<TreeNode> list) {
+        if (null == root) {
+            return;
         }
-        // 如果当前节点又做孩子 先处理左孩子的问题 左孩子下一个节点 就是当前跟 中序遍历 做孩子 当前 右孩子
-        TreeNode leftMostChild = node;
-        if (node.left != null) {
-            leftMostChild = increasingBST(node.left, node, true);
-        }
-        TreeNode rightChild = node.right;
-        // 当前点没有左孩子 连接当前节点
-        if (canConnect) {
-            node.right = node;
-        } else {
-            node.right = increasingBST(rightChild, null, false);
-        }
-        // 当前节点有右孩子
-        if (rightChild != null) {
-            increasingBST(rightChild, null, false);
-        }
-        // 返回最左的孩子
-        return leftMostChild;
+        inorderList(root.left, list);
+        list.add(root);
+        inorderList(root.right, list);
     }
 
     public static void main(String[] args) {
