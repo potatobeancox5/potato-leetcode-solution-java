@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00376.t001;
 
+import org.junit.Assert;
+
 /**
  * 376. 摆动序列
  *
@@ -34,18 +36,53 @@ package com.potato.study.leetcodecn.p00376.t001;
 public class Solution {
 
     /**
-     * dp i 到i位置 （一定有i） 最长摆动序列
+     * 直接遍历 出现摆动就++ 每次记录年后相差的大小
      * @param nums
      * @return
      */
     public int wiggleMaxLength(int[] nums) {
-
-        return -1;
+        if (null == nums) {
+            return 0;
+        }
+        if (nums.length < 2) {
+            return nums.length;
+        }
+        // 上升 为true 下降为false
+        // 1. 生成第一个状态
+        int len = 2;
+        int preStatus = Integer.compare(nums[0], nums[1]);
+        if (preStatus == 0) {
+            len = 1;
+        }
+        // 2. 从第二个状态开始，如果 i 与 i+1之间的状态等同于 i-1 与 1 continue 否则 ++
+        for (int i = 1; i < nums.length - 1; i++) {
+            int status = Integer.compare(nums[i], nums[i+1]);
+            if (status != 0) {
+                if (status != preStatus) {
+                    len++;
+                }
+                preStatus = status;
+            }
+        }
+        return len;
     }
 
 
     public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = new int[] {
+                1,7,4,9,2,5
+        };
+        int i = solution.wiggleMaxLength(nums);
+        System.out.println(i);
+        Assert.assertEquals(6, i);
 
+        nums = new int[] {
+                1,17,5,10,13,15,10,5,16,8
+        };
+        i = solution.wiggleMaxLength(nums);
+        System.out.println(i);
+        Assert.assertEquals(7, i);
     }
 
 
