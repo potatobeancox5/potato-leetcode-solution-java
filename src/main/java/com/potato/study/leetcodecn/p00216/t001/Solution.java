@@ -29,55 +29,71 @@ import java.util.List;
 public class Solution {
 
     /**
-     * 感觉使用递归比较简单
+     * 使用 9个二进制位 作为数字 遍历 数字 num 小于 2^9
      * @param k
      * @param n
      * @return
      */
     public List<List<Integer>> combinationSum3(int k, int n) {
-        List<List<Integer>> resultList = new ArrayList<>();
-        return null;
+        int max = (1 << 9);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < max; i++) {
+            if (isSumSame(n, i)) {
+                List<Integer> list = getResultFromMask(i);
+                if (list.size() == k) {
+                    result.add(list);
+                }
+            }
+        }
+        return result;
     }
-
 
     /**
      *
-     * @param resultList
-     * @param currentList       当前结果集合
-     * @param k
-     * @param n
-     * @param currentNum        当前可用数字
-     * @param currentUsed       当前用了多少个数字
-     */
-    private void combinationSum3(List<List<Integer>> resultList, List<List<Integer>> currentList, int k,
-                                 int n, int currentNum, int currentUsed) {
-        // 当前已经用了 n个数字 直接将 currentList 放入 resultList
-        if (k == currentUsed) {
-            resultList.addAll(copyList(currentList));
-        }
-        // 当前还没有到 遍历 currentList 加上 当前 currentNum
-
-
-        // 对于 currentNum 之后的数字 依次 遍历 得到结果集合 递归生成结果集
-        for (int i = currentNum + 1; i < n; i++) {
-
-        }
-
-
-    }
-
-    /**
-     * 生成新的list
-     * @param resultList
+     * @param sum
+     * @param mask
      * @return
      */
-    private List<List<Integer>> copyList (List<List<Integer>> resultList) {
-        List<List<Integer>> newList = new ArrayList<>();
-        for (int i = 0; i < resultList.size(); i++) {
-            List<Integer> list = new ArrayList<>();
-            list.addAll(resultList.get(i));
-            newList.add(list);
+    private boolean isSumSame(int sum, int mask) {
+        int thisSum = 0;
+        for (int i = 1; i <= 9; i++) {
+            if (1 == (mask & 1)) {
+                thisSum += i;
+            }
+            mask >>>= 1;
         }
-        return newList;
+        return thisSum == sum;
     }
+
+
+    /**
+     * 取 mask 最末 9个位置 作为
+     * @param mask
+     * @return
+     */
+    private List<Integer> getResultFromMask(int mask) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 1; i <= 9; i++) {
+            if (1 == (mask & 1)) {
+                list.add(i);
+            }
+            mask >>>= 1;
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int k = 3, n = 7;
+        List<List<Integer>> lists = solution.combinationSum3(k, n);
+        System.out.println(lists);
+
+        k = 3;
+        n = 9;
+        lists = solution.combinationSum3(k, n);
+        System.out.println(lists);
+    }
+
+
+
 }
