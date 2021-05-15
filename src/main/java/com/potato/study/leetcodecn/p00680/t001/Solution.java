@@ -61,7 +61,7 @@ public class Solution {
             end--;
         }
         // 找到了不一致停止了
-        if (start != end) {
+        if (s.charAt(start) != s.charAt(end)) {
             if (hasEverDelete) {
                 return false;
             }
