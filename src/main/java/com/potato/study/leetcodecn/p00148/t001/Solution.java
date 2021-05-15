@@ -3,6 +3,9 @@ package com.potato.study.leetcodecn.p00148.t001;
 import com.potato.study.leetcode.domain.ListNode;
 import com.potato.study.leetcode.util.ListNodeUtil;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 /**
  * 148. 排序链表
  *
@@ -40,91 +43,129 @@ import com.potato.study.leetcode.util.ListNodeUtil;
  */
 public class Solution {
 
+//    /**
+//     * 递归 求 每个 排序的长度
+//     * 归并排序
+//     * @param head
+//     * @return
+//     */
+//    public ListNode sortList(ListNode head) {
+//        // 找到 中间点 进行分割 （不断链表那种）
+//        return sortList(head, null);
+//    }
+//
+//
+//    /**
+//     * 对 head 到 tail 之间进行排序
+//     * @param head
+//     * @param tail
+//     * @return
+//     */
+//    private ListNode sortList(ListNode head, ListNode tail) {
+//        if (head == null) {
+//            return null;
+//        }
+//        // 只有一个节点的时候 自然有序 已经递归到了一个节点 断链
+//        if (head.next == tail) {
+//            head.next = null;
+//            return head;
+//        }
+//        ListNode fast = head;
+//        ListNode slow = head;
+//        // 找到中间点 进行排序 记得断开链表
+//        while (fast.next != null && fast.next != tail) {
+//            fast = fast.next;
+//            slow = slow.next;
+//            if (fast.next == null || fast.next == tail) {
+//                break;
+//            }
+//            fast = fast.next;
+//        }
+//        sortList(head, slow);
+//        sortList(slow, null);
+//        return mergeSortedListNode(head, slow);
+//    }
+//
+//
+//    /**
+//     * 归并排序 两个 head 的list
+//     * @param head1
+//     * @param head2
+//     * @return
+//     */
+//    private ListNode mergeSortedListNode (ListNode head1, ListNode head2) {
+//        ListNode head = new ListNode(-1);
+//        ListNode p1 = head1;
+//        ListNode p2 = head2;
+//        ListNode p = head;
+//        // 处理两个链表情况
+//        while (p1 != null && p2 != null) {
+//            if (p1.val < p2.val) {
+//                p.next = p1;
+//                p1 = p1.next;
+//            } else {
+//                p.next = p2;
+//                p2 = p2.next;
+//            }
+//            p = p.next;
+//        }
+//        // 处理 单链表情况
+//        if (p1 != null) {
+//            p.next = p1;
+//        }
+//        if (p2 != null) {
+//            p.next = p2;
+//        }
+//        return head.next;
+//    }
+
     /**
-     * 递归 求 每个 排序的长度
-     * 归并排序
+     * 直接用优先级队列
      * @param head
      * @return
      */
     public ListNode sortList(ListNode head) {
-        // 找到 中间点 进行分割 （不断链表那种）
-        return sortList(head, null);
-    }
-
-
-    /**
-     * 对 head 到 tail 之间进行排序
-     * @param head
-     * @param tail
-     * @return
-     */
-    private ListNode sortList(ListNode head, ListNode tail) {
-        if (head == null) {
-            return null;
-        }
-        // 只有一个节点的时候 自然有序
-        if (head.next == null || head.next == tail) {
-            return head;
-        }
-        ListNode newHead = new ListNode(-1);
-        newHead.next = head;
-        ListNode fast = newHead;
-        ListNode slow = newHead;
-        // 找到中间点 进行排序 记得断开链表
-        while (fast != null && fast != tail) {
-            fast = fast.next;
-            slow = slow.next;
-            if (fast == null || fast == tail) {
-                break;
+        PriorityQueue<ListNode> priorityQueue = new PriorityQueue<>(new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode o1, ListNode o2) {
+                return Integer.compare(o1.val, o2.val);
             }
-            fast = fast.next;
-        }
-        sortList(head, slow);
-        sortList(slow, null);
-        return mergeSortedListNode(head, slow);
-    }
-
-
-    /**
-     * 归并排序 两个 head 的list
-     * @param head1
-     * @param head2
-     * @return
-     */
-    private ListNode mergeSortedListNode (ListNode head1, ListNode head2) {
-        ListNode head = new ListNode(-1);
-        ListNode p1 = head1;
-        ListNode p2 = head2;
+        });
         ListNode p = head;
-        // 处理两个链表情况
-        while (p1 != null && p2 != null) {
-            if (p1.val < p2.val) {
-                p.next = p1;
-                p1 = p1.next;
-            } else {
-                p.next = p2;
-                p2 = p2.next;
-            }
+        while (p != null) {
+            priorityQueue.add(p);
             p = p.next;
         }
-        // 处理 单链表情况
-        if (p1 != null) {
-            p.next = p1;
+        ListNode newHead = new ListNode(-1);
+        ListNode q = newHead;
+        while (!priorityQueue.isEmpty()) {
+            ListNode poll = priorityQueue.poll();
+            q.next = poll;
+            q = q.next;
         }
-        if (p2 != null) {
-            p.next = p2;
-        }
-        return head.next;
+        q.next = null;
+        return newHead.next;
     }
-
 
 
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ListNode root = ListNodeUtil.stringToListNode("4->2->1->3");
+
+        ListNode root = ListNodeUtil.stringToListNode("4->2");
         ListNode head = solution.sortList(root);
-        // [1,2,3,4]
+        // [2,4]
+        ListNodeUtil.printListNode(head);
+
+
+        root = ListNodeUtil.stringToListNode("4->2->1");
+        head = solution.sortList(root);
+        // [1,2,4]
+        ListNodeUtil.printListNode(head);
+
+        root = ListNodeUtil.stringToListNode("4->2->3");
+        head = solution.sortList(root);
+        // [2,3,4]
         ListNodeUtil.printListNode(head);
 
 
@@ -132,8 +173,6 @@ public class Solution {
         head = solution.sortList(root);
         // [-1,0,3,4,5]
         ListNodeUtil.printListNode(head);
-
-
 
     }
 
