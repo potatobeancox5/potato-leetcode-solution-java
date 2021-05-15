@@ -39,6 +39,13 @@ public class Solution {
 
     /**
      * 所有可能的二叉树
+     * 用一个 map Integer 存 所有 节点树为 n 的 TreeNode 的 List
+     * 递归 生成树
+     * 如果 当前 n 已经存在 在 map 中了 ，那么直接去 map 结果 copy 一下 返回
+     *
+     * 否则 将 n-1 均分成 分成2个部分，然后递归生成结果，
+     *
+     * 遍历结果 组成新的树 创建头结点 链接，放到map 中 并最终返回结果
      * @param n
      * @return
      */
@@ -50,5 +57,19 @@ public class Solution {
         return null;
     }
 
+
+    /**
+     * 深拷贝 一个 树 head；
+     * @param head
+     * @return
+     */
+    private TreeNode copyTreeNode(TreeNode head) {
+        return null;
+    }
+
+
+    private List<TreeNode> copyAllTree(List<TreeNode> trees) {
+        return null;
+    }
 
 }
