@@ -1,6 +1,10 @@
 package com.potato.study.leetcodecn.sword2offer.p0059.p2.t001;
 
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * 剑指 Offer 59 - II. 队列的最大值
  *
@@ -35,6 +39,10 @@ package com.potato.study.leetcodecn.sword2offer.p0059.p2.t001;
 public class MaxQueue {
 
 
+    private Queue<Integer> queue;
+    private Deque<Integer> deque;
+
+
 
 
     /**
@@ -48,21 +56,48 @@ public class MaxQueue {
      * 如果 pop_front 值为最大值，此时
      *
      *
+     * 维护一个最大的队列  双端 如果 当前
+     *
+     * 入队时
+     *  如果当前值 大于之前的值，双堆队列 队列尾部 一直pop 直到没有元素或者不满足条件
+     *
+     * 出队时
+     *  比较当前出队元素是不是 max双端 头部元素，是的话一并删除
+     *
+     * 调用max 时
+     *  直接返回双端队列头部
+     *
+     *
      */
     public MaxQueue() {
-
+        this.queue = new LinkedList<>();
+        this.deque = new LinkedList<>();
     }
 
     public int max_value() {
-        return -1;
+        if (queue.isEmpty() || deque.isEmpty()){
+            return -1;
+        }
+        return deque.peekFirst();
     }
 
     public void push_back(int value) {
-
+        queue.add(value);
+        while (!deque.isEmpty() && deque.peekLast() < value) {
+            deque.pollLast();
+        }
+        deque.addLast(value);
     }
 
     public int pop_front() {
+        if (queue.isEmpty()) {
+            return -1;
+        }
+        int target = queue.poll();
+        if (!deque.isEmpty() && deque.peekFirst() == target) {
+            deque.pollFirst();
+        }
 
-        return -1;
+        return target;
     }
 }
