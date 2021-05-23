@@ -147,24 +147,67 @@ public class Solution {
     public String decodeString(String s) {
         int index = 0;
         // 1. 遍历 s 有几种情况
-        Deque<Character> deque = new LinkedList<>();
+        Deque<String> deque = new LinkedList<>();
         while (index < s.length()) {
             char ch = s.charAt(index);
             if (Character.isDigit(ch)) {
-                // todo 数字 遇到了 数字 就开始往后找 一直找到 不是数字
+                // 数字 遇到了 数字 就开始往后找 一直找到 不是数字
+                int num = (ch - '0');
+                index++;
+                while (Character.isDigit(s.charAt(index))) {
+                    num *= 10;
+                    num += (s.charAt(index) - '0');
+                    index++;
+                }
+                deque.addLast(String.valueOf(num));
             } else if (Character.isAlphabetic(ch) || '[' == ch) {
-                deque.addLast(ch);
+                deque.addLast(String.valueOf(ch));
+                index++;
             } else {
                 // ']' == ch 循环出栈
-                StringBuilder builder
+                StringBuilder builder = new StringBuilder();
+                while (!deque.isEmpty() && !"[".equals(deque.peekLast())) {
 
+                    String sss = deque.pollLast();
+                    if (sss.length() > 0) {
+                        sss = new StringBuilder(sss).reverse().toString();
+                    }
+                    builder.append(sss);
+
+                }
+                if ("[".equals(deque.peekLast())) {
+                    deque.pollLast();
+                }
+
+                String targetStr = builder.reverse().toString();
+                // 获取数字
+                int num = Integer.parseInt(deque.pollLast());
+                // 获取一定次数的str
+                String str = getStrCount(targetStr, num);
+                deque.addLast(str);
+                index++;
             }
         }
         // 2. 将 stack从栈底开始遍历 生成结果字符串
         StringBuilder builder = new StringBuilder();
+        while (!deque.isEmpty()) {
+            builder.append(deque.pollFirst());
+        }
+        return builder.toString();
+    }
 
-
-        return null;
+    /**
+     *
+     * @param targetStr
+     * @param num
+     * @return
+     */
+    private String getStrCount(String targetStr, int num) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < num; i++) {
+            builder.append(targetStr);
+        }
+        return builder.toString();
     }
 
     public static void main(String[] args) {
