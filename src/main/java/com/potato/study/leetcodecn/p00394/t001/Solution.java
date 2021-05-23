@@ -2,6 +2,7 @@ package com.potato.study.leetcodecn.p00394.t001;
 
 import org.junit.Assert;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -64,72 +65,106 @@ public class Solution {
      * @param s
      * @return
      */
+//    public String decodeString(String s) {
+//        if (null == s) {
+//            return s;
+//        }
+//        // 暂时存放 字母
+//        StringBuilder builder = new StringBuilder();
+//        // 存放每个数字
+//        Queue<Integer> numQueue = new LinkedList<>();
+//        // 存放 每个单词组合 的目前生成的记录
+//        Stack<String> wordStack = new Stack<>();
+//        // 存放 当前 字母 组合 出现了 多少次
+//        Stack<Integer> timesStack = new Stack<>();
+//        // 记录当前有多少左边括号 用于 合并
+//        int status = 0;
+//        for (char ch : s.toCharArray()) {
+//            if (Character.isLetter(ch)) {
+//                builder.append(ch);
+//            } else if (Character.isDigit(ch)) {
+//                numQueue.add(ch - '0');
+//                if (builder.length() > 0) {
+//                    wordStack.push(builder.toString());
+//                    builder = new StringBuilder();
+//                }
+//            } else if ('[' == ch) {
+//                // 计算次数
+//                int times = 0;
+//                while (!numQueue.isEmpty()) {
+//                    times *= 10;
+//                    times += numQueue.poll();
+//                }
+//                timesStack.push(times);
+//            } else {
+//                // '[' == ch
+//                if (builder.length() > 0) {
+//                    wordStack.push(builder.toString());
+//                    builder = new StringBuilder();
+//                }
+//                // 分别从 word 栈和 times 栈中拿到两个值，如果 times 已经为空，那就是 1
+//                int times = 1;
+//                if (!timesStack.isEmpty()) {
+//                    times = timesStack.pop();
+//                }
+//                String word = wordStack.pop();
+//                // 将word 重复 n 次拼接 在从 word栈中 拿栈顶 append 之前拼好的元素 放回栈中
+//                StringBuilder temp = new StringBuilder();
+//                for (int i = 0; i < times; i++) {
+//                    temp.append(word);
+//                }
+//                // 最终压栈
+//                builder = new StringBuilder(temp);
+////                wordStack.push(temp.toString());
+//            }
+//        }
+//        // 最终的结果就是 栈内结果的组合
+//        if (builder.length() > 0) {
+//            wordStack.push(builder.toString());
+//        }
+//        // 依次出栈 组成最终结果
+//        if (wordStack.isEmpty()) {
+//            return "";
+//        }
+//        StringBuilder result = new StringBuilder();
+//        while (!wordStack.isEmpty()) {
+//            result.insert(0, wordStack.pop());
+//        }
+//        return result.toString();
+//    }
+
+    /**
+     * 遍历 s
+     * 使用 stack 记录 当前存在的数据 （使用 list 进行模拟） 因为需要搞成双端队列 最终进行 顺序进行
+     * 1. 遍历 s 有几种情况
+     *  1.1 数字 遇到了 数字 就开始往后找 一直找到 不是数字
+     *  1.2 【   1.3 字符 直接入栈
+     *  1.3 】 循环出栈，一直到 【， 将出栈字符进行收集 组成字符串
+     * 2. 将 stack从栈底开始遍历 生成结果字符串
+     * @param s
+     * @return
+     */
     public String decodeString(String s) {
-        if (null == s) {
-            return s;
-        }
-        // 暂时存放 字母
-        StringBuilder builder = new StringBuilder();
-        // 存放每个数字
-        Queue<Integer> numQueue = new LinkedList<>();
-        // 存放 每个单词组合 的目前生成的记录
-        Stack<String> wordStack = new Stack<>();
-        // 存放 当前 字母 组合 出现了 多少次
-        Stack<Integer> timesStack = new Stack<>();
-        // 记录当前有多少左边括号 用于 合并
-        int status = 0;
-        for (char ch : s.toCharArray()) {
-            if (Character.isLetter(ch)) {
-                builder.append(ch);
-            } else if (Character.isDigit(ch)) {
-                numQueue.add(ch - '0');
-                if (builder.length() > 0) {
-                    wordStack.push(builder.toString());
-                    builder = new StringBuilder();
-                }
-            } else if ('[' == ch) {
-                // 计算次数
-                int times = 0;
-                while (!numQueue.isEmpty()) {
-                    times *= 10;
-                    times += numQueue.poll();
-                }
-                timesStack.push(times);
+        int index = 0;
+        // 1. 遍历 s 有几种情况
+        Deque<Character> deque = new LinkedList<>();
+        while (index < s.length()) {
+            char ch = s.charAt(index);
+            if (Character.isDigit(ch)) {
+                // todo 数字 遇到了 数字 就开始往后找 一直找到 不是数字
+            } else if (Character.isAlphabetic(ch) || '[' == ch) {
+                deque.addLast(ch);
             } else {
-                // '[' == ch
-                if (builder.length() > 0) {
-                    wordStack.push(builder.toString());
-                    builder = new StringBuilder();
-                }
-                // 分别从 word 栈和 times 栈中拿到两个值，如果 times 已经为空，那就是 1
-                int times = 1;
-                if (!timesStack.isEmpty()) {
-                    times = timesStack.pop();
-                }
-                String word = wordStack.pop();
-                // 将word 重复 n 次拼接 在从 word栈中 拿栈顶 append 之前拼好的元素 放回栈中
-                StringBuilder temp = new StringBuilder();
-                for (int i = 0; i < times; i++) {
-                    temp.append(word);
-                }
-                // 最终压栈
-                builder = new StringBuilder(temp);
-//                wordStack.push(temp.toString());
+                // ']' == ch 循环出栈
+                StringBuilder builder
+
             }
         }
-        // 最终的结果就是 栈内结果的组合
-        if (builder.length() > 0) {
-            wordStack.push(builder.toString());
-        }
-        // 依次出栈 组成最终结果
-        if (wordStack.isEmpty()) {
-            return "";
-        }
-        StringBuilder result = new StringBuilder();
-        while (!wordStack.isEmpty()) {
-            result.insert(0, wordStack.pop());
-        }
-        return result.toString();
+        // 2. 将 stack从栈底开始遍历 生成结果字符串
+        StringBuilder builder = new StringBuilder();
+
+
+        return null;
     }
 
     public static void main(String[] args) {
