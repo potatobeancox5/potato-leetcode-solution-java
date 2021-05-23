@@ -40,8 +40,7 @@ import org.junit.Assert;
 public class Solution {
 
     /**
-     * 1. 先判断和 是不是能被3 整除 除不尽直接返回
-     * 2. 依次计算和 如果不能构成 平均数，直接返回
+     * 按照顺序切分
      * @param arr
      * @return
      */
@@ -56,14 +55,18 @@ public class Solution {
         long average = sum / 3;
         int count = 0;
         long currentLoopSum = 0;
-        for (int element : arr) {
-            currentLoopSum += element;
+
+        for (int i = 0; i < arr.length; i++) {
+            currentLoopSum += arr[i];
             if (currentLoopSum == average) {
                 count++;
                 currentLoopSum = 0;
             }
+            if (count == 2 && i != arr.length - 1) {
+                return true;
+            }
         }
-        return count == 3;
+        return false;
     }
 
     public static void main(String[] args) {
@@ -87,5 +90,10 @@ public class Solution {
         res = solution.canThreePartsEqualSum(arr);
         System.out.println(res);
         Assert.assertEquals(true, res);
+
+        arr = new int[]{1,-1,1,-1};
+        res = solution.canThreePartsEqualSum(arr);
+        System.out.println(res);
+        Assert.assertEquals(false, res);
     }
 }
