@@ -39,14 +39,31 @@ public class Solution {
      * @return
      */
     public boolean containsNearbyDuplicate(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (map.containsKey(nums[i]) && Math.abs(map.get(nums[i]) - i) > k) {
-                return false;
+        Map<Integer, Integer> countMap = new HashMap<>();
+        // 先搞k 个元素 一旦 count > 1 return  true
+        for (int i = 0; i < k + 1 && i < nums.length; i++) {
+            Integer count = countMap.getOrDefault(nums[i], 0);
+            count++;
+            countMap.put(nums[i], count);
+            if (count > 1) {
+                return true;
             }
-            map.put(nums[i], i);
         }
-        return true;
+        // 再往后 加一个元素就删一个元素，然后只加的那个元素即可
+        for (int i = k + 1; i < nums.length; i++) {
+            // 加一个元素就删一个元素
+            Integer count = countMap.getOrDefault(nums[i], 0);
+            count++;
+            countMap.put(nums[i], count);
+            // 删一个元素
+            Integer countDel = countMap.get(nums[i-k-1]);
+            countDel--;
+            countMap.put(nums[i-k-1], countDel);
+            if (countMap.get(nums[i]) > 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
@@ -63,5 +80,17 @@ public class Solution {
         res = solution.containsNearbyDuplicate(nums, k);
         System.out.println(res);
         Assert.assertEquals(true, res);
+
+        nums = new int[] {1,2,3,1,2,3};
+        k = 2;
+        res = solution.containsNearbyDuplicate(nums, k);
+        System.out.println(res);
+        Assert.assertEquals(false, res);
+
+        nums = new int[] {1};
+        k = 1;
+        res = solution.containsNearbyDuplicate(nums, k);
+        System.out.println(res);
+        Assert.assertEquals(false, res);
     }
 }
