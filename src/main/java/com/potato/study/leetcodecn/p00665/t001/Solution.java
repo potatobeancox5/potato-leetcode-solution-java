@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00665.t001;
 
+import org.junit.Assert;
+
 /**
  * 665. 非递减数列
  *
@@ -45,13 +47,33 @@ public class Solution {
      * @return
      */
     public boolean checkPossibility(int[] nums) {
-
+        boolean hasChanged = false;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i-1] <= nums[i]) {
+                continue;
+            }
+            if (hasChanged) {
+                return false;
+            }
+            // nums[i-1] > nums[i]
+            if (i > 1 && nums[i] < nums[i-2]) {
+                nums[i] = nums[i-1];
+            }
+            hasChanged = true;
+        }
         return true;
     }
 
     public static void main(String[] args) {
-//        Solution solution = new Solution();
-//        int[][] ints = solution.imageSmoother(m);
-//        System.out.println(Arrays.deepToString(ints));
+        Solution solution = new Solution();
+        int[] nums = new int[]{4,2,3};
+        boolean ints = solution.checkPossibility(nums);
+        System.out.println(ints);
+        Assert.assertEquals(true, ints);
+
+        nums = new int[]{4,2,1};
+        ints = solution.checkPossibility(nums);
+        System.out.println(ints);
+        Assert.assertEquals(false, ints);
     }
 }
