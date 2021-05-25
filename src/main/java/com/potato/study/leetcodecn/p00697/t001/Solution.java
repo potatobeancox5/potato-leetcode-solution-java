@@ -3,8 +3,10 @@ package com.potato.study.leetcodecn.p00697.t001;
 
 import org.junit.Assert;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 /**
  * 697. 数组的度
@@ -63,9 +65,22 @@ public class Solution {
         if (maxNum < 0) {
             return 0;
         }
-        // 输出最后的长度
-        int[] info = countMap.get(maxNum);
-        return info[2] - info[1] + 1;
+        // 遍历 map 找到最大 num的最小长度
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int compare = Integer.compare(o2[0], o1[0]);
+                if (compare == 0) {
+                    return Integer.compare((o1[2] - o1[1]), (o2[2] - o2[1]));
+                }
+                return compare;
+            }
+        });
+        for (int[] val : countMap.values()) {
+            priorityQueue.add(val);
+        }
+        int[] poll = priorityQueue.poll();
+        return poll[2] - poll[1] + 1;
     }
 
     public static void main(String[] args) {
@@ -74,6 +89,13 @@ public class Solution {
         int shortestSubArray = solution.findShortestSubArray(nums);
         System.out.println(shortestSubArray);
         Assert.assertEquals(6, shortestSubArray);
+
+
+        nums = new int[]{2,1,1,2,1,3,3,3,1,3,1,3,2};
+        shortestSubArray = solution.findShortestSubArray(nums);
+        System.out.println(shortestSubArray);
+        Assert.assertEquals(7, shortestSubArray);
+
     }
 
 }
