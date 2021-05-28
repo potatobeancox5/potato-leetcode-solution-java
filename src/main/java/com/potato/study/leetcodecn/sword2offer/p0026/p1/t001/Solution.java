@@ -44,27 +44,34 @@ import com.potato.study.leetcode.domain.TreeNode;
  */
 public class Solution {
 
+
+    public boolean isSubStructure(TreeNode a, TreeNode b) {
+        if (null == b) {
+            return false;
+        }
+        return eachIsSubStructure(a, b);
+    }
+
     /**
      * 递归判断 b 是否是 a 的子结构
      * @param a
      * @param b
      * @return
      */
-    public boolean isSubStructure(TreeNode a, TreeNode b) {
+    public boolean eachIsSubStructure(TreeNode a, TreeNode b) {
         // 终止条件
-        if (a == null && b == null) {
+        if (b == null) {
             return true;
-        } else if (a == null && b != null) {
-            return false;
-        } else if (a != null && b == null) {
+        }
+        if (b != null && a == null) {
             return false;
         }
         //  ab 都非空
         if (a.val != b.val) {
-            return isSubStructure(a.left, b) || isSubStructure(a.right, b);
+            return eachIsSubStructure(a.left, b) || eachIsSubStructure(a.right, b);
         }
         // 继续进行递归判断 相等了 我擦
-        return isSubStructure(a.left, b.left) && isSubStructure(a.right, b.right);
+        return eachIsSubStructure(a.left, b.left) && eachIsSubStructure(a.right, b.right);
     }
 
 }
