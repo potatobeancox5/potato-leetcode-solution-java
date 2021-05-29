@@ -1,5 +1,12 @@
 package com.potato.study.leetcodecn.p00207.t001;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
+
 /**
  * 207. 课程表
  *
@@ -40,13 +47,80 @@ package com.potato.study.leetcodecn.p00207.t001;
 public class Solution {
     /**
      *
+     * 使用 map 记录 prerequisites key 是出发点 value 达到点 list
+     * 使用 map 记录 每个节点的出入度 key 是节点 num， value 是该节点的入度
+     * 每个遍历 map 找到 入读为0的 点  （删除），然后依次修改 到达点的入读 直到结束
+     *
+     *
+     * 最后 如果某次 map 没有发现 出度为 0 的点 ，那么 返回false  否则 为空 返回false
+     *
+     *
      * @param numCourses
      * @param prerequisites
      * @return
      */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, Integer> inDegreeMap = new HashMap<>();
+        for (int i = 0; i < numCourses; i++) {
+            inDegreeMap.put(i, 0);
+        }
+        Map<Integer, List<Integer>> targetListMap = new HashMap<>();
+        for (int[] prerequisite : prerequisites) {
+            int startIndex = prerequisite[1];
+            int endIndex = prerequisite[0];
+            // 2. 使用 map 记录 每个节点的出入度 key 是节点 num， value 是该节点的入度
+            Integer count = inDegreeMap.getOrDefault(endIndex, 0);
+            count++;
+            inDegreeMap.put(endIndex, count);
+            // 1. 使用 map 记录 prerequisites key 是出发点 value 达到点 list
+            List<Integer> list = targetListMap.getOrDefault(startIndex, new ArrayList<>());
+            list.add(endIndex);
+            targetListMap.put(startIndex, list);
+        }
+        // 3. 遍历 2的map
+        while (!inDegreeMap.isEmpty()) {
+            Integer removeIndex = null;
+            for (Map.Entry<Integer, Integer> entry : inDegreeMap.entrySet()) {
+                if (entry.getValue() == 0) {
+                    removeIndex = entry.getKey();
+                    break;
+                }
+            }
+            // 如果某次 map 没有发现 出度为 0 的点 ，那么 返回false
+            if (removeIndex == null) {
+                return false;
+            }
+            inDegreeMap.remove(removeIndex);
+            // 更改其他的入度
+            List<Integer> list = targetListMap.get(removeIndex);
+            if (null == list) {
+                continue;
+            }
+            for (int index : list) {
+                if (!inDegreeMap.containsKey(index)) {
+                    continue;
+                }
+                Integer count = inDegreeMap.get(index);
+                count--;
+                inDegreeMap.put(index, count);
+            }
+        }
+        return true;
+    }
 
-        return false;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int numCourses = 2;
+        int[][] prerequisites = new int[][]{{1,0}};
+        boolean b = solution.canFinish(numCourses, prerequisites);
+        System.out.println(b);
+        Assert.assertEquals(true, b);
+
+        numCourses = 2;
+        prerequisites = new int[][]{{1,0}, {0,1}};
+        b = solution.canFinish(numCourses, prerequisites);
+        System.out.println(b);
+        Assert.assertEquals(false, b);
     }
 }
 
