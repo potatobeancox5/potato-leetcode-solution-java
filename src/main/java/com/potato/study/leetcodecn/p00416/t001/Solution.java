@@ -35,50 +35,56 @@ import org.junit.Assert;
 public class Solution {
 
     /**
+     * dp i j 使用 了 index = i 个数字，能达到 和为j的 bool true 能达到 j false 达到不了
+     * dp ij = dpi-1j || dp i-1 j-num i
+     * dp 0 0 = true
+     * dp 0 nums0 = true
+     *
+     * 
      *
      * @param nums
      * @return
      */
     public boolean canPartition(int[] nums) {
-        if (null == nums || nums.length == 0) {
-            return false;
-        }
         int sum = 0;
+        int max = Integer.MIN_VALUE;
         for (int num : nums) {
             sum += num;
+            max = Math.max(max, num);
         }
         if (sum % 2 != 0) {
             return false;
         }
-        if (canPartition(nums, 0, sum / 2, 0)) {
-            return true;
+        int half = sum / 2;
+        if (max > half) {
+            return false;
+        }
+        boolean[][] dp = new boolean[nums.length][half + 1];
+        dp[0][0] = true;
+        dp[0][nums[0]] = true;
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < half + 1; j++) {
+                if (!dp[i-1][j]) {
+                    continue;
+                }
+                dp[i][j] = true;
+                if (j + nums[i] > half) {
+                    continue;
+                }
+                dp[i][j + nums[i]] = true;
+            }
+        }
+        // 找到 dp half
+        for (int i = 0; i < nums.length; i++) {
+            if (dp[i][half]) {
+                return true;
+            }
         }
         return false;
     }
 
 
-    /**
-     *
-     * @param nums
-     * @param index
-     * @param targetSum
-     * @param currentSum
-     * @return
-     */
-    private boolean canPartition(int[] nums, int index, int targetSum, int currentSum) {
-        if (index >= nums.length) {
-            return false;
-        }
-        // 1 <= nums[i] <= 100 因为
-        if (currentSum > targetSum) {
-            return false;
-        } else if (targetSum == currentSum) {
-            return true;
-        }
-        // 剩下小于的情况了
-        return canPartition(nums, index+1, targetSum, currentSum + nums[index])
-                || canPartition(nums, index+1, targetSum, currentSum);
-    }
+
 
 
     public static void main(String[] args) {
@@ -92,6 +98,13 @@ public class Solution {
 
         num = new int[] {
                 1,2,3,5
+        };
+        b = solution.canPartition(num);
+        System.out.println(b);
+        Assert.assertEquals(false, b);
+
+        num = new int[] {
+                1
         };
         b = solution.canPartition(num);
         System.out.println(b);
