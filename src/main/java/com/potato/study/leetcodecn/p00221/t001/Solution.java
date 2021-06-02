@@ -41,76 +41,35 @@ import org.junit.Assert;
 public class Solution {
 
     /**
-     * dp ij 以点 ij 为右下端点 的正方形边长多少
-     * dp ij 初始 dp 0 0 按照 matrix 是否为 1计算 同理处理 0行 0列
-     * dp ij = 0 如果 matrix ij = '0'
-     * dp ij = 1    如果
-     * dp ij =
-     *    max 以下
-     *      dp i-1，j-1 如果 matrix ij = '1' 且 第 i行 j到 j - dp i-1，j-1 - 1位置都是1
-     *      dp i，j-1 如果 matrix ij = '1' 且 第 j 列
-     *      dp i-1，j 如果 matrix ij = '1' 且 第 i行 j到 j - dp i-1，j-1 - 1位置都是1
+     * dp ij 代表 以ij为右下角点的最长的边长
+     * 如果 matrix ij 位置是 0 那么 这个点的dp 是0
+     * 如果 matrix ij 位置是 1 那么 matrix 位置
+     * dp ij = min {dp i-1,j, dp ij-1, dp i-1, j-1} + 1
      *
      * @param matrix
      * @return
      */
     public int maximalSquare(char[][] matrix) {
-        int[][] dp = new int[matrix.length][matrix[0].length];
-        int maxSide = 0;
-        // 初始化 0 行和 0 列
-        for (int i = 0; i < matrix.length; i++) {
-            if (matrix[i][0] == '1') {
-                dp[i][0] = 1;
-            }
-            maxSide = Math.max(maxSide, dp[i][0]);
-        }
-        for (int i = 0; i < matrix[0].length; i++) {
-            if (matrix[0][i] == '1') {
-                dp[0][i] = 1;
-            }
-            maxSide = Math.max(maxSide, dp[0][i]);
-        }
-        // 从 第一行 和第一列 开始 遍历
-        for (int i = 1; i < matrix.length; i++) {
-            for (int j = 1; j < matrix[0].length; j++) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] dp = new int[m][n];
+        int max = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == '0') {
-                    dp[i][j] = 0;
-                } else {
-                    dp[i][j] = this.maxSide(i, j, dp, matrix);
+                    continue;
                 }
-                maxSide = Math.max(maxSide, dp[i][j]);
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = Math.min(dp[i-1][j-1], dp[i][j-1]);
+                    dp[i][j] = Math.min(dp[i][j], dp[i-1][j]);
+                    dp[i][j] += 1;
+                }
+                max = Math.max(max, dp[i][j]);
             }
         }
-        ArrayUtil.printMatrix(dp);
-        return maxSide * maxSide;
-    }
-
-    /**
-     *
-     * @param i
-     * @param j
-     * @param dp
-     * @return
-     */
-    private int maxSide(int i, int j, int[][] dp, char[][] matrix) {
-        // i-1 和 j-1 组成
-        boolean isSquare = true;
-        int len = dp[i - 1][j - 1];
-        for (int k = 0; k < len; k++) {
-            if (matrix[i][j-1-k] == '0' || matrix[i-1-k][j] == '0') {
-                isSquare = false;
-                break;
-            }
-        }
-        // 如果 当前位置 可以和之前位置 组成大的正方形
-        if (isSquare) {
-            dp[i][j] = dp[i-1][j-1] + 1;
-        } else {
-            dp[i][j] = 1;
-        }
-        dp[i][j] = Math.max(dp[i][j], dp[i][j-1]);
-        dp[i][j] = Math.max(dp[i][j], dp[i-1][j]);
-        return dp[i][j];
+        return max * max;
     }
 
 
