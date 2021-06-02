@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00204.t001;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 
 /**
@@ -35,31 +37,30 @@ import org.junit.Assert;
  */
 public class Solution {
 
-    public int countPrimes(int n) {
-        int count = 0;
-        for (int i = 1; i < n; i++) {
-            if (isPrime(i)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     /**
-     * 判断 数字是否为素数
-     * @param i
+     * 直接用一个 数组 记录 结果 每次判断
+     * @param n
      * @return
      */
-    private boolean isPrime(int i) {
-        if (i == 1) {
-            return false;
-        }
-        for (int j = 2; j < i; j++) {
-            if (i / j * j == i) {
-                return false;
+    public int countPrimes(int n) {
+        boolean[] isPrime = new boolean[n];
+        Arrays.fill(isPrime, true);
+        int primeCount = 0;
+        for (int i = 2; i < n; i++) {
+            if (isPrime[i]) {
+                primeCount++;
+                // 往后改变
+                for (int j = i; j < n/i + 1; j++) {
+                    int index = i * j;
+                    if (index < n) {
+                        isPrime[index] = false;
+                    } else {
+                        break;
+                    }
+                }
             }
         }
-        return true;
+        return primeCount;
     }
 
     public static void main(String[] args) {
@@ -67,5 +68,13 @@ public class Solution {
         int count = solution.countPrimes(10);
         System.out.println(count);
         Assert.assertEquals(4, count);
+
+        count = solution.countPrimes(0);
+        System.out.println(count);
+        Assert.assertEquals(0, count);
+
+        count = solution.countPrimes(2);
+        System.out.println(count);
+        Assert.assertEquals(0, count);
     }
 }
