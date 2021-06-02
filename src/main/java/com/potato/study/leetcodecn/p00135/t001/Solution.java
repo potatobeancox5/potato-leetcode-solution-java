@@ -55,7 +55,7 @@ public class Solution {
         }
 
         for (int i = ratings.length - 2; i >= 0; i--) {
-            if (ratings[i] > ratings[i+1]) {
+            if (ratings[i] > ratings[i+1] && candies[i] <= candies[i+1]) {
                 candies[i] = candies[i+1] + 1;
             }
         }
@@ -66,12 +66,20 @@ public class Solution {
         return sum;
     }
 
-//    public static void main(String[] args) {
-//        Solution solution = new Solution();
-//        int[] gas = {1,2,3,4,5};
-//        int[] cost = {3,4,5,1,2};
-//        int i = solution.canCompleteCircuit(gas, cost);
-//        System.out.println(i);
-//        Assert.assertSame(3, i);
-//    }
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] ratings = new int[] {
+                1,0,2
+        };
+        int i = solution.candy(ratings);
+        System.out.println(i);
+        Assert.assertSame(5, i);
+
+        ratings = new int[] {
+                1,2,2
+        };
+        i = solution.candy(ratings);
+        System.out.println(i);
+        Assert.assertSame(4, i);
+    }
 }
