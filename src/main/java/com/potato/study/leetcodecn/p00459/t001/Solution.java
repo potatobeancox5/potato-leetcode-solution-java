@@ -42,30 +42,53 @@ public class Solution {
      * @return
      */
     public boolean repeatedSubstringPattern(String s) {
-        // i 控制长度
-        for (int i = 2; i <= s.length() / 2; i++) {
-            if (s.length() % 2 != 0) {
+        if (s == null || s.length() <= 1) {
+            return false;
+        }
+        // i 控制长度 前缀长度
+        for (int i = 1; i <= s.length() / 2; i++) {
+            // 如果不能整除，直接continue
+            if (s.length() % i != 0) {
                 continue;
+            }
+            boolean isValid = true;
+            for (int j = 0; j < s.length(); j++) {
+                if (s.charAt(j) != s.charAt(j % i)) {
+                    isValid = false;
+                    break;
+                }
+            }
+            if (isValid) {
+                return true;
             }
         }
         return false;
     }
 
 
-//    public static void main(String[] args) {
-//
-//        Solution solution = new Solution();
-//
-//        int[] g = new int[]{1,2,3};
-//        int[] s = new int[]{1,1};
-//        int contentChildren = solution.findContentChildren(g, s);
-//        System.out.println(contentChildren);
-//        Assert.assertEquals(1, contentChildren);
-//
-//        g = new int[]{1,2};
-//        s = new int[]{1,2,3};
-//        contentChildren = solution.findContentChildren(g, s);
-//        System.out.println(contentChildren);
-//        Assert.assertEquals(2, contentChildren);
-//    }
+    public static void main(String[] args) {
+
+        Solution solution = new Solution();
+
+        String s = "abab";
+        boolean contentChildren = solution.repeatedSubstringPattern(s);
+        System.out.println(contentChildren);
+        Assert.assertEquals(true, contentChildren);
+
+        s = "aba";
+        contentChildren = solution.repeatedSubstringPattern(s);
+        System.out.println(contentChildren);
+        Assert.assertEquals(false, contentChildren);
+
+
+        s = "abcabcabcabc";
+        contentChildren = solution.repeatedSubstringPattern(s);
+        System.out.println(contentChildren);
+        Assert.assertEquals(true, contentChildren);
+
+        s = "bb";
+        contentChildren = solution.repeatedSubstringPattern(s);
+        System.out.println(contentChildren);
+        Assert.assertEquals(true, contentChildren);
+    }
 }
