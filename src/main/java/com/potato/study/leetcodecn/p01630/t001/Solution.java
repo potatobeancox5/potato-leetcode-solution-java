@@ -62,7 +62,57 @@ public class Solution {
      * @return
      */
     public List<Boolean> checkArithmeticSubarrays(int[] nums, int[] l, int[] r) {
+        int n = l.length;
+        List<Boolean> result = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int start = l[i];
+            int end = r[i];
+            if (start >= end) {
+                throw new RuntimeException("输入与题目限定不符");
+            }
+            if (start + 1 == end) {
+                result.add(true);
+                continue;
+            }
+            // 判断 start 和 end 中间 是不是 等差子数组
+            boolean checkResult = checkArithmeticSubarray(nums, start, end);
+            result.add(checkResult);
+        }
+        return result;
+    }
 
-        return null;
+    /**
+     * check
+     * @param nums
+     * @param start
+     * @param end
+     * @return
+     */
+    private boolean checkArithmeticSubarray(int[] nums, int start, int end) {
+        int[] ints = Arrays.copyOfRange(nums, start, end + 1);
+        Arrays.sort(ints);
+        int remind = ints[1] - ints[0];
+        for (int j = 1; j < ints.length; j++) {
+            if (ints[j] - ints[j-1] != remind) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = new int[] {
+                4,6,5,9,3,7
+        };
+        int[] l = new int[]{
+                0,0,2
+        };
+        int[] r = new int[]{
+                2,3,5
+        };
+        List<Boolean> res = solution.checkArithmeticSubarrays(nums, l, r);
+        // [true,false,true]
+        System.out.println(res);
     }
 }
