@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p01006.t001;
 
+import java.util.Stack;
+
 import org.junit.Assert;
 
 /**
@@ -45,37 +47,34 @@ public class Solution {
     /**
      * 笨阶乘
      * * / + -
+     * 使用
      * @param n
      * @return
      */
     public int clumsy(int n) {
-        int sum = n;
-        while (n >= 1) {
-            if (n >= 1) {
-                sum *= n;
-            } else {
-                break;
-            }
-            n--;
-            if (n >= 1) {
-                sum /= n;
-            } else {
-                break;
-            }
-            n--;
-            if (n >= 1) {
-                sum += n;
-            }else {
-                break;
-            }
-            n--;
-            if (n >= 1) {
-                sum -= n;
-            }else {
-                break;
+        if (n == 0) {
+            return 0;
+        }
+        // 使用 stak 接口 模拟 一个运算数栈一个操作符号栈
+        char[] opCh = new char[]{'*', '/', '+', '-'};
+        Stack<Integer> numStack = new Stack<>();
+        Stack<Character> opStack = new Stack<>();
+        // 记录操作数 位置
+        int op = n;
+        numStack.add(op);
+        op--;
+        while (op > 0) {
+            for (char opType : opCh) {
+                if (opType == '+') {
+
+                } else if (opType == '-') {
+
+                } else if (opType == '+') {
+
+                }
             }
         }
-        return sum;
+        return numStack.peek();
     }
 
     public static void main(String[] args) {
