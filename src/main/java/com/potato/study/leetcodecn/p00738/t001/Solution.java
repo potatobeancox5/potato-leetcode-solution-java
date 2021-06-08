@@ -3,6 +3,8 @@ package com.potato.study.leetcodecn.p00738.t001;
 import java.util.Arrays;
 import java.util.Stack;
 
+import org.junit.Assert;
+
 /**
  * 738. 单调递增的数字
  *
@@ -45,25 +47,80 @@ public class Solution {
         }
         // 找到找到第一个 递减的位置 i
         char[] numChar = s.toCharArray();
-
-//        for (int i = 1; i < numChar.length; i++) {
-//            if (numChar[i]) {
-//
-//            }
-//        }
+        boolean isUp = true;
+        int targetIndex = -1;
+        for (int i = 0; i < numChar.length; i++) {
+            if (i == 0) {
+                continue;
+            }
+            if (numChar[i] >= numChar[i-1]) {
+                continue;
+            }
+            // 找到第一个 1221 中 最后一个1的位置
+            isUp = false;
+            targetIndex = i;
+            break;
+        }
+        if (isUp) {
+            return n;
+        }
 
         // i位置之后 都是 9（包括i位置）
+        char[] targetNumChar = numChar.clone();
+        for (int i = targetIndex; i < numChar.length; i++) {
+            targetNumChar[i] = '9';
+        }
+        // i位置之前 找到 第一个 比i 小的位置 的位置 如果这个位置 -- 其他的位置 如果有的话 直接 9了
+        int lastMinIndex = -1;
+        for (int i = targetIndex - 1; i > 0; i--) {
+            if (numChar[i] > numChar[i+1]) {
+                lastMinIndex = i;
+                break;
+            }
+        }
+        if (lastMinIndex != -1) {
+            // lastMinIndex -- ，
+            targetNumChar[lastMinIndex] = (char) (targetNumChar[lastMinIndex] - 1);
+            for (int i = lastMinIndex+1; i < targetIndex; i++) {
+                targetNumChar[i] = '9';
+            }
+        } else {
+            // 前边全一样 第一个位置 -- 其他全是9
+            targetNumChar[0] = (char) (targetNumChar[0] - 1);
+            for (int i = 1; i < targetIndex; i++) {
+                targetNumChar[i] = '9';
+            }
+        }
 
-        // i位置之前 找到 与i位置相等的位置
-
-        return -1;
+        // 计算返回结果
+        int num = 0;
+        for (char ch : targetNumChar) {
+            num *= 10;
+            num += (ch - '0');
+        }
+        return num;
     }
 
-//    public static void main(String[] args) {
-//        Solution solution = new Solution();
-//        int[] temp = new int[] {73, 74, 75, 71, 69, 72, 76, 73};
-//        // [1, 1, 4, 2, 1, 1, 0, 0]
-//        int[] res = solution.dailyTemperatures(temp);
-//        System.out.println(Arrays.toString(res));
-//    }
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int n = 10;
+        int res = solution.monotoneIncreasingDigits(n);
+        System.out.println(res);
+        Assert.assertEquals(9, res);
+        // 1234
+        n = 1234;
+        res = solution.monotoneIncreasingDigits(n);
+        System.out.println(res);
+        Assert.assertEquals(1234, res);
+
+        n = 332;
+        res = solution.monotoneIncreasingDigits(n);
+        System.out.println(res);
+        Assert.assertEquals(299, res);
+
+        n = 120;
+        res = solution.monotoneIncreasingDigits(n);
+        System.out.println(res);
+        Assert.assertEquals(119, res);
+    }
 }
