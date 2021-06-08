@@ -1,5 +1,11 @@
 package com.potato.study.leetcodecn.p01700.t001;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+import org.junit.Assert;
+
 /**
  * 1700. 无法吃午餐的学生数量
  *
@@ -49,14 +55,54 @@ package com.potato.study.leetcodecn.p01700.t001;
 public class Solution {
 
     /**
-     * 模拟方式
+     * 模拟方式 stack
      * @param students
      * @param sandwiches
      * @return
      */
     public int countStudents(int[] students, int[] sandwiches) {
+        Stack<Integer> stack = new Stack<>();
+        for (int i = sandwiches.length - 1; i >= 0; i--) {
+            stack.add(sandwiches[i]);
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int student : students) {
+            queue.add(student);
+        }
+        // 依次往后从栈顶取 技术略过的次数
+        int skipTimes = 0;
+        while (!queue.isEmpty()) {
+            // 如果当前略过的人数 等于 队列的人数直接返回了
+            if (skipTimes == queue.size()) {
+                break;
+            }
+            // 判断
+            if (stack.peek() == queue.peek()) {
+                queue.poll();
+                stack.pop();
+                skipTimes = 0;
+            } else {
+                Integer noFoodStudent = queue.poll();
+                queue.add(noFoodStudent);
+                skipTimes++;
+            }
+        }
+        return skipTimes;
+    }
 
-        return -1;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] students = new int[] {1,1,0,0};
+        int[] sandwiches = new int[] {0,1,0,1};
+        int i = solution.countStudents(students, sandwiches);
+        System.out.println(i);
+        Assert.assertEquals(0, i);
+
+        students = new int[] {1,1,1,0,0,1};
+        sandwiches = new int[] {1,0,0,0,1,1};
+        i = solution.countStudents(students, sandwiches);
+        System.out.println(i);
+        Assert.assertEquals(3, i);
     }
 
 }
