@@ -1,5 +1,10 @@
 package com.potato.study.leetcodecn.p00406.t001;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 import com.potato.study.leetcode.domain.TreeNode;
 
 /**
@@ -44,12 +49,39 @@ import com.potato.study.leetcode.domain.TreeNode;
 public class Solution {
 
     /**
-     * 优先级队列 按照身高排序 降序
+     * 优先级队列 按照身高排序 降序 排列 然后
+     * 排序规则，先按照 hi 降序排列 然后按照 ki 升序排列，
+     * 遍历排列后的数组，然后 依次遍历，将遍历到的按照 方法哦 ki 位置 如果该位置没有 就直接放到对位，已经有的需要移动之后的
      * @param people
      * @return
      */
     public int[][] reconstructQueue(int[][] people) {
-
-        return null;
+        // 优先级队列 按照身高排序 降序 排列 然后
+        Arrays.sort(people, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                // 身高降序
+                if (o1[0] != o2[0]) {
+                    return Integer.compare(o2[0], o1[0]);
+                }
+                return Integer.compare(o1[1], o2[1]);
+            }
+        });
+        // 依次遍历，将遍历到的按照 方法哦 ki 位置 如果该位置没有 就直接放到对位，已经有的需要移动之后的
+        List<int[]> list = new ArrayList<>();
+        for (int i = 0; i < people.length; i++) {
+            int[] person = people[i];
+            if (person[1] >= list.size()) {
+                list.add(person);
+            } else {
+                list.add(person[1], person);
+            }
+        }
+        // list -> array
+        int[][] res = new int[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+        return res;
     }
 }
