@@ -49,10 +49,28 @@ import java.util.Arrays;
 public class Solution {
 
     /**
-     * 也是 动态规划
-     * coinKinds i 组成 i这个面额 有多少种办法，
-     * coinKinds i 初始化为 -1 -1为不可达
-     * 遍历 coin 如果 i - coins[j] 为可达，那么coinKinds i+= coinKinds i - coins[j]
+     * 硬币面额数组 从大往小排列
+     * 类的成员变量计数
+     *
+     *
+     * Dfs 递归求解
+     *
+     * dfs amount 总金额 （剩余）， 硬币面额数组，目前该使用的硬币index
+     * 终止条件
+     * 如果当前 amount 已经到 0 直接计数 ++ 返回
+     *
+     * 如果当前 idex 已经非法了 直接返回
+     *
+     *
+     *
+     * fori index - 终点
+     * 	如果当前 amount 已经不满足 减了 直接continue 吧
+     * 	否则
+     * 		dfs amount- 当前前数，硬币面额数组， i（当前用到的面额index）
+     *
+     *
+     *
+     * 主函数 直接 返回 成员变量的计数个数
      * @param amount
      * @param coins
      * @return
@@ -86,6 +104,12 @@ public class Solution {
         int change = solution.change(amount, coins);
         System.out.println(change);
         Assert.assertEquals(4, change);
+
+        amount = 3;
+        coins = new int[]{2};
+        change = solution.change(amount, coins);
+        System.out.println(change);
+        Assert.assertEquals(0, change);
     }
 
 }
