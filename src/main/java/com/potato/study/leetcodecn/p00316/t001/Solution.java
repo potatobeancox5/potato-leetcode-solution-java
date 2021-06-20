@@ -1,5 +1,9 @@
 package com.potato.study.leetcodecn.p00316.t001;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+
 import org.junit.Assert;
 
 /**
@@ -34,41 +38,58 @@ import org.junit.Assert;
 public class Solution {
 
     /**
-     * 有个要求就是按照字典顺序
+     * https://leetcode-cn.com/problems/remove-duplicate-letters/solution/qu-chu-zhong-fu-zi-mu-by-leetcode-soluti-vuso/
+     *
+     * 用一个 arr 记录每个字母出现次数
+     * 单调栈 单调递增
+     * set 记录 目前 栈中字母有哪些
+     *
+     * init 栈空且set 空 直接入栈和set，arr 计数--
+     * 遍历 s 其他字母
+     * 如果 ch 在 stack 中 说明 已经安置好了位置 continue
+     * ch 为 stack 中没有出现过
+     *
+     * 如果 peek 元素 还有没有剩余 那就直接将 ch 进展 计数-- set增加
+     * 否则 peek 有剩余  且 peek 大于 ch 循环出栈 出栈结束之后 ch 可以进栈了
+     *
+     *
      * @param s
      * @return
      */
     public String removeDuplicateLetters(String s) {
-        boolean[] appear = new boolean[26];
-        StringBuilder builder = new StringBuilder();
+        // 用一个 arr 记录每个字母出现次数
+        int[] count = new int[26];
         for (char ch : s.toCharArray()) {
-            // 没有出现重复 直接插入
-            if (!appear[ch - 'a']) {
-                appear[ch - 'a'] = true;
-                builder.append(ch);
-            } else {
-                // 出现了重复 找到之前的位置 如果 之后的位置存在比他小的 那么删除 这个元素 往最后加上他
-                int index = -1;
-                for (int i = 0; i < builder.length(); i++) {
-                    if (builder.charAt(i) == ch) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                for (int i = index + 1; i < builder.length(); i++) {
-                    // 相等
-                    if (builder.charAt(i) < ch) {
-                        builder.deleteCharAt(index);
-                        builder.append(ch);
-
-                    }
-                    // 不满足直接返回只比较一个位置
-                    break;
-                }
-            }
+            count[ch - 'a']++;
         }
-        return builder.toString();
+        // 单调栈 单调递增
+        Stack<Character> stack = new Stack<>();
+        // set 记录 目前 栈中字母有哪些
+        Set<Character> set = new HashSet<>();
+        // init 栈空且set 空 直接入栈和set，arr 计数--
+        for (char ch : s.toCharArray()) {
+            // 如果 ch 在 stack 中 说明 已经安置好了位置 continue
+            if (set.contains(ch)) {
+                count[ch - 'a']--;
+                continue;
+            }
+            // 否则 peek 有剩余  且 peek 大于 ch 循环出栈 出栈结束之后 ch 可以进栈了
+            while (!stack.isEmpty() && stack.peek() > ch && count[stack.peek() - 'a'] > 0) {
+                Character pop = stack.pop();
+                set.remove(pop);
+            }
+            // 如果 peek 元素 还有没有剩余 那就直接将 ch 进展 计数-- set增加
+            count[ch - 'a']--;
+            set.add(ch);
+            stack.add(ch);
+            continue;
+        }
+        // stack 正常顺序输出
+        StringBuilder builder = new StringBuilder();
+        while (!stack.isEmpty()) {
+            builder.append(stack.pop());
+        }
+        return builder.reverse().toString();
     }
 
     public static void main(String[] args) {
