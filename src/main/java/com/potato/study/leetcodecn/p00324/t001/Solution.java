@@ -1,6 +1,7 @@
 package com.potato.study.leetcodecn.p00324.t001;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 
@@ -44,6 +45,8 @@ public class Solution {
 
 
     /**
+     * 现在改成 都是倒序穿插
+     * https://leetcode-cn.com/problems/wiggle-sort-ii/solution/3ms-99-xian-pai-xu-zai-chuan-cha-by-wang-o7pm/
      *
      * @param nums
      */
@@ -51,26 +54,20 @@ public class Solution {
         // sort
         Arrays.sort(nums);
         int[] res = new int[nums.length];
-        int index = 0;
-        int i;
-        for (i = 0; i < nums.length; i++) {
-            res[index] = nums[i];
-            index+=2;
-            if (index >= nums.length) {
-                i++;
-                break;
-            }
+        int index = nums.length - 1;
+        // 倒序写入 res 1 - len
+        for (int i = 1; i < nums.length; i+=2) {
+            res[i] = nums[index];
+            index--;
         }
-        index = 1;
-        for (; i < nums.length; i++) {
-            res[index] = nums[i];
-            index+=2;
-            if (index >= nums.length) {
-                break;
-            }
+        // 倒序写入 res 0 - len
+        for (int i = 0; i < nums.length; i+=2) {
+            res[i] = nums[index];
+            index--;
         }
-        for (int j = 0; j < nums.length; j++) {
-            nums[j] = res[j];
+        // res ->num
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = res[i];
         }
         return;
     }
