@@ -45,19 +45,31 @@ public class Solution {
 
 
     /**
+     * first second 最开始都是 int 最大值
      *
+     * 遍历 num  如果 当前值 小于 fisst 选中其为 first
+     *
+     * 如果 当前值大于 first 且 小于 second
+     * 将其 设置为 second
+     *
+     *
+     * 如果当前 大于 second 就是 已经找到了 3个 直接返回吧
      * @param nums
      * @return
      */
     public boolean increasingTriplet(int[] nums) {
-
+        int first = Integer.MAX_VALUE;
+        int second = Integer.MAX_VALUE;
+        for (int num : nums) {
+            if (num < first) {
+                first = num;
+            } else if (first < num && num < second) {
+                second = num;
+            } else if (second< num) {
+                return true;
+            }
+        }
         return false;
     }
 
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-
-
-    }
 }
