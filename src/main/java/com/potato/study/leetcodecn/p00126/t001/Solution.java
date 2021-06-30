@@ -49,83 +49,93 @@ import java.util.*;
  */
 public class Solution {
 
+    private List<List<String>> resultList;
+
+    private int maxPathLength;
+
     /**
-     * 根 127 一致 只不过需要找到所有的最短转换序列，而且要输出序列 这里如何记录序列是个难点
-     * 那我们维护一个 map 记录从开始位置 key 位置 走过的最短序列结果集合，这样 每次找下一个节点的时候 都能生成对应的店
-     *
-     * @param beginWord
-     * @param endWord
-     * @param wordList
+     * 递归处理 记录一个全局最最小值 和 全局结果
+     * @param beginWord 开始单词
+     * @param endWord   结束单词
+     * @param wordList  单词列表
      * @return
      */
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        Set<List<String>> result = new HashSet<>();
-        if (null == wordList || wordList.size() == 0) {
-            return new ArrayList<>();
+        this.resultList = new ArrayList<>();
+        this.maxPathLength = Integer.MAX_VALUE;
+        // 预处理一下
+        Map<String, Set<String>> connectMap = new HashMap<>();
+        for (int i = 0; i < wordList.size(); i++) {
+            if (isSolitaire(beginWord, wordList.get(i))) {
+                Set<String> set = connectMap.getOrDefault(beginWord, new HashSet<>());
+                set.add(wordList.get(i));
+                connectMap.put(beginWord, set);
+            }
         }
-        // 1. wordList -> wordSet
-        Set<String> set = new HashSet<>();
-        for (String word : wordList) {
-            set.add(word);
-        }
-        // 2. contians end word 判断
-        if (!set.contains(endWord)) {
-            return new ArrayList<>();
-        }
-        // 3. 层序遍历 并记录 位置 每轮找到后 记录一个状态 之后就那么经过这轮之后就不再继续了
-        Queue<String> queue = new LinkedList<>();
-        queue.add(beginWord);
-        boolean hasFound = false;
-        Map<String, Set<List<String>>> resultMap = new HashMap<>();
-        Set<List<String>> list = new HashSet<>();
-        List<String> innerList = new ArrayList<>();
-        innerList.add(beginWord);
-        list.add(innerList);
-        resultMap.put(beginWord, list);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                String poll = queue.poll();
-                // 遍历 set
-                Iterator<String> iterator = set.iterator();
-                while (iterator.hasNext()) {
-                    String next = iterator.next();
-                    if (isSolitaire(poll, next)) {
-                        // 组装结果
-                        Set<List<String>> keyPath = resultMap.getOrDefault(next, new HashSet<>());
-                        Set<List<String>> lastPath = resultMap.get(poll);
-                        for (List<String> eachPath : lastPath) {
-                            List<String> newList = new ArrayList<>(eachPath);
-                            newList.add(next);
-                            keyPath.add(newList);
-                        }
-                        if (endWord.equals(next)) {
-                            // 找到
-                            hasFound = true;
-                            // 组装结果 遍历当前结果
-                            Set<List<String>> resultList = resultMap.getOrDefault(endWord, new HashSet<>());
-                            resultList.addAll(keyPath);
-                            resultMap.put(next, resultList);
-                        } else {
-                            resultMap.put(next, keyPath);
-                            queue.add(next);
-                            iterator.remove();
-                        }
-                    }
+        for (int i = 0; i < wordList.size(); i++) {
+            for (int j = i + 1; j < wordList.size(); j++) {
+                if (isSolitaire(wordList.get(i), wordList.get(j))) {
+                    Set<String> set1 = connectMap.getOrDefault(wordList.get(i), new HashSet<>());
+                    set1.add(wordList.get(j));
+                    connectMap.put(wordList.get(i), set1);
+                    Set<String> set2 = connectMap.getOrDefault(wordList.get(j), new HashSet<>());
+                    set2.add(wordList.get(i));
+                    connectMap.put(wordList.get(j), set2);
                 }
             }
-            // 当前层已经确定了答案直接跳出
-            if (hasFound) {
-                break;
-            }
         }
-        result = resultMap.get(endWord);
-        if (result == null) {
-            return new ArrayList<>();
-        }
-        return new ArrayList<>(result);
+        boolean[] usedStatus = new boolean[wordList.size()];
+        List<String> path = new ArrayList<>();
+        path.add(beginWord);
+        getLadders(beginWord, endWord, wordList, usedStatus, path, connectMap);
+        return resultList;
     }
 
+
+    /**
+     * dfs 找最小
+     * @param current
+     * @param target
+     * @param wordList
+     * @param usedStatus
+     * @param path 走到 current 的路径 ，其中包括 current
+     */
+    private void getLadders(String current, String target, List<String> wordList, boolean[] usedStatus,
+            List<String> path, Map<String, Set<String>> connectMap) {
+        // 终止条件 如果当前 current 就是 target 比较一下 是否最小的path
+        if (target.equals(current)) {
+            if (path.size() == maxPathLength) {
+                resultList.add(path);
+            } else if (path.size() < maxPathLength) {
+                resultList = new ArrayList<>();
+                resultList.add(path);
+                maxPathLength = path.size();
+            }
+            return;
+        }
+        // 修改 current 对应 遍历 wordlist 如果 uesd contonue 否则 生成 新path 然后递归调用
+        for (int i = 0; i < wordList.size(); i++) {
+            // 之前用过
+            if (usedStatus[i]) {
+                continue;
+            }
+            // 预处理优化判定是否链接
+            Set<String> containSet = connectMap.get(current);
+            if (containSet == null) {
+                continue;
+            }
+            if (!containSet.contains(wordList.get(i))) {
+                continue;
+            }
+            // word i 需要被使用
+            String word = wordList.get(i);
+            usedStatus[i] = true;
+            List<String> newPath = new ArrayList<>(path);
+            newPath.add(word);
+            getLadders(word, target, wordList, usedStatus, newPath, connectMap);
+            usedStatus[i] = false;
+        }
+    }
 
     /**
      * 两个单词是不是接龙关系
@@ -145,6 +155,9 @@ public class Solution {
             if (word1.charAt(i) != word2.charAt(i)) {
                 diffCount++;
             }
+            if (diffCount > 1) {
+                return false;
+            }
         }
         return diffCount == 1;
     }
@@ -155,6 +168,16 @@ public class Solution {
         String endWord = "cog";
         List<String> wordList = Lists.newArrayList("hot","dot","dog","lot","log","cog");
         List<List<String>> ladders = solution.findLadders(beginWord, endWord, wordList);
+        // ["hit","hot","dot","dog","cog"],
+        // ["hit","hot","lot","log","cog"]
+        System.out.println(ladders);
+
+
+        beginWord = "red";
+        endWord = "tax";
+        wordList = Lists.newArrayList("ted","tex","red","tax","tad","den","rex","pee");
+        ladders = solution.findLadders(beginWord, endWord, wordList);
+        // [["red","ted","tad","tax"],["red","ted","tex","tax"],["red","rex","tex","tax"]]
         System.out.println(ladders);
     }
 }
