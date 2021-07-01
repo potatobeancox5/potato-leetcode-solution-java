@@ -1,9 +1,12 @@
 package com.potato.study.leetcodecn.p00132.t001;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Assert;
 
 /**
  * 132. 分割回文串 II
@@ -40,14 +43,70 @@ import java.util.Map;
  *
  */
 public class Solution {
-
     /**
-     *
+     * isPalindrome 判断 ij 之间字符串 包括 两边 是不是回文
+     * minSplitTime i 0-i 之前字符串 最少的分割次数
      * @param s
      * @return
      */
     public int minCut(String s) {
+        // gij bool 判断 ij 中间 串是否回文 gij = gi+1j-1 && chi==chj
+        boolean[][] isPalindrome = new boolean[s.length()][s.length()];
+        // 全部初始化 为 true 因为 有不一致的检测 所以无所谓
+        for (int i = 0; i < s.length(); i++) {
+            Arrays.fill(isPalindrome[i], true);
+        }
+        // 生成 是够是回文 判定矩阵
+        for (int i = 0; i < s.length() - 1; i++) {
+            for (int j = i + 1; j < s.length(); j++) {
+                char ch1 = s.charAt(i);
+                char ch2 = s.charAt(j);
+                // 不相同
+                if (ch1 != ch2) {
+                    isPalindrome[i][j] = false;
+                    continue;
+                } else {
+                    // ij 位置相同
+                    isPalindrome[i][j] = isPalindrome[i+1][j-1];
+                }
+            }
+        }
+        // fi 从0开始 作为 回文数组的最小分割数
+        int[] minSplitTime = new int[s.length()];
+        Arrays.fill(minSplitTime, Integer.MAX_VALUE);
+        for (int i = 0; i < s.length(); i++) {
+            // 如果 0 - i 整体 是回文直接返回 0
+            if (isPalindrome[0][i]) {
+                minSplitTime[i] = 0;
+                continue;
+            }
+            // 否则 遍历 0 - i 每次分割 j - i 如果 ji 是回文 计算最小值
+            for (int j = 0; j <= i; j++) {
+                // 如果 就+ 1
+                if (isPalindrome[j][i]) {
+                    int time = minSplitTime[j-1] + 1;
+                    minSplitTime[i] = Math.min(minSplitTime[i], time);
+                }
+            }
+        }
+        return minSplitTime[s.length() - 1];
+    }
 
-        return -1;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s = "aab";
+        int i = solution.minCut(s);
+        System.out.println(i);
+        Assert.assertEquals(1, i);
+
+        s = "ab";
+        i = solution.minCut(s);
+        System.out.println(i);
+        Assert.assertEquals(1, i);
+
+        s = "a";
+        i = solution.minCut(s);
+        System.out.println(i);
+        Assert.assertEquals(0, i);
     }
 }

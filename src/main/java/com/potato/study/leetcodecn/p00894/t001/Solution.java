@@ -2,7 +2,10 @@ package com.potato.study.leetcodecn.p00894.t001;
 
 import com.potato.study.leetcode.domain.TreeNode;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 894. 所有可能的满二叉树
@@ -36,40 +39,60 @@ import java.util.List;
  */
 public class Solution {
 
-
+    private Map<Integer, List<TreeNode>> subTreeMap = new HashMap<>();
     /**
-     * 所有可能的二叉树
-     * 用一个 map Integer 存 所有 节点树为 n 的 TreeNode 的 List
-     * 递归 生成树
-     * 如果 当前 n 已经存在 在 map 中了 ，那么直接去 map 结果 copy 一下 返回
-     *
-     * 否则 将 n-1 均分成 分成2个部分，然后递归生成结果，
-     *
-     * 遍历结果 组成新的树 创建头结点 链接，放到map 中 并最终返回结果
+     * 894
      * @param n
      * @return
      */
     public List<TreeNode> allPossibleFBT(int n) {
-        // 递归获取 孩子节点的可能性
+        // 节点必须满足 奇数
+        List<TreeNode> list = new ArrayList<>();
+        if (n % 2 == 0) {
+            return list;
+        }
+        // 缓存
+        if (subTreeMap.containsKey(n)) {
+            return subTreeMap.get(n);
+        }
+        // 没有缓存的话 插入 遍历左边孩子个数
+        for (int i = 0; i < n; i++) {
+            List<TreeNode> leftChildList = allPossibleFBT(i);
+            List<TreeNode> rightChildList = allPossibleFBT(n - i - 1);
 
+            if (leftChildList.size() == 0 && rightChildList.size() == 0) {
+                TreeNode root = new TreeNode(0);
+                list.add(root);
+                continue;
+            }
 
-        // 遍历孩子节点 生成一个新的当前节点，
-        return null;
-    }
-
-
-    /**
-     * 深拷贝 一个 树 head；
-     * @param head
-     * @return
-     */
-    private TreeNode copyTreeNode(TreeNode head) {
-        return null;
-    }
-
-
-    private List<TreeNode> copyAllTree(List<TreeNode> trees) {
-        return null;
+            if (leftChildList.size() == 0) {
+                for (TreeNode right : rightChildList) {
+                    TreeNode root = new TreeNode(0);
+                    root.right = right;
+                    list.add(root);
+                }
+                continue;
+            }
+            if (rightChildList.size() == 0) {
+                for (TreeNode left : leftChildList) {
+                    TreeNode root = new TreeNode(0);
+                    root.left = left;
+                    list.add(root);
+                }
+                continue;
+            }
+            for (TreeNode left : leftChildList) {
+                for (TreeNode right : rightChildList) {
+                    TreeNode root = new TreeNode(0);
+                    root.left = left;
+                    root.right = right;
+                    list.add(root);
+                }
+            }
+        }
+        subTreeMap.put(n, list);
+        return list;
     }
 
 }
