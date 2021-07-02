@@ -56,8 +56,7 @@ public class Solution {
         for (int i = 0; i < s.length(); i++) {
             Arrays.fill(isPalindrome[i], true);
         }
-        // 生成 是够是回文 判定矩阵
-        for (int i = 0; i < s.length() - 1; i++) {
+        for (int i = s.length() - 2; i >= 0; i--) {
             for (int j = i + 1; j < s.length(); j++) {
                 char ch1 = s.charAt(i);
                 char ch2 = s.charAt(j);
@@ -81,11 +80,11 @@ public class Solution {
                 continue;
             }
             // 否则 遍历 0 - i 每次分割 j - i 如果 ji 是回文 计算最小值
-            for (int j = 0; j <= i; j++) {
-                // 如果 就+ 1
-                if (isPalindrome[j][i]) {
-                    int time = minSplitTime[j-1] + 1;
-                    minSplitTime[i] = Math.min(minSplitTime[i], time);
+            for (int j = 0; j < i; j++) {
+                // if j+1 到 i 是回文
+                if (isPalindrome[j+1][i]) {
+                    long time = minSplitTime[j] + 1L;
+                    minSplitTime[i] = (int) Math.min(minSplitTime[i], time);
                 }
             }
         }
@@ -108,5 +107,10 @@ public class Solution {
         i = solution.minCut(s);
         System.out.println(i);
         Assert.assertEquals(0, i);
+
+        s = "cabababcbc";
+        i = solution.minCut(s);
+        System.out.println(i);
+        Assert.assertEquals(3, i);
     }
 }
