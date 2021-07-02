@@ -40,8 +40,10 @@ import java.util.Map;
 public class Solution {
 
     private Map<Integer, List<TreeNode>> subTreeMap = new HashMap<>();
+
+
     /**
-     * 894
+     * 每个节点要么有2个节点 要么没有节点
      * @param n
      * @return
      */
@@ -51,37 +53,23 @@ public class Solution {
         if (n % 2 == 0) {
             return list;
         }
+        if (n == 1) {
+            list.add(new TreeNode(0));
+            return list;
+        }
         // 缓存
         if (subTreeMap.containsKey(n)) {
             return subTreeMap.get(n);
         }
         // 没有缓存的话 插入 遍历左边孩子个数
         for (int i = 0; i < n; i++) {
+            // 左子树不可能偶数个
+            if (i % 2 == 0) {
+                continue;
+            }
+            // 右子树不可能偶数个
             List<TreeNode> leftChildList = allPossibleFBT(i);
             List<TreeNode> rightChildList = allPossibleFBT(n - i - 1);
-
-            if (leftChildList.size() == 0 && rightChildList.size() == 0) {
-                TreeNode root = new TreeNode(0);
-                list.add(root);
-                continue;
-            }
-
-            if (leftChildList.size() == 0) {
-                for (TreeNode right : rightChildList) {
-                    TreeNode root = new TreeNode(0);
-                    root.right = right;
-                    list.add(root);
-                }
-                continue;
-            }
-            if (rightChildList.size() == 0) {
-                for (TreeNode left : leftChildList) {
-                    TreeNode root = new TreeNode(0);
-                    root.left = left;
-                    list.add(root);
-                }
-                continue;
-            }
             for (TreeNode left : leftChildList) {
                 for (TreeNode right : rightChildList) {
                     TreeNode root = new TreeNode(0);
