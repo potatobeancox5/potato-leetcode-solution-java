@@ -40,11 +40,45 @@ package com.potato.study.leetcodecn.p00877.t001;
 public class Solution {
 
     /**
+     * dp ij 剩下 ij 时 当前人比对手 最大差值
+     *
+     * dp ij = max （pile i - dp i+1 j， pile j - dp i j-1
      *
      * @param piles
      * @return
      */
     public boolean stoneGame(int[] piles) {
-        return false;
+        int[][] dp = new int[piles.length][piles.length];
+        // 初始化 dp ii 只有一个堆 谁那是谁的
+        for (int i = 0; i < piles.length; i++) {
+            dp[i][i] = piles[i];
+        }
+        // 状态转移
+        for (int i = piles.length - 2; i >= 0; i--) {
+            for (int j = i + 1; j < piles.length; j++) {
+                dp[i][j] = Math.max(piles[i] - dp[i+1][j], piles[j] - dp[i][j-1]);
+            }
+        }
+        return dp[0][piles.length - 1] > 0;
+    }
+
+
+    /**
+     *
+     * @param piles
+     * @param from
+     * @param to
+     * @param fisrtNum
+     * @param secondNum
+     * @return
+     */
+    private boolean canFistWin(int[] piles, int from, int to, int fisrtNum, int secondNum) {
+        // 如果 已经没有是否可以拿了
+        if (from > to) {
+            return fisrtNum > secondNum;
+        }
+        // 还可以拿 拿from 或者 拿 to的
+        return !canFistWin(piles, from + 1, to, secondNum, fisrtNum + piles[from])
+                && !canFistWin(piles, from, to - 1, secondNum + piles[to], fisrtNum);
     }
 }
