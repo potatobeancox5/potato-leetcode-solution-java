@@ -45,23 +45,20 @@ public class Solution {
 
 
     /**
+     * 选出任一 x，满足 0 < x < N 且 N % x == 0 。
+     * n = 2 a win
+     * n = 3 b win
+     * n = 4 a win
+     * n = 5 b win
+     * n = 6 a win
+     * n = 7 b win
      *
+     * https://leetcode-cn.com/problems/divisor-game/solution/chu-shu-bo-yi-by-leetcode-solution/
+     * 数学归纳法
      * @param n
      * @return
      */
     public boolean divisorGame(int n) {
-
-        return false;
+        return n % 2 == 0;
     }
-
-    // todo 找到素数的方法
-
-    //
-
-
-//    public static void main(String[] args) {
-////        Solution solution = new Solution();
-////        TreeNode treeNode = solution.recoverFromPreorder();
-//
-//    }
 }
