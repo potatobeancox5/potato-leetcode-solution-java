@@ -1,7 +1,11 @@
 package com.potato.study.leetcodecn.p00885.t001;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.potato.study.leetcode.util.ArrayUtil;
+import com.potato.study.leetcode.util.LeetcodeUtils;
 
 /**
  * 885. 螺旋矩阵 III
@@ -50,8 +54,63 @@ import java.util.Set;
  */
 public class Solution {
 
-    public int[][] spiralMatrixIII(int r, int c, int r0, int c0) {
+    // 885
+    public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        // rStart cStart 开始 使用 direct数组控制方向 东南西北
+        int[][] direction = new int[][] {
+                {0, 1}, {1, 0}, {0, -1}, {-1, 0}
+        };
+        // 使用 stepLen 控制每次走的长度 （没两个方向换一次）
+        int stepLen = 1;
+        // 走了多少步
+        int stepCount = 0;
+        // 对于生成的 坐标 如果不在里边的话 是 就直接continue 吧
+        int[][] result = new int[rows * cols][2];
+        int x = rStart;
+        int y = cStart;
+        result[stepCount] = new int[] {x, y};
+        stepCount++;
+        int turnTime = 0;
+        for (int i = 0; i < rows * cols; i++) {
+            // 方向
+            for (int directionIndex = 0; directionIndex < direction.length; directionIndex++) {
+                // 这个方向走几步
+                turnTime++;
+                for (int j = 0; j < stepLen; j++) {
+                    x += direction[directionIndex][0];
+                    y += direction[directionIndex][1];
+                    // 判断坐标是否合法
+                    if (0 <= x && x < rows && 0 <= y && y < cols) {
+                        result[stepCount] = new int[] {x, y};
+                        stepCount++;
+                    }
+                }
+                // stepLen 转移
+                if (turnTime % 2 == 0) {
+                    stepLen++;
+                }
+            }
 
-        return null;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int rows = 1;
+        int cols = 4;
+        int rStart = 0;
+        int cStart = 0;
+//        [[0,0],[0,1],[0,2],[0,3]]
+        int[][] ints = solution.spiralMatrixIII(rows, cols, rStart, cStart);
+        ArrayUtil.printMatrix(ints);
+
+        rows = 5;
+        cols = 6;
+        rStart = 1;
+        cStart = 4;
+        // [[0,0],[0,1],[0,2],[0,3]]
+        ints = solution.spiralMatrixIII(rows, cols, rStart, cStart);
+        ArrayUtil.printMatrix(ints);
     }
 }
