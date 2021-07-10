@@ -62,6 +62,12 @@ import java.util.List;
 public class Solution {
 
 
+    /**
+     *
+     * @param queens
+     * @param king
+     * @return
+     */
     public List<List<Integer>> queensAttacktheKing(int[][] queens, int[] king) {
 
         return null;
