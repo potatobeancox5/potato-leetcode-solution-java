@@ -1,5 +1,8 @@
 package com.potato.study.leetcodecn.p00166.t001;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Assert;
 
 /**
@@ -71,15 +74,94 @@ public class Solution {
      while 循环做上面的东西
 
      每次把除法结果刚到 map中 value 是出现过的indez
-
+     int numerator, int denominator
      再次出现的时候就知道
      xfirst appear 到
-     * @param numerator
-     * @param denominator
+     * @param intNumerator
+     * @param intDenominator
      * @return
      */
-    public String fractionToDecimal(int numerator, int denominator) {
+    public String fractionToDecimal(int intNumerator, int intDenominator) {
+        long numerator = intNumerator;
+        long denominator = intDenominator;
+        // 处理 符号
+        boolean isNegtive = false;
+        if (numerator * denominator < 0) {
+            isNegtive = true;
+        }
+        if (numerator < 0) {
+            numerator *= -1;
+        }
+        if (denominator < 0) {
+            denominator *= -1;
+        }
+        // 处理整数部分
+        long numPart = numerator / denominator;
+        long remind = numerator % denominator;
+        if (remind == 0) {
+            if (isNegtive) {
+                numPart *= -1;
+            }
+            return String.valueOf(numPart);
+        }
+        // 记录 当前被除数出现的位置 的map
+        Map<Long, Integer> appearIndexMap = new HashMap<>();
+        StringBuilder builder = new StringBuilder();
+        builder.append(numPart);
+        builder.append(".");
+        // 如果不能整除 循环使用余数 * 10 进行除法 ，利用map 记录每次出现的结果 和出现的位置 那么就是 （）增加的位置
+        numerator = remind * 10;
+        while (numerator != 0) {
+            // map 存在就完了
+            long num = numerator / denominator;
+            remind = numerator % denominator;
+            appearIndexMap.put(numerator, builder.length());
+            numerator = remind * 10;
+            builder.append(num);
+            // 下一个之前出现过 增加 （） 跳出
+            if (appearIndexMap.containsKey(numerator)) {
+                Integer firstIndex = appearIndexMap.get(numerator);
+                builder.insert(firstIndex, "(");
+                builder.append(")");
+                break;
+            }
+        }
+        if (isNegtive) {
+            builder.insert(0, "-");
+        }
+        return builder.toString();
+    }
 
-        return null;
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int numerator = 1;
+        int denominator = 2;
+        String s = solution.fractionToDecimal(numerator, denominator);
+        System.out.println(s);
+        Assert.assertEquals("0.5", s);
+
+        numerator = 2;
+        denominator = 3;
+        s = solution.fractionToDecimal(numerator, denominator);
+        System.out.println(s);
+        Assert.assertEquals("0.(6)", s);
+
+        numerator = 2;
+        denominator = 1;
+        s = solution.fractionToDecimal(numerator, denominator);
+        System.out.println(s);
+        Assert.assertEquals("2", s);
+
+        numerator = -50;
+        denominator = 8;
+        s = solution.fractionToDecimal(numerator, denominator);
+        System.out.println(s);
+        Assert.assertEquals("-6.25", s);
+
+        numerator = -1;
+        denominator = -2147483648;
+        s = solution.fractionToDecimal(numerator, denominator);
+        System.out.println(s);
+        Assert.assertEquals("0.0000000004656612873077392578125", s);
     }
 }
