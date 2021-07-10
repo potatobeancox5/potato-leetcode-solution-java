@@ -1,68 +1,113 @@
 package com.potato.study.leetcodecn.p00474.t001;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Assert;
+
 /**
- * 470. 用 Rand7() 实现 Rand10()
+ * 474. 一和零
  *
- * 已有方法 rand7 可生成 1 到 7 范围内的均匀随机整数，试写一个方法 rand10 生成 1 到 10 范围内的均匀随机整数。
-
- 不要使用系统的 Math.random() 方法。
-
-  
-
- 示例 1:
-
- 输入: 1
- 输出: [7]
- 示例 2:
-
- 输入: 2
- 输出: [8,4]
- 示例 3:
-
- 输入: 3
- 输出: [8,1,10]
-  
-
- 提示:
-
- rand7 已定义。
- 传入参数: n 表示 rand10 的调用次数。
-  
-
- 进阶:
-
- rand7()调用次数的 期望值 是多少 ?
- 你能否尽量少调用 rand7() ?
-
- 来源：力扣（LeetCode）
- 链接：https://leetcode-cn.com/problems/implement-rand10-using-rand7
- 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ * 给你一个二进制字符串数组 strs 和两个整数 m 和 n 。
+ *
+ * 请你找出并返回 strs 的最大子集的大小，该子集中 最多 有 m 个 0 和 n 个 1 。
+ *
+ * 如果 x 的所有元素也是 y 的元素，集合 x 是集合 y 的 子集 。
+ *
+ *  
+ *
+ * 示例 1：
+ *
+ * 输入：strs = ["10", "0001", "111001", "1", "0"], m = 5, n = 3
+ * 输出：4
+ * 解释：最多有 5 个 0 和 3 个 1 的最大子集是 {"10","0001","1","0"} ，因此答案是 4 。
+ * 其他满足题意但较小的子集包括 {"0001","1"} 和 {"10","1","0"} 。{"111001"} 不满足题意，因为它含 4 个 1 ，大于 n 的值 3 。
+ * 示例 2：
+ *
+ * 输入：strs = ["10", "0", "1"], m = 1, n = 1
+ * 输出：2
+ * 解释：最大的子集是 {"0", "1"} ，所以答案是 2 。
+ *  
+ *
+ * 提示：
+ *
+ * 1 <= strs.length <= 600
+ * 1 <= strs[i].length <= 100
+ * strs[i] 仅由 '0' 和 '1' 组成
+ * 1 <= m, n <= 100
+ *
+ * 来源：力扣（LeetCode）
+ * 链接：https://leetcode-cn.com/problems/ones-and-zeroes
+ * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  */
 public class Solution {
 
 
-    public int rand7() {
-        return -1;
+    /**
+     * 474
+     * @param strs
+     * @param m
+     * @param n
+     * @return
+     */
+    public int findMaxForm(String[] strs, int m, int n) {
+        int max = 0;
+        int tmpM = 0;
+        int tmpN = 0;
+        Map<Integer, int[]> indexCountMap = new HashMap<>();
+        // 当前窗口大小
+        int currentCount = 0;
+        for (int i = 0; i < strs.length; i++) {
+            int[] count = getZeroAndOneNum(strs[i]);
+            tmpM += count[0];
+            tmpN += count[1];
+            indexCountMap.put(i, count);
+            currentCount++;
+            if (tmpM <= m && tmpN <= n) {
+                max = Math.max(max, currentCount);
+                continue;
+            }
+            // 处理 current
+            while (currentCount > 0 && (tmpM > m || tmpN > n)) {
+                int toDeleteIndex = i - currentCount + 1;
+                int[] deleteCount = indexCountMap.get(toDeleteIndex);
+                if (deleteCount != null) {
+                    tmpM -= deleteCount[0];
+                    tmpN -= deleteCount[1];
+                }
+                currentCount--;
+            }
+        }
+        return max;
     }
 
     /**
-     * 生成一个 7进制的数字，然后转化成10进制
-     * 1-7, 8-14,
+     *
+     * @param numStr
      * @return
      */
-    public int rand10() {
-        // 生成 1 - 40
-        int val = 0;
-        do {
-            int val1 = rand7();
-            int val2 = rand7();
-            val = val1 + (val2 - 1) * 7;
-        } while (val > 40);
-        // 生成 0 - 9
-        int target = (val - 1 ) % 10;
-        // 生成 1- 10
-        return target + 1;
+    private int[] getZeroAndOneNum(String numStr) {
+        int[] count = new int[2];
+        if (numStr == null) {
+            return count;
+        }
+        for (char ch : numStr.toCharArray()) {
+            count[ch - '0']++;
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String[] strs = new String[]{
+                "10", "0001", "111001", "1", "0"
+        };
+        int m = 5;
+        int n = 3;
+        int maxForm = solution.findMaxForm(strs, m, n);
+        System.out.println(maxForm);
+        Assert.assertEquals(4, maxForm);
     }
 
 }
