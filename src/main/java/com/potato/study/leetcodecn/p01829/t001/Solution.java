@@ -71,16 +71,15 @@ public class Solution {
         for (int i = 1; i < nums.length; i++) {
             nums[i] = nums[i-1] ^ nums[i];
         }
+        // maximumBit 生成 1-1  2-3  3-7
+        int mask = 0;
+        for (int j = 0; j < maximumBit; j++) {
+            mask += (1 << j);
+        }
         // 对于每个 num for nums 从最低位开始 生成 取 与当前位置 不同的数字，知道 取到的数字 大于等于 2 maximumBit次幂等
         for (int i = 0; i < nums.length; i++) {
-            int mask = nums[nums.length - 1 - i];
-            int cur = 0;
-            for (int j = 0; j < maximumBit; j++) {
-                cur <<= 1;
-                cur += (1 - (mask % 2));
-                mask >>>= 1;
-            }
-            result[i] = cur;
+            int xor = nums[nums.length - 1 - i];
+            result[i] = mask ^ xor;
         }
         return result;
     }
