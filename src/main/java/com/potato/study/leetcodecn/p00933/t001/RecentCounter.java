@@ -1,7 +1,9 @@
 package com.potato.study.leetcodecn.p00933.t001;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -50,20 +52,22 @@ import org.junit.Assert;
  */
 public class RecentCounter {
 
-    private TreeSet<Integer> treeSet;
+    private Queue<Integer> queue;
 
     /**
      * 声明 一个 存储的东西 TreeSet
      */
     public RecentCounter() {
-        this.treeSet = new TreeSet<>();
+        this.queue = new LinkedList<>();
     }
 
     public int ping(int t) {
-        treeSet.add(t);
-        Set<Integer> head1 = treeSet.headSet(t+1);
-        Set<Integer> head2 = treeSet.headSet(t - 3000);
-        return head1.size() - head2.size();
+
+        queue.add(t);
+        while (!queue.isEmpty() && queue.peek() < t - 3000) {
+            queue.poll();
+        }
+        return queue.size();
     }
 
     public static void main(String[] args) {
