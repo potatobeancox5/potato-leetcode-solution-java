@@ -4,9 +4,11 @@ package com.potato.study.leetcodecn.p01261.t001;
 import com.potato.study.leetcode.domain.TreeNode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * 1261. 在受污染的二叉树中查找元素
@@ -85,11 +87,13 @@ public class FindElements {
 
     private TreeNode root;
 
+    private Set<Integer> set;
     /**
      * 层序遍历进行还原
      * @param root
      */
     public FindElements(TreeNode root) {
+        this.set = new HashSet<>();
         this.root = root;
         // 层序遍历进行还原
         root.val = 0;
@@ -97,6 +101,7 @@ public class FindElements {
         queue.add(root);
         while (!queue.isEmpty()) {
             TreeNode poll = queue.poll();
+            set.add(poll.val);
             int val = poll.val;
             if (poll.left != null) {
                 queue.add(poll.left);
@@ -116,27 +121,6 @@ public class FindElements {
      * @return
      */
     public boolean find(int target) {
-        if (target == 0) {
-            return root != null;
-        }
-        TreeNode p = root;
-        while (target > 0) {
-            int res = target % 2;
-            // 左孩子
-            if (res == 1) {
-                if (p.left == null) {
-                    return false;
-                }
-                p = p.left;
-            } else {
-                if (p.right == null) {
-                    return false;
-                }
-                p = p.right;
-            }
-            target = target - 2;
-            target /= 2;
-        }
-        return true;
+        return set.contains(target);
     }
 }
