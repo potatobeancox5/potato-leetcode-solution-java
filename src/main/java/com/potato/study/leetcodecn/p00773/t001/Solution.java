@@ -58,14 +58,17 @@ public class Solution {
      */
     public int slidingPuzzle(int[][] board) {
         Queue<String> queue = new LinkedList<>();
-        String initStatus = getStatus(board);
+        String initStatus = "";
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                initStatus += board[i][j];
+            }
+        }
         queue.add(initStatus);
         int count = 0;
         String finalStatus = "123450";
+        // 存放遍历过得字符串
         Set<String> visited = new HashSet<>();
-        int[][] direction = new int[][] {
-                {-1, 0}, {1, 0}, {0, 1}, {0, -1}
-        };
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
@@ -77,36 +80,15 @@ public class Solution {
                 }
                 visited.add(status);
                 // 下一个 位置迭代
-                int zeroIndex1 = -1;
-                int zeroIndex2 = -1;
-                kkk:
-                for (int j = 0; j < board.length; j++) {
-                    for (int k = 0; k < board[0].length; k++) {
-                        if (board[j][k] == 0) {
-                            zeroIndex1 = j;
-                            zeroIndex2 = k;
-                            break kkk;
-                        }
-                    }
+                String[] nextPuzzle = getNextPuzzle(status);
+                if (null == nextPuzzle) {
+                    continue;
                 }
-                for (int j = 0; j < 4; j++) {
-                    int[][] clone = getFromStatus(status);
-                    int nextIndex1 = zeroIndex1 + direction[j][0];
-                    int nextIndex2 = zeroIndex2 + direction[j][1];
-                    if (nextIndex1 < 0 || nextIndex1 >= board.length) {
+                for (String next : nextPuzzle) {
+                    if (visited.contains(next)) {
                         continue;
                     }
-                    if (nextIndex2 < 0 || nextIndex2 >= board[0].length) {
-                        continue;
-                    }
-                    int tmp = clone[zeroIndex1][zeroIndex2];
-                    clone[zeroIndex1][zeroIndex2] = clone[nextIndex1][nextIndex2];
-                    clone[nextIndex1][nextIndex2] = tmp;
-                    String nextStatus = getStatus(clone);
-                    if (visited.contains(nextStatus)) {
-                        continue;
-                    }
-                    queue.add(nextStatus);
+                    queue.add(next);
                 }
             }
             count++;
@@ -114,36 +96,33 @@ public class Solution {
         return -1;
     }
 
-    /**
-     * 获取 当前状态
-     * @param board
-     * @return
-     */
-    private String getStatus(int[][] board) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                builder.append(board[i][j]);
-            }
+    private int[][] swap = new int[][] {
+            {1,3},
+            {0, 2, 4},
+            {1, 5},
+            {0, 4},
+            {1,3,5},
+            {2,4}
+    };
+
+    private String[] getNextPuzzle(String status) {
+        // 找到 status 中0 的位置
+        int index = status.indexOf('0');
+        // 按照zero的位置 找到需要进行交换的两个字符串
+        int[] nextSwapIndex = swap[index];
+        String[] result = new String[nextSwapIndex.length];
+        int i = 0;
+        for (int swapIndex : nextSwapIndex) {
+            char[] chars = status.toCharArray();
+            char tmp = chars[index];
+            chars[index] = chars[swapIndex];
+            chars[swapIndex] = tmp;
+            result[i++] = new String(chars);
         }
-        return builder.toString();
+        // 可交换生成新的记过
+        return result ;
     }
 
-    /**
-     *
-     * @return
-     */
-    private int[][] getFromStatus(String status) {
-        int[][] res = new int[2][3];
-        int index = 0;
-        for (int i = 0; i < res.length; i++) {
-            for (int j = 0; j < res[0].length; j++) {
-                res[i][j] = (status.charAt(index) - '0');
-                index++;
-            }
-        }
-        return res;
-    }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
