@@ -52,47 +52,38 @@ public class Solution {
      * @return
      */
     public int findMaxForm(String[] strs, int m, int n) {
-        int max = 0;
-        int tmpM = 0;
-        int tmpN = 0;
-        Map<Integer, int[]> indexCountMap = new HashMap<>();
-        // 当前窗口大小
-        int currentCount = 0;
+        // dp ijk 前 i 和串 include 使用 j 个0 和 k个1 最多能有 多少个元素
+        int[][][] dp = new int[strs.length][m+1][n+1];
         for (int i = 0; i < strs.length; i++) {
-            int[] count = getZeroAndOneNum(strs[i]);
-            tmpM += count[0];
-            tmpN += count[1];
-            indexCountMap.put(i, count);
-            currentCount++;
-            if (tmpM <= m && tmpN <= n) {
-                max = Math.max(max, currentCount);
-                continue;
-            }
-            // 处理 current
-            while (currentCount > 0 && (tmpM > m || tmpN > n)) {
-                int toDeleteIndex = i - currentCount + 1;
-                int[] deleteCount = indexCountMap.get(toDeleteIndex);
-                if (deleteCount != null) {
-                    tmpM -= deleteCount[0];
-                    tmpN -= deleteCount[1];
-                }
-                currentCount--;
-            }
-        }
-        return max;
-    }
+            String word = strs[i];
+            int[] count = getCount(word);
+            for (int j = 0; j <= m; j++) {
+                for (int k = 0; k <= n; k++) {
 
-    /**
-     *
-     * @param numStr
-     * @return
-     */
-    private int[] getZeroAndOneNum(String numStr) {
-        int[] count = new int[2];
-        if (numStr == null) {
-            return count;
+                    if (i > 0) {
+                        dp[i][j][k] = dp[i-1][j][k];
+                    }
+
+                    if (count[0] > j) {
+                        continue;
+                    }
+                    if (count[1] > k) {
+                        continue;
+                    }
+                    if (i == 0) {
+                        dp[i][j][k] = 1;
+                        continue;
+                    }
+                    dp[i][j][k] = Math.max(dp[i][j][k], dp[i-1][j-count[0]][k-count[1]] + 1);
+                }
+            }
         }
-        for (char ch : numStr.toCharArray()) {
+        return dp[strs.length - 1][m][n];
+    }
+    // 获取 01的数量
+    private int[] getCount(String word) {
+        int[] count = new int[2];
+        for (char ch : word.toCharArray()) {
             count[ch - '0']++;
         }
         return count;
