@@ -61,7 +61,8 @@ public class Foo {
     }
 
     /**
-     *
+     * https://blog.csdn.net/fanrenxiang/article/details/80623884
+     * AtomicInteger 详解
      * @param printFirst
      * @throws InterruptedException
      */
