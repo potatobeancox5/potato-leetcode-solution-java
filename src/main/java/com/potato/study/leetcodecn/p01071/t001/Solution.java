@@ -45,20 +45,37 @@ public class Solution {
      * @return
      */
     public String gcdOfStrings(String str1, String str2) {
-        String shortWord = str1;
-        String longWord = str2;
-        if (shortWord.length() > longWord.length()) {
-            String tmp = shortWord;
-            shortWord = longWord;
-            longWord = tmp;
+        String target = str1 + str2;
+        if (!target.equals(str2 + str1)) {
+            return "";
         }
-        int len = shortWord.length();
-        for (int i = len; i > 0; i--) {
-
-        }
-        return null;
+        // 最大公约数
+        int gcd = gcd(str1.length(), str2.length());
+        return str1.substring(0, gcd);
     }
 
+
+    /**
+     * 求最大公约数
+     * @param x
+     * @param y
+     * @return
+     */
+    private int gcd(int x, int y) {
+        if (x == 0) {
+            return y;
+        }
+        return gcd(y % x, x);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String str1 = "ABCABC";
+        String str2 = "ABC";
+        String s = solution.gcdOfStrings(str1, str2);
+        System.out.println(s);
+        Assert.assertEquals("ABC", s);
+    }
 
 
 
