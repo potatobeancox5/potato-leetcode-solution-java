@@ -44,50 +44,85 @@ import org.junit.Assert;
  */
 public class Solution {
 
-    /**
-     * 笨阶乘
-     * * / + -
-     * 使用
-     * @param n
-     * @return
-     */
+
+//
+    // 1006
     public int clumsy(int n) {
-        if (n == 0) {
-            return 0;
-        }
-        // 使用 stak 接口 模拟 一个运算数栈一个操作符号栈
-        char[] opCh = new char[]{'*', '/', '+', '-'};
+        char[] op = new char[] {
+                '*','/','+','-'
+        };
+        // 一个操作数栈 一样op栈
         Stack<Integer> numStack = new Stack<>();
         Stack<Character> opStack = new Stack<>();
-        // 记录操作数 位置
-        int op = n;
-        numStack.add(op);
-        op--;
-        while (op > 0) {
-            for (char opType : opCh) {
-                if (opType == '+') {
-
-                } else if (opType == '-') {
-
-                } else if (opType == '+') {
-
-                }
+        int index = 0;
+        for (int i = n; i > 0 ; i--) {
+            // 数字入栈
+            numStack.push(i);
+            if (i == 1) {
+                continue;
             }
+            // 操作符 获取
+            char currentOp = op[index];
+            index++;
+            index %= op.length;
+            // 操作符栈空 入栈 否则比较 如果peek 操作符优先级大于等于 当前 先算栈里边的
+            if (opStack.isEmpty()) {
+                opStack.push(currentOp);
+                continue;
+            }
+            while (!opStack.isEmpty() && getOpPriority(opStack.peek()) >= getOpPriority(currentOp)) {
+                int num2 = numStack.pop();
+                int num1 = numStack.pop();
+                int res = compute(num1, num2, opStack.pop());
+                numStack.push(res);
+            }
+            opStack.push(currentOp);
         }
+        // 计算最终的操作符号
+        while (!opStack.isEmpty()) {
+            int num2 = numStack.pop();
+            int num1 = numStack.pop();
+            int res = compute(num1, num2, opStack.pop());
+            numStack.push(res);
+        }
+        // 枚举 n 进行计算 求值
         return numStack.peek();
+    }
+
+    private int getOpPriority(char op) {
+        if (op == '*' || op == '/') {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
+    private int compute(int num1, int num2, char op) {
+        if (op == '+') {
+            return num1 + num2;
+        } else if (op == '-') {
+            return num1 - num2;
+        } else if (op == '*') {
+            return num1 * num2;
+        } else {
+            return num1 / num2;
+        }
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int n = 4;
+        int n = 5;
         int valid = solution.clumsy(n);
         System.out.println(valid);
+        // 5 * 4 / 3 + 2 - 1 = 7
         Assert.assertEquals(7, valid);
 
-//        s = "abcabcababcc";
-//        valid = solution.isValid(s);
-//        System.out.println(valid);
-//        Assert.assertEquals(true, valid);
+
+        n = 10;
+        valid = solution.clumsy(n);
+        System.out.println(valid);
+        // 12 = 10 * 9 / 8 + 7 - 6 * 5 / 4 + 3 - 2 * 1
+        Assert.assertEquals(12, valid);
 //
 //        s = "aa";
 //        valid = solution.isValid(s);
