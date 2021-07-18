@@ -97,6 +97,32 @@ public class Solution {
         return coinKinds[amount];
     }
 
+
+    private int totalCount = 0;
+
+    /**
+     *
+     * @param amount
+     * @param coins
+     * @param index
+     * @param current
+     */
+    private void doChange(int amount, int[] coins, int index, int current) {
+        if (amount == current) {
+            totalCount++;
+            return;
+        }
+        if (index >= coins.length) {
+
+        }
+        // 不用当前硬币
+//        doChange(amount);
+
+        // 从 index 开始
+//        while ()
+    }
+
+
     public static void main(String[] args) {
         Solution solution = new Solution();
         int amount = 5;
