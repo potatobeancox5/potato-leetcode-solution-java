@@ -47,7 +47,17 @@ public class Solution {
      * @return
      */
     public int findLengthOfLCIS(int[] nums) {
-        return -1;
+        int max = 1;
+        int currentLength = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i-1]) {
+                currentLength++;
+                max = Math.max(max, currentLength);
+            } else {
+                currentLength = 1;
+            }
+        }
+        return max;
     }
 
     public static void main(String[] args) {
