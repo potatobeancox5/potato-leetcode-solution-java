@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Assert;
+
 /**
  * 1208. 尽可能使字符串相等
  *
@@ -51,30 +53,48 @@ import java.util.Set;
  */
 public class Solution {
 
-    /**
-     *
-     * @param s
-     * @param t
-     * @param maxCost
-     * @return
-     */
+    // 1208
     public int equalSubstring(String s, String t, int maxCost) {
-        // 遍历 一遍 做差 绝对值
-        int[] arr = new int[s.length()];
-        for (int i = 0; i < s.length(); i++) {
-            arr[i] = Math.abs((s.charAt(i) - t.charAt(i)));
+        // 两个字符串变成一样 最多执行k的值，做多能转换多少个子串
+        int len = s.length();
+        int[] cost = new int[len];
+        // 计算一个开销数组
+        for (int i = 0; i < len; i++) {
+            cost[i] = Math.abs(s.charAt(i) - t.charAt(i));
         }
-        // 遍历查 使用 maxCost 滑动窗口
-        int continuousLen = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if (maxCost >= arr[i]) {
-                maxCost -= arr[i];
-                continuousLen++;
+        // 遍历数组，维护一个 长度 当前cost 对于每个值i 如果 cost 加上i 大于 max ，删除 i-len 的cost 每次记录最大len
+        int total = 0;
+        int subLen = 0;
+        int maxLen = 0;
+        for (int i = 0; i < len; i++) {
+            total += cost[i];
+            subLen++;
+            if (total <= maxCost) {
+                maxLen = Math.max(maxLen, subLen);
+                continue;
             } else {
-                // 加上之前的值
-
+                // 减去最开始的值
+                total -= cost[i-subLen+1];
+                subLen--;
             }
         }
-        return -1;
+        return maxLen;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s = "abcd";
+        String t = "bcdf";
+        int maxCost = 3;
+        int max = solution.equalSubstring(s, t, maxCost);
+        System.out.println(max);
+        Assert.assertEquals(3, max);
+
+        s = "abcd";
+        t = "acde";
+        maxCost = 0;
+        max = solution.equalSubstring(s, t, maxCost);
+        System.out.println(max);
+        Assert.assertEquals(1, max);
     }
 }
