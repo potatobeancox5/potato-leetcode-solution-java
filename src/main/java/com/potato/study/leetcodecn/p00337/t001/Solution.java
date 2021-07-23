@@ -1,6 +1,8 @@
 package com.potato.study.leetcodecn.p00337.t001;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.junit.Assert;
 
@@ -47,7 +49,53 @@ import com.potato.study.leetcode.domain.TreeNode;
 public class Solution {
 
 
+    class RobTreeNode {
+        public RobTreeNode left;
+        public RobTreeNode right;
+        public int robThisVal;
+        public int notRobThisVal;
+        public TreeNode root;
+    }
+
+    // 337
     public int rob(TreeNode root) {
-        return 0;
+        int max = 0;
+        if (root == null) {
+            return max;
+        }
+        Queue<RobTreeNode> queue = new LinkedList<>();
+        RobTreeNode robRoot = new RobTreeNode();
+        robRoot.robThisVal = root.val;
+        robRoot.robThisVal = 0;
+        robRoot.root = root;
+        max = root.val;
+        queue.add(robRoot);
+        while (!queue.isEmpty()) {
+            RobTreeNode poll = queue.poll();
+            max = Math.max(max, poll.robThisVal);
+            max = Math.max(max, poll.notRobThisVal);
+
+            TreeNode pollRoot = poll.root;
+            if (pollRoot.left != null) {
+                RobTreeNode robRootLeft = new RobTreeNode();
+                robRootLeft.root = pollRoot.left;
+                poll.left = robRootLeft;
+                robRootLeft.robThisVal = poll.notRobThisVal + pollRoot.left.val;
+                robRootLeft.notRobThisVal = Math.max(poll.notRobThisVal, poll.robThisVal);
+                max = Math.max(max, robRootLeft.robThisVal);
+                max = Math.max(max, robRootLeft.notRobThisVal);
+            }
+
+            if (pollRoot.right != null) {
+                RobTreeNode robRootRight = new RobTreeNode();
+                poll.right = robRootRight;
+                robRootRight.root = pollRoot.right;
+                robRootRight.robThisVal = poll.notRobThisVal + pollRoot.right.val;
+                robRootRight.notRobThisVal = Math.max(poll.notRobThisVal, poll.robThisVal);
+                max = Math.max(max, robRootRight.robThisVal);
+                max = Math.max(max, robRootRight.notRobThisVal);
+            }
+        }
+        return max;
     }
 }

@@ -1,6 +1,8 @@
 package com.potato.study.leetcodecn.p00541.t001;
 
 
+import org.junit.Assert;
+
 /**
  * 541. 反转字符串 II
  *
@@ -35,8 +37,63 @@ public class Solution {
      * @return
      */
     public String reverseStr(String s, int k) {
+        // 找到k 个字符 判断当前是第几个k ，奇数个遍进行 转换
+        char[] chars = s.toCharArray();
+        int count = 0;
+        boolean needReverse = true;
+        for (int i = 0; i < chars.length; i++) {
+            count++;
+            if (count % k == 0) {
+                if (needReverse) {
+                    // 反转
+                    int left = i - k + 1;
+                    int right = i;
+                    while (left < right) {
+                        char tmp = chars[right];
+                        chars[right] = chars[left];
+                        chars[left] = tmp;
+                        // 往下走
+                        left++;
+                        right--;
+                    }
+                    needReverse = false;
+                } else {
+                    needReverse = true;
+                }
+            }
+        }
 
-        return "";
+        // 最后几个
+        if (needReverse && count <= k) {
+            int left = s.length() - count;
+            int right = s.length() - 1;
+            while (left < right) {
+                char tmp = chars[right];
+                chars[right] = chars[left];
+                chars[left] = tmp;
+                // 往下走
+                left++;
+                right--;
+            }
+        }
+        return new String(chars);
     }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String str = "abcdefg";
+        int k = 2;
+        String s = solution.reverseStr(str, k);
+        System.out.println(s);
+        Assert.assertEquals("bacdfeg", s);
+
+
+        k = 8;
+        s = solution.reverseStr(str, k);
+        System.out.println(s);
+        Assert.assertEquals("gfedcba", s);
+    }
+
+
 
 }
