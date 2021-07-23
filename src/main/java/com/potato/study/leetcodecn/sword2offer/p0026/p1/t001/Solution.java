@@ -46,7 +46,7 @@ public class Solution {
 
 
     public boolean isSubStructure(TreeNode a, TreeNode b) {
-        if (null == b) {
+        if (null == a) {
             return false;
         }
         return eachIsSubStructure(a, b);
@@ -54,21 +54,34 @@ public class Solution {
 
     /**
      * 递归判断 b 是否是 a 的子结构
+     * 子结果区别于子树
      * @param a
      * @param b
      * @return
      */
     public boolean eachIsSubStructure(TreeNode a, TreeNode b) {
-        // 终止条件
+        // 终止条件 空树 直接返回false
         if (b == null) {
-            return true;
-        }
-        if (b != null && a == null) {
             return false;
         }
-        //  ab 都非空
+        if (a == null && b != null) {
+            return false;
+        }
+
+
+
+        //  ab 都非空 ab 不相等
         if (a.val != b.val) {
-            return eachIsSubStructure(a.left, b) || eachIsSubStructure(a.right, b);
+            if (a.left != null && a.right != null) {
+                return eachIsSubStructure(a.left, b) || eachIsSubStructure(a.right, b);
+            } else if (a.left != null) {
+                return eachIsSubStructure(a.left, b);
+            } else if (a.right != null) {
+                return eachIsSubStructure(a.right, b);
+            } else {
+                return false;
+            }
+
         }
         // 继续进行递归判断 相等了 我擦
         return eachIsSubStructure(a.left, b.left) && eachIsSubStructure(a.right, b.right);

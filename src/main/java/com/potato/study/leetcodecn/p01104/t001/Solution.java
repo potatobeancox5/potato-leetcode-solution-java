@@ -1,6 +1,9 @@
 package com.potato.study.leetcodecn.p01104.t001;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,6 +49,31 @@ public class Solution {
      * @return
      */
     public List<Integer> pathInZigZagTree(int label) {
-        return null;
+        List<Integer> list = new ArrayList<>();
+        while (label >= 1) {
+            list.add(label);
+            label /= 2;
+        }
+        // 遍历结果 计算翻转之后的结果 利用满二叉树性质 第k层 开始点 2 ^(k-1)终止点 2^k - 1
+        List<Integer> result = new ArrayList<>();
+
+        for (int i = list.size(); i > 0 ; i--) {
+            if (i % 2 == 0) {
+                int num = (int) (3 * Math.pow(2, (i-1)) - 1);
+                int target = num - list.get(i-1);
+                result.add(target);
+            } else {
+                result.add(list.get(i-1));
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int label = 14;
+        List<Integer> list = solution.pathInZigZagTree(label);
+        //[1,3,4,14]
+        System.out.println(list);
     }
 }
