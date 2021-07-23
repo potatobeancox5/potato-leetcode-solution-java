@@ -36,9 +36,18 @@ import org.junit.Assert;
  */
 public class Solution {
 
+    // 714
     public int maxProfit(int[] prices, int fee) {
-
-        return -1;
+        // 第i 天处于买入状态的最大收益
+        int[] buy = new int[prices.length];
+        // 第i 天处于卖出状态的最大收益
+        int[] sell = new int[prices.length];
+        buy[0] = 0 - prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            buy[i] = Math.max(buy[i-1], sell[i-1] - prices[i]);
+            sell[i] = Math.max(sell[i-1], buy[i-1] + prices[i] - fee);
+        }
+        return sell[prices.length-1];
     }
 
     public static void main(String[] args) {
