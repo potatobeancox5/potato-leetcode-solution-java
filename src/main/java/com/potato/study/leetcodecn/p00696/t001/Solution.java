@@ -1,7 +1,11 @@
 package com.potato.study.leetcodecn.p00696.t001;
 
 
+import org.junit.Assert;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,31 +45,50 @@ import java.util.Map;
  */
 public class Solution {
 
-    // 696
+    /**
+     * 题目 含义是这样的
+     * 要求 子串中 01 是连续的，且01 数量相同
+     * 先对s进行计数，连续的01 个数，存在数组中
+     * 遍历数组 看两个相邻的数字是否相同，相同 ++
+     * @param s
+     * @return
+     */
     public int countBinarySubstrings(String s) {
-        // 统计 s 中 每个 位置 出现的 1-0 的个数差 然后进行组合 cn2
-        Map<Integer, Integer> countMap = new HashMap<>();
-        // key 是 0-1 结果 ， value 是该结果的个数
-        int diff = 0;
+        int len = 0;
+        List<Integer> countList = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
-            if ('0' == s.charAt(i)) {
-                diff++;
-            } else {
-                diff--;
-            }
-            Integer orDefault = countMap.getOrDefault(diff, 0);
-            orDefault++;
-            countMap.put(diff, orDefault);
-        }
-        // 数量
-        int totalCount = 0;
-        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
-            if (entry.getValue() == 1) {
+            if (i == 0) {
+                len++;
                 continue;
             }
-            totalCount += (entry.getValue() * (entry.getValue() - 1) / 2);
+            if (s.charAt(i) == s.charAt(i-1)) {
+                len++;
+            } else {
+                countList.add(len);
+                len = 1;
+            }
         }
-        return totalCount;
+        countList.add(len);
+        int count = 0;
+        for (int i = 1; i < countList.size(); i++) {
+            count += Math.min(countList.get(i), countList.get(i-1));
+        }
+        return count;
     }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s = "00110011";
+        int i = solution.countBinarySubstrings(s);
+        System.out.println(i);
+        Assert.assertEquals(6, i);
+
+        s = "10101";
+        i = solution.countBinarySubstrings(s);
+        System.out.println(i);
+        Assert.assertEquals(4, i);
+    }
+
+
 
 }
