@@ -48,80 +48,23 @@ import java.util.Arrays;
  */
 public class Solution {
 
-    /**
-     * 硬币面额数组 从大往小排列
-     * 类的成员变量计数
-     *
-     *
-     * Dfs 递归求解
-     *
-     * dfs amount 总金额 （剩余）， 硬币面额数组，目前该使用的硬币index
-     * 终止条件
-     * 如果当前 amount 已经到 0 直接计数 ++ 返回
-     *
-     * 如果当前 idex 已经非法了 直接返回
-     *
-     *
-     *
-     * fori index - 终点
-     * 	如果当前 amount 已经不满足 减了 直接continue 吧
-     * 	否则
-     * 		dfs amount- 当前前数，硬币面额数组， i（当前用到的面额index）
-     *
-     *
-     *
-     * 主函数 直接 返回 成员变量的计数个数
-     * @param amount
-     * @param coins
-     * @return
-     */
+    // 518
     public int change(int amount, int[] coins) {
-        int[] coinKinds = new int[amount + 1];
-        Arrays.fill(coinKinds, -1);
-        // 面额 0 不使用任何硬币即可
-        coinKinds[0] = 1;
-        for (int i = 1; i <= amount ; i++) {
-            for (int j = 0; j < coins.length; j++) {
-                if (i - coins[j] < 0) {
+        // dp i  组成i面额的硬币总数
+        int[] dp = new int[amount+1];
+        // 面额为 0 的组合数只有一种
+        dp[0] = 1;
+        // 遍历 硬币 内部遍历 0-amount 如果当前值 小于 硬币面额 dp += dp i- coin
+        for (int coin : coins) {
+            for (int i = 1; i <= amount; i++) {
+                if (i < coin) {
                     continue;
                 }
-                if (coinKinds[i - coins[j]] == -1) {
-                    continue;
-                }
-                if (coinKinds[i] == -1) {
-                    coinKinds[i] = 0;
-                }
-                coinKinds[i] += coinKinds[i - coins[j]];
+                dp[i] += dp[i -coin];
             }
         }
-        return coinKinds[amount];
+        return dp[amount];
     }
-
-
-    private int totalCount = 0;
-
-    /**
-     *
-     * @param amount
-     * @param coins
-     * @param index
-     * @param current
-     */
-    private void doChange(int amount, int[] coins, int index, int current) {
-        if (amount == current) {
-            totalCount++;
-            return;
-        }
-        if (index >= coins.length) {
-
-        }
-        // 不用当前硬币
-//        doChange(amount);
-
-        // 从 index 开始
-//        while ()
-    }
-
 
     public static void main(String[] args) {
         Solution solution = new Solution();
