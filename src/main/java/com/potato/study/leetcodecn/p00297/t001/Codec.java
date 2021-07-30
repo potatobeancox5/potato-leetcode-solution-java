@@ -51,13 +51,40 @@ public class Codec {
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-
-        return null;
+        if (root == null) {
+            return "null";
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(root.val);
+        builder.append(",");
+        builder.append(serialize(root.left));
+        builder.append(",");
+        builder.append(serialize(root.right));
+        return builder.toString();
     }
 
     // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
+    private int index;
 
-        return null;
+    public TreeNode deserialize(String data) {
+        String[] split = data.split(",");
+        this.index = 0;
+        return getTree(split);
+    }
+
+    private TreeNode getTree(String[] data) {
+        if (data == null || data.length == 0) {
+            return null;
+        }
+        String valueStr = data[index];
+        index++;
+        if ("null".equals(valueStr)) {
+            return null;
+        }
+        int value = Integer.parseInt(valueStr);
+        TreeNode treeNode = new TreeNode(value);
+        treeNode.left = getTree(data);
+        treeNode.right = getTree(data);
+        return treeNode;
     }
 }
