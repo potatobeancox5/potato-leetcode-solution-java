@@ -52,11 +52,12 @@ public class Solution {
         // 使用一个 map key 节点 value 是list key的前置课程列表
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int[] prerequisite : prerequisites) {
+            int after = prerequisite[0];
             int pre = prerequisite[1];
-            inDegree[pre]++;
-            List<Integer> orDefault = map.getOrDefault(prerequisite[0], new ArrayList<>());
-            orDefault.add(pre);
-            map.put(prerequisite[0], orDefault);
+            inDegree[after]++;
+            List<Integer> orDefault = map.getOrDefault(pre, new ArrayList<>());
+            orDefault.add(after);
+            map.put(pre, orDefault);
         }
         // 遍历 数组 找到 目前入读是 0 且没有被选择的节点 放到结果中 按照map记录前置节点依赖，修改对应前置节点依赖
         int[] result = new int[numCourses];
@@ -70,8 +71,8 @@ public class Solution {
                     // update
                     List<Integer> list = map.get(i);
                     if (null != list) {
-                        for (int pre : list) {
-                            inDegree[pre]--;
+                        for (int after : list) {
+                            inDegree[after]--;
                         }
                     }
                     used[i] = true;
