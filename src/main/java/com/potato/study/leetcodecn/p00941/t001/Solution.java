@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00941.t001;
 
+import org.junit.Assert;
+
 /**
  * 941. 有效的山脉数组
  *
@@ -49,17 +51,53 @@ public class Solution {
      * @return
      */
     public boolean validMountainArray(int[] arr) {
-        int left = 0;
-        while (left < arr.length - 1 && arr[left] <= arr[left+1]) {
-            left++;
+        if (arr.length < 3) {
+            return false;
         }
-        int right = left + 1;
-        while (right < arr.length - 1 && arr[right] >= arr[right+1]) {
-            right++;
+        if (arr[0] >= arr[1]) {
+            return false;
+        }
+        int index = 1;
+        // 向左扫描 找到最大的点
+        while (index < arr.length && arr[index-1] < arr[index]) {
+            index++;
+        }
+        if (index == arr.length) {
+            return false;
+        }
+        if (arr[arr.length - 2] <= arr[arr.length-1]) {
+            return false;
+        }
+        while (index < arr.length - 1 && arr[index] > arr[index+1]) {
+            index++;
         }
         // right 到不了最后一个位置
-        return right == arr.length - 1;
+        return index == arr.length - 1;
     }
 
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] arr = new int[] {
+                2,1
+        };
+        boolean b = solution.validMountainArray(arr);
+        System.out.println(b);
+        Assert.assertEquals(false, b);
+
+        arr = new int[] {
+                3,5,5
+        };
+        b = solution.validMountainArray(arr);
+        System.out.println(b);
+        Assert.assertEquals(false, b);
+
+        arr = new int[] {
+                0,3,2,1
+        };
+        b = solution.validMountainArray(arr);
+        System.out.println(b);
+        Assert.assertEquals(true, b);
+    }
 
 }
