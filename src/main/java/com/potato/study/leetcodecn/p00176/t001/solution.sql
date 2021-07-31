@@ -22,4 +22,5 @@
 
 
 # Write your MySQL query statement below
-SELECT Salary as SecondHighestSalary FROM Employee ORDER BY Salary LIMIT 1,1
+
+SELECT  (SELECT distinct Salary FROM Employee ORDER BY Salary DESC LIMIT 1,1) AS SecondHighestSalary
