@@ -49,37 +49,34 @@ import java.util.PriorityQueue;
  */
 public class Solution {
 
+
     /**
-     * dp ij 从 0-i 包括 分成j组的最小值
-     * dp ij = min 「dp kj-1， + k-I 的最大值」
+     *
      * @param arr
      * @param k
      * @return
      */
     public int maxSumAfterPartitioning(int[] arr, int k) {
-        int n = arr.length;
-        int[][] dp = new int[n][k+1];
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < n; i++) {
-            max = Math.max(max, arr[i]);
-            dp[i][1] = max;
-        }
-
-        for (int j = 2; j <= k; j++) {
-            for (int i = 0; i < n; i++) {
-                dp[i][j] = Integer.MAX_VALUE;
-                // 遍历 k
-                for (int l = 0; l < i; l++) {
-                    int partMax = Integer.MIN_VALUE;
-                    for (int m = l+1; m <= i; m++) {
-                        partMax = Math.max(partMax, arr[m]);
-                    }
-                    dp[i][j] = Math.min(dp[i][j], dp[l][j-1] + partMax);
+        // dp i 到i 为止最大的值
+        int[] dp = new int[arr.length+1];
+        // dp 0 就是 数量为 0 时的最大值
+        dp[0] = 0;
+        for (int i = 1; i <= arr.length; i++) {
+            // 枚举最后一个位置 dpi 对应就是 i之前的数字
+            int max = arr[i-1];
+            for (int j = i-1; j >= 0; j--) {
+                if (i - j > k) {
+                    break;
                 }
+                // 计算当前最大值 k- i
+                max = Math.max(max, arr[j]);
+                // dp i 等于 max { j 从 0-idp j + i-j区间最大值 * ij间距
+                dp[i] = Math.max(dp[i], dp[j] + max * (i - j));
             }
         }
-        return dp[n-1][k];
+        return dp[arr.length];
     }
+
 
     public static void main(String[] args) {
         Solution solution = new Solution();
@@ -98,5 +95,13 @@ public class Solution {
         i = solution.maxSumAfterPartitioning(arr , k);
         System.out.println(i);
         Assert.assertEquals(83, i);
+
+        arr = new int[]{
+                1,15,7,9,2,5,10
+        };
+        k = 3;
+        i = solution.maxSumAfterPartitioning(arr , k);
+        System.out.println(i);
+        Assert.assertEquals(84, i);
     }
 }
