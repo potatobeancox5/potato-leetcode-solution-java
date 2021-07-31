@@ -1,5 +1,8 @@
 package com.potato.study.leetcodecn.p01941.t001;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 1941. 检查是否所有字符出现次数相同
  *
@@ -40,9 +43,19 @@ public class Solution {
      * @return
      */
     public boolean areOccurrencesEqual(String s) {
-
-
-        return false;
+        // 遍历 s 计算次数
+        Map<Character, Integer> map = new HashMap<>();
+        for (char ch : s.toCharArray()) {
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        }
+        // 遍历 看是不是都一样
+        int count = map.get(s.charAt(0));
+        for (Map.Entry<Character, Integer> entry: map.entrySet()) {
+            if (count != entry.getValue()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) {
