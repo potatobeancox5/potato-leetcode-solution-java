@@ -111,13 +111,14 @@ public class Solution {
         int[] count = new int[26];
         for (int i = 0; i < words.length; i++) {
             int bit = (status & 1);
+            status >>>= 1;
             if (bit == 0) {
                 continue;
             }
             for (char ch : words[i].toCharArray()) {
                 count[ch - 'a']++;
             }
-            status >>>= 1;
+
         }
         return count;
     }
@@ -125,7 +126,7 @@ public class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
         String[] words = new String[] {
-                "dog","cat","dad","good"
+                "dad","good","dog","cat"
         };
         char[] letters = new char[]{
                 'a','a','c','d','d','d','g','o','o'
@@ -134,7 +135,7 @@ public class Solution {
                 1,0,9,5,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0
         };
         int max = solution.maxScoreWords(words, letters, score);
-
+        System.out.println(max);
         Assert.assertEquals(23, max);
     }
 }
