@@ -19,9 +19,9 @@ import org.junit.Assert;
  *
  * 例如，考虑到如下布局的地下城，如果骑士遵循最佳路径 右 -> 右 -> 下 -> 下，则骑士的初始健康点数至少为 7。
  *
- * -2 (K)	-3	3
- * -5	-10	1
- * 10	30	-5 (P)
+ * -2 (K) -3  3
+ * -5	 -10  1
+ * 10	 30	 -5 (P)
  *  
  *
  * 说明:
@@ -37,6 +37,7 @@ import org.junit.Assert;
  */
 public class Solution {
 
+
     /**
      * 174
      *
@@ -44,25 +45,28 @@ public class Solution {
      * @return
      */
     public int calculateMinimumHP(int[][] dungeon) {
-        // dp ij 00 - 到达 ij 体力
-        int[][] dp = new int[dungeon.length][dungeon[0].length];
-        int min = Integer.MAX_VALUE;
-        // dp ij = val ij + max「dp【i-1,j】 dp【i】【j-1】」
-        for (int i = 0; i < dungeon.length; i++) {
-            for (int j = 0; j < dungeon[0].length; j++) {
-                if (i == 0 && j == 0) {
-                    dp[i][j] = dungeon[i][j];
-                } else if (i == 0) {
-                    dp[i][j] = dungeon[i][j] + dp[i][j-1];
-                } else if (j == 0) {
-                    dp[i][j] = dungeon[i][j] + dp[i-1][j];
+        int n = dungeon.length;
+        int m = dungeon[0].length;
+        // dp ij 从ij 到 最后 最小要多少个体力
+        int[][] dp = new int[n][m];
+        for (int i = n-1; i >= 0; i--) {
+            for (int j = m-1; j >= 0; j--) {
+                if (i == n-1 && j == m-1) {
+                    dp[i][j] = 1 - dungeon[i][j];
+                } else if (j == m-1) {
+                    dp[i][j] = dp[i+1][j] - dungeon[i][j];
+                } else if (i == n-1) {
+                    dp[i][j] = dp[i][j+1] - dungeon[i][j];
                 } else {
-                    dp[i][j] = dungeon[i][j] + Math.max(dp[i-1][j], dp[i][j-1]);
+                    dp[i][j] = Math.min(dp[i+1][j], dp[i][j+1]) - dungeon[i][j];
                 }
-                min = Math.min(min, dp[i][j]);
+                // 每个点必须剩余一个生命
+                if (dp[i][j] < 1) {
+                    dp[i][j] = 1;
+                }
             }
         }
-        return min;
+        return dp[0][0];
     }
 
 
