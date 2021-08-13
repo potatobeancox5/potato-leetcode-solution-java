@@ -1,5 +1,7 @@
 package com.potato.study.leetcodecn.p00405.t001;
 
+import org.junit.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,47 +39,55 @@ import java.util.List;
 public class Solution {
 
     /**
-     * 十六进制
-     * 整数直接求
+     * 直接转
      * @param num
      * @return
      */
     public String toHex(int num) {
-        return null;
+        // 因为 int 是 32 位的 将其分成 8分 即可 首先转成2进制 数组
+        int[] bit = new int[32];
+        int index = bit.length - 1;
+        while (num != 0) {
+            int thisBit = num & 1;
+            bit[index--] = thisBit;
+            // 无符号右移
+            num >>>= 1;
+        }
+        // 每 4个二进制位 进行一次合并 生成一个 数字
+        char[] hexChar = new char[]{
+                '0', '1', '2', '3', '4', '5', '6', '7',
+                '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+        };
+        // 查表获取对应字母
+        StringBuilder resultBuilder = new StringBuilder();
+        int tmp = 0;
+        for (int i = 0; i < bit.length; i++) {
+            tmp <<= 1;
+            tmp += bit[i];
+            // 如果是4
+            if (i % 4 == 3) {
+                char ch = hexChar[tmp];
+                resultBuilder.append(ch);
+                tmp = 0;
+            }
+        }
+        // 返回 之前去除先导0
+        while (resultBuilder.length() > 1 && resultBuilder.charAt(0) == '0') {
+            resultBuilder.deleteCharAt(0);
+        }
+        return resultBuilder.toString();
     }
 
-    private List<Integer> toBinary (int num) {
-        List<Integer> result = new ArrayList<>();
-        if (num == 0) {
-            result.add(0);
-            return result;
-        }
-        boolean isNegative = false;
-        if (num < 0) {
-            isNegative = true;
-            num *= -1;
-        }
-        // 转成2进制
-        while (num > 0) {
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int num = 26;
+        String s = solution.toHex(num);
+        System.out.println(s);
+        Assert.assertEquals("1a", s);
 
-        }
-        if (isNegative) {
-            // 取反码
-            for (int i = 0; i < result.size(); i++) {
-                if (result.get(i) == 1) {
-                    result.set(i, 0);
-                } else {
-                    result.set(i, 1);
-                }
-            }
-            // 算补码
-            for (int i = result.size() - 1; i >= 0; i--) {
-//                result.get(i) + 1;
-            }
-
-        }
-//        Integer integer = new Integer();
-//        Integer.toHexString()
-        return null;
+        num = -1;
+        s = solution.toHex(num);
+        System.out.println(s);
+        Assert.assertEquals("ffffffff", s);
     }
 }
